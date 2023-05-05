@@ -1924,7 +1924,6 @@ jlsbianan JLBIANAN Cbs@1234</textarea></div>
 { "d": "MK__", "t": "Overgeared (Team Argo)", "p": ["0/?"] },
 { "d": "MK__", "t": "Player", "p": ["0/?"] },
 { "d": "MK__", "t": "Positively Yours", "p": ["0/?"] },
-{ "d": "MK__", "t": "QUESTISM", "p": ["0/?"] },
 { "d": "MK__", "t": "Second Life Ranker", "p": ["0/?"] },
 { "d": "MK__", "t": "Solitary Lady", "p": ["0/?"] },
 { "d": "MK__", "t": "Solo Leveling", "p": ["179/179"] },
@@ -1947,21 +1946,13 @@ jlsbianan JLBIANAN Cbs@1234</textarea></div>
 { "d": "MK__", "t": "The Max Level Hero Strikes Back!", "p": ["0/?"] },
 { "d": "MK__", "t": "The Reason Why Raeliana Ended up at the Duke's Mansion", "p": ["0/158"] },
 { "d": "MK__", "t": "The Skeleton Soldier Failed to Defend the Dungeon", "p": ["0/?"] },
-{ "d": "MK__", "t": "The Twins' New Life", "p": ["0/?"] },
 { "d": "MK__", "t": "The Villainess is a Marionette", "p": ["0/?"] },
 { "d": "MK__", "t": "The Villainess Turns the Hourglass", "p": ["0/?"] },
 { "d": "MK__", "t": "This Witch of Mine", "p": ["0/55"] },
 { "d": "MK__", "t": "To Love Your Enemy", "p": ["0/?"] },
-{ "d": "MK__", "t": "True Education", "p": ["0/?"] },
 { "d": "MK__", "t": "Twilight Poem", "p": ["0/?"] },
 { "d": "MK__", "t": "Undercover Empress", "p": ["0/?"] },
-{ "d": "MK__", "t": "Viral Hit", "p": ["0/?"] },
-{ "d": "MK__", "t": "Who Invited You?", "p": ["0/67"] },
-{ "d": "MK__", "t": "Who Made Me a Princess", "p": ["0/?"] },
-{ "d": "MK__", "t": "Winter Woods", "p": ["0/129"] },
-{ "d": "MK__", "t": "Your Throne", "p": ["0/?"] },
 { "d": "MK_D", "t": "Empress of Another World", "p": ["0/?"] },
-{ "d": "MK_D", "t": "Hypnosis School", "p": ["0/?"] },
 { "d": "MK_D", "t": "The Beginning After the End", "p": ["47/?"] }]//mkush
 
 body = document.querySelector("body")
@@ -1970,8 +1961,9 @@ download_bytes = 2750000
 
 window.addEventListener("load", () => {
 play_music(music_list[Math.floor(Math.random() * music_list.length)].name)
-//user_ip.scrollIntoView({ behavior: 'smooth' })
+binance_search()
 get_posts()
+//user_ip.scrollIntoView({ behavior: 'smooth' })
 })
 
 function query_search(query) {
@@ -2153,7 +2145,7 @@ if(progress) {
 html_message = (typeof message === "string") ? message : message.join("<br>")
 progress.innerHTML = html_message } }
 function speedtest_init() {
-speedtest_show_progress("Speed Test")
+speedtest_show_progress("kish")
 window.setTimeout(speedtest, 1) }
 function speedtest() {
 let start_time, end_time
@@ -2200,8 +2192,6 @@ auto_hide_div.style.display = "block" } )
 function binance_search(query) {
 axios.get(`https://api.binance.com/api/v3/ticker/24hr?symbol=${query || 'BTC'}USDT`)
 .then(res => crypto_position.innerHTML = `${res.data.symbol.split("USDT")[0]}: $${parseFloat(res.data.lastPrice).toFixed(2)} [${parseFloat(res.data.priceChangePercent).toFixed(2)}%]`) }
-
-binance_search()
 
 mode_selector.onchange = event => {
 if(event.target.value.toLowerCase() === "nightmode") {
