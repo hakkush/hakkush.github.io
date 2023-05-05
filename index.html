@@ -165,7 +165,7 @@ jsonFile = JSON.parse(fs.readFileSync(file + "html", "utf8").split("mkush = ")[5
 
 data = []
 jsonFile.forEach(m => {
-if(m.p[0].includes("0/")) return
+if(m.p[0].startsWith("0/")) return
 data.push(`{ "d": "${m.d}", "t": "${m.t}", "p": ["${m.p}" }`) } )
 data.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
 fs.writeFileSync(file + "dll", fs.readFileSync(file + "html", "utf8").split("mkush = ").slice(0, -1).join("mkush = ") + "mkush = [" + data.join(",\n") + "]//mkush" + fs.readFileSync(file + "html", "utf8").split("//mkush").slice(5).join("//mkush"))
