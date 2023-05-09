@@ -112,8 +112,8 @@ html { scroll-behavior: smooth; }
 <input type="checkbox" id="menu" checked>
 <div class="main_menu">
 <ul>
-<li><a>Ish</a>
-<ul><li><a>Kaifer</a></li></ul>
+<li><a>LoMo</a>
+<ul><li><a>UiHa</a></li></ul>
 </li>   
 </ul>
 </div>
@@ -164,9 +164,7 @@ file = "storage/shared/download/index."
 jsonFile = JSON.parse(fs.readFileSync(file + "html", "utf8").split("mkush = ")[5].split("//mkush")[0])
 
 data = []
-jsonFile.forEach(m => {
-if(m.p[0].startsWith("0/")) return
-data.push(`{ "d": "${m.d}", "t": "${m.t}", "p": ["${m.p}" }`) } )
+jsonFile.forEach(m => data.push(`{ "d": "${m.d}", "t": "${m.t}", "p": ["${m.p}" }`))
 data.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
 fs.writeFileSync(file + "dll", fs.readFileSync(file + "html", "utf8").split("mkush = ").slice(0, -1).join("mkush = ") + "mkush = [" + data.join(",\n") + "]//mkush" + fs.readFileSync(file + "html", "utf8").split("//mkush").slice(5).join("//mkush"))
 
@@ -1900,19 +1898,6 @@ jlsbianan JLBIANAN Cbs@1234</textarea></div>
 { "d": "MK__", "t": "Second Life Ranker", "p": ["0/?"] },
 { "d": "MK__", "t": "Solitary Lady", "p": ["0/?"] },
 { "d": "MK__", "t": "Solo Leveling", "p": ["179/179"] },
-{ "d": "MK__", "t": "Something About Us", "p": ["0/?"] },
-{ "d": "MK__", "t": "Springtime For Blossom", "p": ["0/34"] },
-{ "d": "MK__", "t": "SSS-Class Revival Hunter", "p": ["0/?"] },
-{ "d": "MK__", "t": "Study Group", "p": ["0/?"] },
-{ "d": "MK__", "t": "Subtle Disaster", "p": ["0/45"] },
-{ "d": "MK__", "t": "Tales of the Unusual", "p": ["0/?"] },
-{ "d": "MK__", "t": "Taming Master", "p": ["10/?"] },
-{ "d": "MK__", "t": "Teenage Mercenary", "p": ["0/?"] },
-{ "d": "MK__", "t": "The Abandoned Empress", "p": ["0/146"] },
-{ "d": "MK__", "t": "The Boy of Death", "p": ["0/?"] },
-{ "d": "MK__", "t": "The Breaker", "p": ["0/72"] },
-{ "d": "MK__", "t": "The Dark Magician Transmigrates After 66666", "p": ["0/?"] },
-{ "d": "MK__", "t": "The Girl from Random Chatting!", "p": ["0/?"] },
 { "d": "MK__", "t": "The God of High School", "p": ["0/?"] },
 { "d": "MK__", "t": "The Lady and the Beast", "p": ["0/?"] },
 { "d": "MK__", "t": "The Legendary Moonlight Sculptor", "p": ["106/?"] },
