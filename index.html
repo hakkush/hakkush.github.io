@@ -79,6 +79,7 @@ grid-template-columns: 1px 1ch 1fr;
 <option value="Rewind">Rewind</option>
 <option value="Reset">Reset</option></select>
 <button id="query_search" onclick="query_search(document.querySelector('#query').value)">Search</button><br>
+<a href="#scroll">Scroll</a>
 <input type="radio" id="sort1" name="sort" value="Name" unchecked><label for="sort1">Name</label>
 <input type="radio" id="sort2" name="sort" value="Date"><label for="sort2">Date</label></fieldset>
 
@@ -86,7 +87,6 @@ grid-template-columns: 1px 1ch 1fr;
 <div id="result"></div>
 
 <button onclick="hide_music()">Mo<span style="color: red; font-weight: bold;">u</span>se</button>
-<a href="#f"><button>Kish</button></a>
 <button id="user_ip">IP</button>
 <button id="progress">MBPS</button>
 
@@ -954,7 +954,7 @@ class emoji(commands.Cog):
                 await message.delete()
 
 def setup(bot):
-    bot.add_cog(emoji(bot))</textarea><div id="f"></div>
+    bot.add_cog(emoji(bot))</textarea><a id="scroll" name="scroll">Scroll</a>
 <script>mkush = [{ "d": "AC__", "t": "The King's Avatar", "p": "12/12,12/12" },
 { "d": "ACS_", "t": "How to Steal 55 Kisses", "p": "12/12,12/12,12/12,12/12" },
 { "d": "ACS_", "t": "To Be Hero", "p": "12/12,1/12" },
@@ -1381,8 +1381,8 @@ window.addEventListener("load", () => {
 play_music(music_list[Math.floor(Math.random() * music_list.length)].name)
 binance_search()
 get_posts()
-//hide.checked = true
-//f.scrollIntoView({ behavior: 'smooth' })
+hide.checked = true
+scroll.scrollIntoView({ behavior: "smooth" })
 })
 
 function query_search(query) {
