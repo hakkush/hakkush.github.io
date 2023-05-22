@@ -35,7 +35,7 @@ grid-template-columns: 1px 1ch 1fr;
 
 <div class="main_menu" style="user-select: none;">
 <ul style="justify-content: space-between; display: flex;">
-<li><b><i id="auto_type_p" style="font-size: 1.2rem;" onclick="background_image()">Paper<span style="color: blue; font-weight: bold;">T</span>hena</i></b></li>
+<li><b><i id="auto_type_p" style="font-size: 1.2rem;" onclick="background_image()">Paperthena</i></b></li>
 <li></li>
 <li>Music
 <ul style= "line-height: 4vh">
@@ -85,8 +85,8 @@ grid-template-columns: 1px 1ch 1fr;
 <div id="home"></div>
 <div id="result"></div>
 
-<button onclick="hide_music()">Kish</button>
-<a href="#user_ip"><button>Mouse</button></a>
+<button onclick="hide_music()">Mo<span style="color: red; font-weight: bold;">u</span>se</button>
+<a href="#f"><button>Kish</button></a>
 <button id="user_ip">IP</button>
 <button id="progress">MBPS</button>
 
@@ -954,7 +954,7 @@ class emoji(commands.Cog):
                 await message.delete()
 
 def setup(bot):
-    bot.add_cog(emoji(bot))</textarea>
+    bot.add_cog(emoji(bot))</textarea><div id="f"></div>
 <script>mkush = [{ "d": "AC__", "t": "The King's Avatar", "p": "12/12,12/12" },
 { "d": "ACS_", "t": "How to Steal 55 Kisses", "p": "12/12,12/12,12/12,12/12" },
 { "d": "ACS_", "t": "To Be Hero", "p": "12/12,1/12" },
@@ -1381,8 +1381,8 @@ window.addEventListener("load", () => {
 play_music(music_list[Math.floor(Math.random() * music_list.length)].name)
 binance_search()
 get_posts()
-hide.checked = true
-//user_ip.scrollIntoView({ behavior: 'smooth' })
+//hide.checked = true
+//f.scrollIntoView({ behavior: 'smooth' })
 })
 
 function query_search(query) {
