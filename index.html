@@ -15,64 +15,61 @@ textarea { width: 50%; }
 body { background-image: url("background2.jpg"); } }
 #hide:checked ~ .auto_resize { display: none; }
 
+input[type="search"], input, select, button { padding: 0.1vw; background-color: black; color: white; border: none; }
+a { color: white; text-decoration: none; pointer-events: none; }
+
 .main_menu ul { list-style-type: none; cursor: pointer; }
-.main_menu ul li ul { flex-direction: column; display: none; }
-.main_menu ul li:hover > ul { display: flex; }
-.main_menu ul li a:hover { transition: all 0.5s ease; background-color: pink; }
-.main_menu ul { background-color: black; color: white; }
+.main_menu ul li ul { position: absolute; opacity: 0; flex-direction: column; display: flex; }
+.main_menu ul li:hover > ul { transition: all 0.5s ease; opacity: 1; }
+.main_menu ul li a:hover { transition: all 0.8s ease; background-color: pink; }
+.main_menu ul { background-color: black; color: white; padding: 1vw; }
+.main_menu ul li:hover ul::before { content: "*" !important; }
 </style>
 
 <!--
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-font-family: 'Poppins', sans-serif;
-
-#menu::before
-input[type="search"]
-
-content: "" !important;
 transform: rotate(1deg);
-user-select: none;
-font-size: 1rem;
 object-fit: cover;
 word-break: break-all;
-grid-template-columns: auto 1fr 1px 1ch;
-pointer-events: auto;
-border: none;
-outline: none;
+grid-template-columns: 1px 1ch 1fr;
 -->
 
-<div class="main_menu">
+<div class="main_menu" style="user-select: none;">
 <ul style="justify-content: space-between; display: flex;">
-<li><a onclick="play_music('shinunoga')">Shinunoga E-Wa</a></li>
-<li><a onclick="play_music('lemon')">Lemon</a></li>
-<li><a onclick="play_music('night')">Night Dancer</a>
+<li><b><i id="auto_type_p" style="font-size: 1.2rem;" onclick="background_image()">Paperthena</i></b></li>
+<li></li>
+<li><a onclick="hide_music()">Music</a>
 <ul style= "line-height: 4vh">
+<li><a onclick="play_music('night')">Night Dancer</a></li>
+<li><a onclick="play_music('shinunoga')">Shinunoga E-Wa</a></li>
 <li><a onclick="play_music('tsumi')">Tsumi No Kaori</a></li>
-<li><a onclick="play_music('matsuri')">Matsuri</a></li>
 <li><a onclick="play_music('haiiro')">Haiiro to Ao</a></li>
-<li><a onclick="play_music('loser')">Loser</a></li>
-<li><a onclick="play_music('kaerou')">Kaerou</a>
+<li><a onclick="play_music('uma')">Uma to Shika</a></li>
+<li><a onclick="play_music('eine')">Eine Kleine</a></li>
+<li>More
 <ul style="justify-content: space-between;">
 <li><a onclick="play_music('yasashisa')">Yasashisa</a></li>
-<li><a onclick="play_music('metronome')">Metronome</a></li>
-<li><a onclick="play_music('shunrai')">Shunrai</a></li>
-<li><a onclick="play_music('uma')">Uma to Shika</a></li>
+<li><a onclick="play_music('matsuri')">Matsuri</a></li>
 <li><a onclick="play_music('orion')">Orion</a></li>
-<li><a onclick="play_music('eine')">Eine Kleine</a></li></ul></li>
-</ul></li></ul></div>
-
-<h1 onclick="hide_music()"><i id="auto_type_p">Paperthena</i></h1>
+<li><a onclick="play_music('lemon')">Lemon</a></li>
+<li><a onclick="play_music('loser')">Loser</a></li>
+<li><a onclick="play_music('kaerou')">Kaerou</a></li>
+<li><a onclick="play_music('shunrai')">Shunrai</a></li>
+<li><a onclick="play_music('metronome')">Metronome</a></li>
+</ul></li>
+</ul></li>
+<li>
+<a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/paperthena"><img src="facebook.png" width="20vw" height="20vw"></a>
+<a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/paperthena/"><img src="insta.png" width="20vw" height="20vw"></a>
+<a target="_blank" rel="noopener noreferrer" href="https://shopee.ph/paperthena"><img src="shopee.png" width="20vw" height="20vw"></a>
+</li>
+<li><select id="mode_selector"><option value="Nightmode" selected>White</option><option value="Lightmode">Black</option></select></li>
+</ul></div>
 
 <div id="auto_hide_div">
 <div id="crypto_position"></div>
 </div>
 
-<a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/paperthena"><img src="facebook.png" width="8%" height="4%"></a>
-<a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/paperthena/"><img src="insta.png" width="8%" height="4%"></a>
-<a target="_blank" rel="noopener noreferrer" href="https://shopee.ph/paperthena"><img src="shopee.png" width="8%" height="4%"></a>
-<img id="z" src="qr.png" width="8%" height="4%">
-
-<fieldset><legend><a href="index.html" style="color: white; text-decoration: none;" download>Search</a></legend>
+<fieldset><legend><a href="index.html" download>Search</a></legend>
 <input id="query" placeholder="Search" type="search" onkeypress="if(event.key === 'Enter') document.querySelector('#query_search').click()">
 <select id="search_type">
 <option value="Reddit" selected>Reddit</option>
@@ -85,12 +82,6 @@ outline: none;
 <input type="radio" id="sort1" name="sort" value="Name" unchecked><label for="sort1">Name</label>
 <input type="radio" id="sort2" name="sort" value="Date"><label for="sort2">Date</label></fieldset>
 
-<select id="mode_selector">
-<option value="Nightmode" selected>Nightmode</option>
-<option value="Lightmode">Lightmode</option>
-</select>
-<input type="submit" value="Theme" onclick="background_image()">
-
 <div id="home"></div>
 <div id="result"></div>
 
@@ -102,7 +93,7 @@ outline: none;
 
 <div id="music_position"></div>
 
-<a target="_blank" rel="noopener noreferrer" href="https://shopee.ph/Watercolor-Sketchbook-(200-gsm)-i.405891306.12809265345">
+<div id="z">
 <img src="book1.jpg" width="14%" height="7%">
 <img src="book2.jpg" width="14%" height="7%">
 <img src="book3.jpg" width="14%" height="7%">
@@ -123,7 +114,8 @@ outline: none;
 <img src="stamp1.jpg" width="14%" height="7%">
 <img src="stamp2.jpg" width="14%" height="7%">
 <img src="stamp3.jpg" width="14%" height="7%">
-<img src="stamp4.jpg" width="14%" height="7%"></a>
+<img src="stamp4.jpg" width="14%" height="7%">
+</div>
 
 <form onsubmit="on_submit(event)">
 <input id="user" placeholder="User" required>
@@ -1514,8 +1506,8 @@ if(link.image) img_element(link.image, posts_div) }
 posts.replaceChildren(posts_div) }
 
 keyboard_events = ["z"]
-window.addEventListener("keydown", e => { if(!keyboard_events.includes(e.key)) return; document.getElementById(e.key).style.opacity = "0" })
-window.addEventListener("keyup", e => { if(!keyboard_events.includes(e.key)) return; keyboard_events.forEach(temp_key => document.getElementById(temp_key).style.opacity = "1") })
+window.addEventListener("keydown", e => { if(!keyboard_events.includes(e.key)) return; document.getElementById(e.key).style.display = "none" })
+window.addEventListener("keyup", e => { if(!keyboard_events.includes(e.key)) return; keyboard_events.forEach(temp_key => document.getElementById(temp_key).style.display = "block") })
 
 keyboard_events.forEach(temp_key => keyboard_press(temp_key))
 function keyboard_press(key) { btn = document.getElementById(key)
@@ -1590,7 +1582,7 @@ bits_loaded = download_bytes * 8
 speed_bps = (bits_loaded / duration).toFixed(2)
 speed_kbps = (speed_bps / 1024).toFixed(2)
 speed_mbps = (speed_kbps / 1024).toFixed(2)
-speedtest_show_progress([speed_mbps + " mbps"]) } }
+speedtest_show_progress([speed_mbps + " MBPS"]) } }
 speedtest_init()
 
 auto_type_word = ""
