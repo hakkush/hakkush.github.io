@@ -35,9 +35,9 @@ grid-template-columns: 1px 1ch 1fr;
 
 <div class="main_menu" style="user-select: none;">
 <ul style="justify-content: space-between; display: flex;">
-<li><b><i id="auto_type_p" style="font-size: 1.2rem;" onclick="background_image()">Paperthena</i></b></li>
+<li><b><i id="auto_type_p" style="font-size: 1.2rem;" onclick="background_image()">Paper<span style="color: blue; font-weight: bold;">T</span>hena</i></b></li>
 <li></li>
-<li><a onclick="hide_music()">Music</a>
+<li>Music
 <ul style= "line-height: 4vh">
 <li><a onclick="play_music('night')">Night Dancer</a></li>
 <li><a onclick="play_music('shinunoga')">Shinunoga E-Wa</a></li>
@@ -85,9 +85,10 @@ grid-template-columns: 1px 1ch 1fr;
 <div id="home"></div>
 <div id="result"></div>
 
-<a href="#user_ip">Mouise</a>
-<span id="user_ip">IP</span>
-<span id="progress">MBPS</span>
+<button onclick="hide_music()">Kish</button>
+<a href="#user_ip"><button>Mouse</button></a>
+<button id="user_ip">IP</button>
+<button id="progress">MBPS</button>
 
 <input type="checkbox" id="hide" unchecked><label for="hide" id="playing_indicator" style="display: none;">Hide</label>
 
@@ -1563,7 +1564,7 @@ if(progress) {
 html_message = (typeof message === "string") ? message : message.join("<br>")
 progress.innerHTML = html_message } }
 function speedtest_init() {
-speedtest_show_progress("kish")
+speedtest_show_progress("KISH")
 window.setTimeout(speedtest, 1) }
 function speedtest() {
 let start_time, end_time
