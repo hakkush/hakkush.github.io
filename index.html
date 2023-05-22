@@ -17,7 +17,7 @@ body { background-image: url("background2.jpg"); } }
 #hide:checked ~ .auto_resize { display: none; }
 
 input[type="search"], input, select, button { padding: 0.1vw; background-color: black; color: white; border: none; }
-a { color: white; text-decoration: none; pointer-events: none; }
+a { color: white; text-decoration: none; }
 .main_menu ul { list-style-type: none; cursor: pointer; }
 .main_menu ul li ul { position: absolute; opacity: 0; flex-direction: column; display: flex; }
 .main_menu ul li:hover > ul { transition: all 0.5s ease; opacity: 1; }
@@ -27,6 +27,7 @@ a { color: white; text-decoration: none; pointer-events: none; }
 </style>
 
 <!--
+pointer-events: none;
 transform: rotate(1deg);
 object-fit: cover;
 word-break: break-all;
