@@ -18,7 +18,7 @@ body { background-image: url("background2.jpg"); } }
 .main_menu ul { list-style-type: none; cursor: pointer; }
 .main_menu ul li ul { flex-direction: column; display: none; }
 .main_menu ul li:hover > ul { display: flex; }
-.main_menu ul li:hover { background-color: pink; }
+.main_menu ul li a:hover { transition: all 0.5s ease; background-color: pink; }
 .main_menu ul { background-color: black; color: white; }
 </style>
 
@@ -31,7 +31,6 @@ input[type="search"]
 
 content: "" !important;
 transform: rotate(20deg);
-transition: all 0.3s ease;
 user-select: none;
 font-size: 2rem;
 object-fit: cover;
@@ -44,22 +43,22 @@ outline: none;
 
 <div class="main_menu">
 <ul style="justify-content: space-between; display: flex;">
-<li onclick="play_music('shinunoga')">Shinunoga E-Wa</li>
-<li onclick="play_music('lemon')">Lemon</li>
-<li onclick="play_music('night')">Night Dancer
+<li><a onclick="play_music('shinunoga')">Shinunoga E-Wa</a></li>
+<li><a onclick="play_music('lemon')">Lemon</a></li>
+<li><a onclick="play_music('night')">Night Dancer</a>
 <ul style= "line-height: 4vh">
-<li onclick="play_music('tsumi')">Tsumi No Kaori</li>
-<li onclick="play_music('matsuri')">Matsuri</li>
-<li onclick="play_music('kaerou')">Kaerou
+<li><a onclick="play_music('tsumi')">Tsumi No Kaori</a></li>
+<li><a onclick="play_music('matsuri')">Matsuri</a></li>
+<li><a onclick="play_music('haiiro')">Haiiro to Ao</a></li>
+<li><a onclick="play_music('loser')">Loser</a></li>
+<li><a onclick="play_music('kaerou')">Kaerou</a>
 <ul style="justify-content: space-between;">
-<li onclick="play_music('yasashisa')">Yasashisa</li>
-<li onclick="play_music('metronome')">Metronome</li>
-<li onclick="play_music('shunrai')">Shunrai</li>
-<li onclick="play_music('uma')">Uma to Shika</li>
-<li onclick="play_music('orion')">Orion</li>
-<li onclick="play_music('eine')">Eine Kleine</li>
-<li onclick="play_music('haiiro')">Haiiro to Ao</li>
-<li onclick="play_music('loser')">Loser</li></ul></li>
+<li><a onclick="play_music('yasashisa')">Yasashisa</a></li>
+<li><a onclick="play_music('metronome')">Metronome</a></li>
+<li><a onclick="play_music('shunrai')">Shunrai</a></li>
+<li><a onclick="play_music('uma')">Uma to Shika</a></li>
+<li><a onclick="play_music('orion')">Orion</a></li>
+<li><a onclick="play_music('eine')">Eine Kleine</a></li></ul></li>
 </ul></li></ul></div>
 
 <h1 onclick="hide_music()"><i id="auto_type_p">Paperthena</i></h1>
