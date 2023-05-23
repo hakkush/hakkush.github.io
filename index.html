@@ -80,8 +80,8 @@ grid-template-columns: 1px 1ch 1fr;
 <option value="Rewind">Rewind</option>
 <option value="Reset">Reset</option></select>
 <button id="query_search" onclick="query_search(document.querySelector('#query').value)">Search</button><br>
-<input type="radio" id="sort1" name="sort" value="Kish"><a href="#f"><label for="sort1"><button>Kish</button></label></a>
-<input type="radio" id="sort2" name="sort" value="Kiri"><a onclick="f.scrollIntoView({ behavior: 'smooth' })"><label for="sort2"><button>Kiri</button></label></a></fieldset>
+<input type="radio" id="sort1" name="sort" value="Kish"><a href="#v"><label for="sort1"><button>Kish</button></label></a>
+<input type="radio" id="sort2" name="sort" value="Kiri"><a onclick="v.scrollIntoView({ behavior: 'smooth' })"><label for="sort2"><button>Kiri</button></label></a></fieldset>
 
 <div id="home"></div>
 <div id="result"></div>
@@ -93,7 +93,7 @@ grid-template-columns: 1px 1ch 1fr;
 
 <div id="music_position"></div>
 
-<div id="f">
+<div id="f" onclick="reddit_comment()">
 <img src="book1.jpg">
 <img src="book2.jpg">
 <img src="book3.jpg">
@@ -953,7 +953,7 @@ class emoji(commands.Cog):
                 await message.delete()
 
 def setup(bot):
-    bot.add_cog(emoji(bot))</textarea><div id="f"></div>
+    bot.add_cog(emoji(bot))</textarea><div id="v"></div>
 <script>mkush = [{ "d": "AC__", "t": "The King's Avatar", "p": "12/12,12/12" },
 { "d": "ACS_", "t": "How to Steal 55 Kisses", "p": "12/12,12/12,12/12,12/12" },
 { "d": "ACS_", "t": "To Be Hero", "p": "12/12,1/12" },
