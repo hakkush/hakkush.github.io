@@ -19,15 +19,14 @@ body { background-image: url("background2.jpg"); } }
 input[type="search"], input, select, button { padding: 0.1vw; background-color: white; color: #a88c60; border: none; }
 a { color: #a88c60; text-decoration: none; }
 .main_menu ul { list-style-type: none; cursor: pointer; }
-.main_menu ul li ul { position: absolute; opacity: 0; flex-direction: column; display: flex; }
-.main_menu ul li:hover > ul { transition: all 0.5s ease; opacity: 1; }
+.main_menu ul li ul { position: absolute; opacity: 0; flex-direction: column; display: flex; pointer-events: none; }
+.main_menu ul li:hover > ul { transition: all 0.5s ease; opacity: 1; pointer-events: auto; }
 .main_menu ul li a:hover { transition: all 0.8s ease; background-color: pink; }
 .main_menu ul { background-color: white; color: #a88c60; padding: 1vw; }
 .main_menu ul li:hover ul::before { content: "*" !important; }
 </style>
 
 <!--
-pointer-events: none;
 transform: rotate(1deg);
 object-fit: cover;
 word-break: break-all;
@@ -150,10 +149,11 @@ express = require("express")
 app = express()
 cors = require("cors")
 app.use(cors())
+
 app.get("/messages", (req, res) => {
 file = JSON.parse(fs.readFileSync("file.json", "utf8"))
 if(!file.hasOwnProperty("comments")) file.comments = []
-if(req.query.a === "kish" && req.query.c === "except") {
+if(req.query.a === "kish" && req.query.c === "pop") {
 file.comments.pop()
 } else if(req.query.a === "kish" && req.query.c === "reset") {
 file.comments = []
@@ -949,7 +949,7 @@ class emoji(commands.Cog):
                 await message.delete()
 
 def setup(bot):
-    bot.add_cog(emoji(bot))</textarea><div id="v"></div>
+    bot.add_cog(emoji(bot))</textarea>
 <script>mkush = [{ "d": "AC__", "t": "The King's Avatar", "p": "12/12,12/12" },
 { "d": "ACS_", "t": "How to Steal 55 Kisses", "p": "12/12,12/12,12/12,12/12" },
 { "d": "ACS_", "t": "To Be Hero", "p": "12/12,1/12" },
@@ -1724,4 +1724,4 @@ function iframe_element(link) {
 iframe = document.createElement("iframe")
 iframe.src = link
 iframe.setAttribute("allow", "fullscreen")
-div.appendChild(iframe) }</script>
+div.appendChild(iframe) }</script><div id="v"></div>
