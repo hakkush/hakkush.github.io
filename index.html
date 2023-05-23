@@ -19,7 +19,7 @@ body { background-image: url("background2.jpg"); } }
 input[type="search"], input, select, button { padding: 0.1vw; background-color: white; color: #a88c60; border: none; }
 a { color: #a88c60; text-decoration: none; }
 .main_menu ul { list-style-type: none; cursor: pointer; }
-.main_menu ul li ul { position: absolute; opacity: 0; flex-direction: column; display: flex; pointer-events: none; }
+.main_menu ul li ul { transform: translateX(5vw); position: absolute; opacity: 0; flex-direction: column; display: flex; pointer-events: none; }
 .main_menu ul li:hover > ul { transition: all 0.5s ease; opacity: 1; pointer-events: auto; }
 .main_menu ul li a:hover { transition: all 0.8s ease; background-color: pink; }
 .main_menu ul { background-color: white; color: #a88c60; padding: 1vw; }
@@ -27,7 +27,6 @@ a { color: #a88c60; text-decoration: none; }
 </style>
 
 <!--
-transform: rotate(1deg);
 object-fit: cover;
 word-break: break-all;
 grid-template-columns: 1px 1ch 1fr;
@@ -1603,7 +1602,7 @@ auto_hide_div.style.visibility = "visible" } )
 
 function binance_search(query) {
 axios.get(`https://api.binance.com/api/v3/ticker/24hr?symbol=${query || 'BTC'}USDT`)
-.then(res => crypto_position.innerHTML = `${res.data.symbol.split("USDT")[0]}: $${parseFloat(res.data.lastPrice).toFixed(2)} [${parseFloat(res.data.priceChangePercent).toFixed(2)}%]`) }
+.then(res => crypto_position.innerHTML = `${res.data.symbol.split("USDT")[0]}-${parseFloat(res.data.lastPrice).toFixed(2)}-${parseFloat(res.data.priceChangePercent).toFixed(2)}%`) }
 
 mode_selector.onchange = event => {
 if(event.target.value.toLowerCase() === "nightmode") {
