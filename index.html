@@ -14,7 +14,7 @@ img { max-width: 90vw; }
 textarea { width: 50%; }
 @media only screen and (min-width: 200px) and (max-width: 480px) {
 body { background-image: url("background2.jpg"); } }
-#hide:checked ~ .auto_resize { display: none; }
+#hide_id:checked ~ .auto_resize { display: none; }
 
 input[type="search"], input, select, button { padding: 0.1vw; background-color: white; color: #a88c60; border: none; }
 a { color: #a88c60; text-decoration: none; }
@@ -58,17 +58,13 @@ grid-template-columns: 1px 1ch 1fr;
 <li><a onclick="play_music('metronome')">Metronome</a></li>
 </ul></li>
 </ul></li>
-<li>
+<li><div id="auto_hide_div">
 <a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/paperthena"><img src="facebook.png" width="20vw" height="20vw"></a>
 <a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/paperthena/"><img src="insta.png" width="20vw" height="20vw"></a>
 <a target="_blank" rel="noopener noreferrer" href="https://shopee.ph/paperthena"><img src="shopee.png" width="20vw" height="20vw"></a>
-</li>
+</div></li>
 <li><select id="mode_selector"><option value="Nightmode" selected>White</option><option value="Lightmode">Black</option></select></li>
 </ul></div>
-
-<div id="auto_hide_div">
-<button id="crypto_position"></button>
-</div>
 
 <fieldset><legend><a href="index.html" download>Search</a></legend>
 <input id="query" placeholder="Search" type="search" onkeypress="if(event.key === 'Enter') document.querySelector('#query_search').click()">
@@ -87,11 +83,11 @@ grid-template-columns: 1px 1ch 1fr;
 <div id="result"></div>
 
 <button onclick="hide_music()">Mo<span style="color: red; font-weight: bold;">u</span>se</button>
-<input type="checkbox" id="hide" unchecked><label for="hide" id="playing_indicator" style="display: none;"><button>Hide</button></label>
+<input type="checkbox" id="hide_id" unchecked><label for="hide_id" id="playing_indicator" style="display: none;"><button>Hide</button></label>
+<button id="crypto_position"></button>
 <button id="user_ip">IP</button>
 <button id="progress">MBPS</button>
-
-<div id="music_position"></div>
+<button id="music_position"></button>
 
 <div id="f" onclick="reddit_comment()">
 <img src="book1.jpg">
@@ -1380,7 +1376,7 @@ window.addEventListener("load", () => {
 play_music(music_list[Math.floor(Math.random() * music_list.length)].name)
 binance_search()
 get_posts()
-hide.checked = true
+hide_id.checked = true
 })
 
 function query_search(query) {
@@ -1602,9 +1598,9 @@ setTimeout(auto_type, 500)
 } else { auto_type_running = true } }
 
 body.addEventListener("touchstart", () => { auto_type_init()
-auto_hide_div.style.display = "none" } )
+auto_hide_div.style.visibility = "hidden" } )
 body.addEventListener("touchend", () => {
-auto_hide_div.style.display = "block" } )
+auto_hide_div.style.visibility = "visible" } )
 
 function binance_search(query) {
 axios.get(`https://api.binance.com/api/v3/ticker/24hr?symbol=${query || 'BTC'}USDT`)
