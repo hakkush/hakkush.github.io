@@ -35,9 +35,9 @@ grid-template-columns: 1px 1ch 1fr;
 
 <div class="main_menu" style="user-select: none;">
 <ul style="justify-content: space-between; display: flex;">
-<li><button><b><i id="auto_type_p" style="font-size: 1rem;" onclick="background_image()">Paperthena</i></b></button></li>
+<li><button><b><i style="font-size: 1.1rem;" onclick="background_image()">Paperthena</i></b></button></li>
 <li></li>
-<li><button><b>Music</b></button>
+<li><button><b><i>Music</i></b></button>
 <ul style= "line-height: 4vh">
 <li><a onclick="play_music('night')">Night Dancer</a></li>
 <li><a onclick="play_music('shinunoga')">Shinunoga E-Wa</a></li>
@@ -62,10 +62,10 @@ grid-template-columns: 1px 1ch 1fr;
 <a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/paperthena/"><img src="insta.png" width="18vw" height="18vw"></a>
 <a target="_blank" rel="noopener noreferrer" href="https://shopee.ph/paperthena"><img src="shopee.png" width="18vw" height="18vw"></a>
 </div></li>
-<li><select style="font-weight: bold;" id="mode_selector"><option value="Nightmode" selected>Night</option><option value="Lightmode">Light</option></select></li>
+<li><select style="font-weight: bold; font-style: italic;" id="mode_selector"><option value="Nightmode" selected>Night</option><option value="Lightmode">Light</option></select></li>
 </ul></div>
 
-<fieldset><legend><a href="index.html" download>Search</a></legend>
+<fieldset><legend><a id="auto_type_p" href="index.html" download>Mouise</a></legend>
 <input id="query" placeholder="Search" type="search" onkeypress="if(event.key === 'Enter') document.querySelector('#query_search').click()">
 <select id="search_type">
 <option value="Reddit" selected>Reddit</option>
@@ -81,11 +81,11 @@ grid-template-columns: 1px 1ch 1fr;
 <div id="home"></div>
 <div id="result"></div>
 
-<button onclick="hide_music()">Mo<span style="color: red; font-weight: bold;">u</span>se</button>
-<input type="checkbox" id="hide_id" unchecked><label for="hide_id" id="playing_indicator" style="display: none;"><button>Hide</button></label>
+<input type="checkbox" id="hide_id" unchecked><label for="hide_id" id="playing_indicator" style="display: none;"><button>Note</button></label>
 <button id="crypto_position"></button>
 <button id="user_ip">IP</button>
 <button id="progress">MBPS</button>
+<button onclick="hide_music()">H<span style="color: blue; font-weight: bold;">id</span>e</button>
 
 <div id="f" onclick="reddit_comment()">
 <img src="book1.jpg">
@@ -111,14 +111,15 @@ grid-template-columns: 1px 1ch 1fr;
 <img src="stamp4.jpg">
 </div>
 
-<button id="music_position"></button>
-
 <div id="z">
+<button id="music_position"></button>
+</div>
+
 <form onsubmit="on_submit(event)">
 <input id="user" placeholder="User" required>
 <input id="message" placeholder="Message">
 <button type="submit" onclick="get_posts(document.querySelector('#user').value, document.querySelector('#message').value)">Send</button>
-</form><div id="posts">Posts</div></div>
+</form><div id="posts">Posts</div>
 
 <textarea class="auto_resize">client=~/client && rm -r ${client} && cd ~/storage/shared/download/ && cp -r client ${client} && cd ${client} && vercel --prod -y
 alias "+ac0" "bind q dota_ability_autocast 0"; alias "-ac0" "bind q dota_ability_execute 0"; bind "shift" "+ac0"
