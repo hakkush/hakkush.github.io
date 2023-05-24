@@ -17,7 +17,8 @@ body { background-image: url("background2.jpg"); } }
 #hide_id:checked ~ .auto_resize { display: none; }
 
 input[type="search"], input, select, button { padding: 0.1vw; background-color: white; color: #a88c60; border: none; }
-a { color: #a88c60; text-decoration: none; }
+a { color: #white; text-decoration: none; }
+
 .main_menu ul { list-style-type: none; cursor: pointer; }
 .main_menu ul li ul { transform: translateX(5vw); position: absolute; opacity: 0; flex-direction: column; display: flex; pointer-events: none; }
 .main_menu ul li:hover > ul { transition: all 0.5s ease; opacity: 1; pointer-events: auto; }
@@ -34,9 +35,9 @@ grid-template-columns: 1px 1ch 1fr;
 
 <div class="main_menu" style="user-select: none;">
 <ul style="justify-content: space-between; display: flex;">
-<li><b><i id="auto_type_p" style="font-size: 1.2rem;" onclick="background_image()">Paperthena</i></b></li>
+<li><button><b><i id="auto_type_p" style="font-size: 1rem;" onclick="background_image()">Paperthena</i></b></button></li>
 <li></li>
-<li>Music
+<li><button><b>Music</b></button>
 <ul style= "line-height: 4vh">
 <li><a onclick="play_music('night')">Night Dancer</a></li>
 <li><a onclick="play_music('shinunoga')">Shinunoga E-Wa</a></li>
@@ -57,11 +58,11 @@ grid-template-columns: 1px 1ch 1fr;
 </ul></li>
 </ul></li>
 <li><div id="auto_hide_div">
-<a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/paperthena"><img src="facebook.png" width="20vw" height="20vw"></a>
-<a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/paperthena/"><img src="insta.png" width="20vw" height="20vw"></a>
-<a target="_blank" rel="noopener noreferrer" href="https://shopee.ph/paperthena"><img src="shopee.png" width="20vw" height="20vw"></a>
+<a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/paperthena"><img src="facebook.png" width="18vw" height="18vw"></a>
+<a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/paperthena/"><img src="insta.png" width="18vw" height="18vw"></a>
+<a target="_blank" rel="noopener noreferrer" href="https://shopee.ph/paperthena"><img src="shopee.png" width="18vw" height="18vw"></a>
 </div></li>
-<li><select id="mode_selector"><option value="Nightmode" selected>White</option><option value="Lightmode">Black</option></select></li>
+<li><select style="font-weight: bold;" id="mode_selector"><option value="Nightmode" selected>Night</option><option value="Lightmode">Light</option></select></li>
 </ul></div>
 
 <fieldset><legend><a href="index.html" download>Search</a></legend>
@@ -85,7 +86,6 @@ grid-template-columns: 1px 1ch 1fr;
 <button id="crypto_position"></button>
 <button id="user_ip">IP</button>
 <button id="progress">MBPS</button>
-<button id="music_position"></button>
 
 <div id="f" onclick="reddit_comment()">
 <img src="book1.jpg">
@@ -110,6 +110,8 @@ grid-template-columns: 1px 1ch 1fr;
 <img src="stamp3.jpg">
 <img src="stamp4.jpg">
 </div>
+
+<button id="music_position"></button>
 
 <div id="z">
 <form onsubmit="on_submit(event)">
