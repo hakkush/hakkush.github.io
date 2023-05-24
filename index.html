@@ -75,17 +75,23 @@ grid-template-columns: 1px 1ch 1fr;
 <option value="Rewind">Rewind</option>
 <option value="Reset">Reset</option></select>
 <button id="query_search" onclick="query_search(document.querySelector('#query').value)">Search</button><br>
-<input type="radio" id="sort1" name="sort" value="Kish"><a href="#v"><label for="sort1"><button>Kish</button></label></a>
-<input type="radio" id="sort2" name="sort" value="Kiri"><a onclick="v.scrollIntoView({ behavior: 'smooth' })"><label for="sort2"><button>Kiri</button></label></a></fieldset>
+<input type="radio" id="sort1" name="sort" value="sort1"><button><label for="sort1">Kish</label></button>
+<input type="radio" id="sort2" name="sort" value="sort2"><button><label for="sort2">Kiri</label><button>
+</fieldset>
+
+<button>Apply</button>
+
+<a href="#v">T1</a>
+<a onclick="v.scrollIntoView({ behavior: 'smooth' })">T2</a>
 
 <div id="home"></div>
 <div id="result"></div>
 
-<input type="checkbox" id="hide_id" unchecked><label for="hide_id" id="playing_indicator" style="display: none;"><button>Note</button></label>
 <button id="crypto_position"></button>
 <button id="user_ip">IP</button>
 <button id="progress">MBPS</button>
 <button onclick="hide_music()">H<span style="color: blue; font-weight: bold;">id</span>e</button>
+<input type="checkbox" id="hide_id" unchecked><button><label for="hide_id" id="playing_indicator" style="display: none;">Note</label><button>
 
 <div id="f" onclick="reddit_comment()">
 <img src="book1.jpg">
