@@ -28,11 +28,18 @@ a { color: #white; text-decoration: none; }
 </style>
 
 <!--
+small spray bottle
+butterfly knife
+egg
+rice
+lace comprog
+retractable
+rent
+
 object-fit: cover;
 word-break: break-all;
 grid-template-columns: 1px 1ch 1fr;
 -->
-
 <div class="main_menu" style="user-select: none;">
 <ul style="justify-content: space-between; display: flex;">
 <li><button><b><i style="font-size: 1.1rem;" onclick="background_image()">Paperthena</i></b></button></li>
@@ -75,14 +82,14 @@ grid-template-columns: 1px 1ch 1fr;
 <option value="Rewind">Rewind</option>
 <option value="Reset">Reset</option></select>
 <button id="query_search" onclick="query_search(document.querySelector('#query').value)">Search</button><br>
-<input type="radio" id="sort1" name="sort" value="sort1"><button><label for="sort1">Kish</label></button>
+<input type="radio" id="sort1" name="sort" value="sort1" checked><button><label for="sort1">Kish</label></button>
 <input type="radio" id="sort2" name="sort" value="sort2"><button><label for="sort2">Kiri</label><button>
 </fieldset>
 
-<button>Apply</button>
+<button onclick="applyToggle()">Apply</button>
 
-<a href="#v">T1</a>
-<a onclick="v.scrollIntoView({ behavior: 'smooth' })">T2</a>
+<a onclick="v.scrollIntoView({ behavior: 'smooth' })"><button>Reddit Bot</button></a>
+<a href="#v"><button>Discord Bot</button></a>
 
 <div id="home"></div>
 <div id="result"></div>
@@ -1385,6 +1392,11 @@ binance_search()
 get_posts()
 hide_id.checked = true
 })
+
+function applyToggle() {
+if(sort1.checked) console.log("true")
+else if(sort2.checked) console.log("false")
+}
 
 function query_search(query) {
 switch(search_type.value.toLowerCase()) {
