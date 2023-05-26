@@ -26,8 +26,21 @@ a { color: #white; text-decoration: none; }
 .main_menu ul { background-color: white; color: #a88c60; padding: 1vw; }
 .main_menu ul li:hover ul::before { content: "*" !important; }
 </style>
-
 <!--
+he asks and u go
+why go?
+give him time of ur day
+not mention him to me
+block
+what do u say when he asks u to come to his room
+what u say when he asks on roof top
+how many times are u alone
+how many times asks u alone
+how close r u wd him on door
+does he touch u
+what do u say when he flirts
+even tho ur chatting wd me why go with other man
+
 small spray bottle
 butterfly knife
 egg
@@ -82,11 +95,9 @@ grid-template-columns: 1px 1ch 1fr;
 <option value="Rewind">Rewind</option>
 <option value="Reset">Reset</option></select>
 <button id="query_search" onclick="query_search(document.querySelector('#query').value)">Search</button><br>
-<input type="radio" id="sort1" name="sort" value="sort1" checked><button><label for="sort1">Kish</label></button>
-<input type="radio" id="sort2" name="sort" value="sort2"><button><label for="sort2">Kiri</label><button>
+<input type="radio" id="sort1" name="sort" class="sort" value="sort1" checked><button><label for="sort1">Kish</label></button>
+<input type="radio" id="sort2" name="sort" class="sort" value="sort2"><button><label for="sort2">Kiri</label><button>
 </fieldset>
-
-<button onclick="applyToggle()">Apply</button>
 
 <a onclick="v.scrollIntoView({ behavior: 'smooth' })"><button>Reddit Bot</button></a>
 <a href="#v"><button>Discord Bot</button></a>
@@ -97,8 +108,12 @@ grid-template-columns: 1px 1ch 1fr;
 <button id="crypto_position"></button>
 <button id="user_ip">IP</button>
 <button id="progress">MBPS</button>
-<button onclick="hide_music()">H<span style="color: blue; font-weight: bold;">id</span>e</button>
+<button onclick="hide_music()">H<span style="color: pink; font-weight: bold;">id</span>e</button>
 <input type="checkbox" id="hide_id" unchecked><button><label for="hide_id" id="playing_indicator" style="display: none;">Note</label><button>
+
+<div id="z">
+<button id="music_position"></button>
+</div>
 
 <div id="f" onclick="reddit_comment()">
 <img src="book1.jpg">
@@ -122,10 +137,6 @@ grid-template-columns: 1px 1ch 1fr;
 <img src="stamp2.jpg">
 <img src="stamp3.jpg">
 <img src="stamp4.jpg">
-</div>
-
-<div id="z">
-<button id="music_position"></button>
 </div>
 
 <form onsubmit="on_submit(event)">
@@ -1390,13 +1401,11 @@ window.addEventListener("load", () => {
 play_music(music_list[Math.floor(Math.random() * music_list.length)].name)
 binance_search()
 get_posts()
-hide_id.checked = true
-})
+hide_id.checked = true })
 
-function applyToggle() {
-if(sort1.checked) console.log("true")
-else if(sort2.checked) console.log("false")
-}
+radios = document.querySelectorAll(".sort")
+for(radio in radios) {
+radios[radio].onchange = function() { console.log(this.value) } }
 
 function query_search(query) {
 switch(search_type.value.toLowerCase()) {
