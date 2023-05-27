@@ -10,13 +10,12 @@ html { scroll-behavior: smooth; }
 body { background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center; background-image: url("background.jpg"); color: white; background-color: black; }
 iframe, canvas { width: 90vw; height: calc(90vw/1.77); }
 img { max-width: 90vw; }
-#f img { width: 14%; }
 textarea { width: 50%; }
 @media only screen and (min-width: 200px) and (max-width: 480px) {
 body { background-image: url("background2.jpg"); } }
 #hide_id:checked ~ .auto_resize { display: none; }
 
-input[type="search"], input, select, button { padding: 0.1vw; background-color: white; color: #a88c60; border: none; }
+input[type="search"], input, select, button, textarea { padding: 0.1vw; background-color: #a88c60; color: white; border: none; }
 a { color: #white; text-decoration: none; }
 
 .main_menu ul { list-style-type: none; cursor: pointer; }
@@ -26,7 +25,8 @@ a { color: #white; text-decoration: none; }
 .main_menu ul { background-color: white; color: #a88c60; padding: 1vw; }
 .main_menu ul li:hover ul::before { content: "*" !important; }
 #f { background-color: #a88c60; }
-#f:hover > img { transition: all 5s ease; transform: rotate(360deg); }
+#f img { width: 12%; }
+#f:hover > img { transition: all 3s ease; transform: rotate(360deg); }
 </style>
 <!--
 small spray bottle
