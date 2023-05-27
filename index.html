@@ -1617,7 +1617,7 @@ setTimeout(auto_type, 500)
 
 ["touchstart", "mousedown"].forEach(e_list => {
 body.addEventListener(e_list, () => { auto_type_init()
-auto_hide_div.style.visibility = "hidden" } ) } )
+auto_hide_div.style.visibility = "hidden" } ) } );
 ["touchend", "mouseup"].forEach(e_list => {
 body.addEventListener(e_list, () => {
 auto_hide_div.style.visibility = "visible" } ) } )
