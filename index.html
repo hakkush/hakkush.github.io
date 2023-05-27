@@ -20,27 +20,14 @@ input[type="search"], input, select, button { padding: 0.1vw; background-color: 
 a { color: #white; text-decoration: none; }
 
 .main_menu ul { list-style-type: none; cursor: pointer; }
-.main_menu ul li ul { transform: translateX(5vw); position: absolute; opacity: 0; flex-direction: column; display: flex; pointer-events: none; }
+.main_menu ul li ul { position: absolute; opacity: 0; flex-direction: column; display: flex; pointer-events: none; }
 .main_menu ul li:hover > ul { transition: all 0.5s ease; opacity: 1; pointer-events: auto; }
 .main_menu ul li a:hover { transition: all 0.8s ease; background-color: pink; }
 .main_menu ul { background-color: white; color: #a88c60; padding: 1vw; }
 .main_menu ul li:hover ul::before { content: "*" !important; }
+#f:hover { transition: all 0.8s ease; transform: rotate(45deg); }
 </style>
 <!--
-he asks and u go
-why go?
-give him time of ur day
-not mention him to me
-block
-what do u say when he asks u to come to his room
-what u say when he asks on roof top
-how many times are u alone
-how many times asks u alone
-how close r u wd him on door
-does he touch u
-what do u say when he flirts
-even tho ur chatting wd me why go with other man
-
 small spray bottle
 butterfly knife
 egg
@@ -48,6 +35,7 @@ rice
 lace comprog
 retractable
 rent
+mouthspray
 
 object-fit: cover;
 word-break: break-all;
@@ -111,10 +99,6 @@ grid-template-columns: 1px 1ch 1fr;
 <button onclick="hide_music()">H<span style="color: pink; font-weight: bold;">id</span>e</button>
 <input type="checkbox" id="hide_id" unchecked><button><label for="hide_id" id="playing_indicator" style="display: none;">Note</label><button>
 
-<div id="z">
-<button id="music_position"></button>
-</div>
-
 <div id="f" onclick="reddit_comment()">
 <img src="book1.jpg">
 <img src="book2.jpg">
@@ -137,6 +121,10 @@ grid-template-columns: 1px 1ch 1fr;
 <img src="stamp2.jpg">
 <img src="stamp3.jpg">
 <img src="stamp4.jpg">
+</div>
+
+<div id="z">
+<div id="music_position"></div>
 </div>
 
 <form onsubmit="on_submit(event)">
@@ -1330,7 +1318,7 @@ def setup(bot):
 { "d": "MK__", "t": "Eleceed", "p": "0/?" },
 { "d": "MK__", "t": "Girl the Wild's", "p": "260/260" },
 { "d": "MK__", "t": "Just for a Meowment", "p": "0/103" },
-{ "d": "MK__", "t": "Solo Leveling", "p": "182/?" },
+{ "d": "MK__", "t": "Solo Leveling", "p": "198/?" },
 { "d": "MK__", "t": "The God of High School", "p": "0/?" },
 { "d": "MK__", "t": "The Legendary Moonlight Sculptor", "p": "106/?" },
 { "d": "MK__", "t": "Undercover Empress", "p": "0/?" },
