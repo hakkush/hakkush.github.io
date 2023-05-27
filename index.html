@@ -25,7 +25,7 @@ a { color: #white; text-decoration: none; }
 .main_menu ul li a:hover { transition: all 0.8s ease; background-color: pink; }
 .main_menu ul { background-color: white; color: #a88c60; padding: 1vw; }
 .main_menu ul li:hover ul::before { content: "*" !important; }
-#f:hover { transition: all 0.8s ease; transform: rotate(45deg); }
+#f:hover > img { transition: all 5s ease; transform: rotate(360deg); }
 </style>
 <!--
 small spray bottle
@@ -1393,7 +1393,9 @@ hide_id.checked = true })
 
 radios = document.querySelectorAll(".sort")
 for(radio in radios) {
-radios[radio].onchange = function() { console.log(this.value) } }
+radios[radio].onchange = function() {
+if(this.value === "sort1") f.style.display = "block"
+else if(this.value === "sort2") f.style.display = "none" } }
 
 function query_search(query) {
 switch(search_type.value.toLowerCase()) {
@@ -1613,10 +1615,12 @@ auto_type_index++
 setTimeout(auto_type, 500)
 } else { auto_type_running = true } }
 
-body.addEventListener("touchstart", () => { auto_type_init()
-auto_hide_div.style.visibility = "hidden" } )
-body.addEventListener("touchend", () => {
-auto_hide_div.style.visibility = "visible" } )
+["touchstart", "mousedown"].forEach(e_list => {
+body.addEventListener(e_list, () => { auto_type_init()
+auto_hide_div.style.visibility = "hidden" } ) } )
+["touchend", "mouseup"].forEach(e_list => {
+body.addEventListener(e_list, () => {
+auto_hide_div.style.visibility = "visible" } ) } )
 
 function binance_search(query) {
 axios.get(`https://api.binance.com/api/v3/ticker/24hr?symbol=${query || 'BTC'}USDT`)
