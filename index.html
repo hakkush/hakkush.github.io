@@ -32,9 +32,7 @@ a { color: #white; text-decoration: none; }
 body { background-image: url("background2.jpg"); }
 #auto_hide_div img { width: 6vw; } }</style>
 
-<!--object-fit: contain;
-word-break: break-all;
-grid-template-columns: 1px 1ch 1fr;-->
+<!--object-fit: contain; word-break: break-all; grid-template-columns: 1px 1ch 1fr;-->
 
 <div class="main_menu" style="user-select: none;">
 <ul style="justify-content: space-between; display: flex;">
@@ -83,16 +81,16 @@ grid-template-columns: 1px 1ch 1fr;-->
 </fieldset>
 
 <a onclick="v.scrollIntoView({ behavior: 'smooth' })"><button>Reddit Bot</button></a>
-<a href="#v"><button>Discord Bot</button></a>
+<a href="#v"><button>Dis<span style="color: red; font-weight: bold;">cord</span> Bot</button></a>
+<input type="checkbox" id="music_id"><button onclick="hide_music()"><label for="music_id">Music</label></button>
+<input type="checkbox" id="hide_id"><button><label for="hide_id" id="playing_indicator" style="display: none;">Note</label><button>
 
 <div id="home"></div>
 <div id="result"></div>
 
-<button id="crypto_position"></button>
+<button id="crypto_position">BTC</button>
 <button id="user_ip">IP</button>
 <button id="progress">MBPS</button>
-<button onclick="hide_music()">H<span style="color: pink; font-weight: bold;">id</span>e</button>
-<input type="checkbox" id="hide_id"><button><label for="hide_id" id="playing_indicator" style="display: none;">Note</label><button>
 
 <div id="f" onclick="reddit_comment()">
 <img src="book1.jpg">
@@ -118,48 +116,9 @@ grid-template-columns: 1px 1ch 1fr;-->
 <img src="stamp4.jpg">
 </div>
 
+<img id="z" src="https://cdn0.gamesports.net/content_teasers/95000/95514.jpg?1599300191">
 
-
-<div style="text-align: left; background-color: black;">
-<label><input type="checkbox">she got a call</label><br>
-<label><input type="checkbox">claims it's her mom</label><br>
-<label><input type="checkbox">later claims it's magdalena</label><br>
-<label><input type="checkbox">says it's random guy hitting on her</label><br>
-<label><input type="checkbox">later claims it's college friend</label><br><br>
-<label><input type="checkbox">i was still unaware of tenshin</label><br>
-<label><input type="checkbox">did he cover for tenshin</label><br>
-<label>why didn't she just say it's him?</label><br><input style="background-color: white; color: black;" type="search"><br>
-<label><input type="checkbox">is tenshin magdalena?</label><br>
-<label>why she didn't mention she hangouts with a guy?</label><br><input style="background-color: white; color: black;" type="search"><br>
-<label><input type="checkbox">she know's i'll get jelous?</label><br>
-<label><input type="checkbox">she know's it's a bad thing?</label><br><br>
-
-<label><input type="checkbox">later claims mom called her just a few moments ago</label><br>
-<label><input type="checkbox">so she thought it's her again</label><br>
-<label><input type="checkbox">but we've been on call/chatting for a while</label><br>
-<label><input type="checkbox">and she had time to type and see who it really is</label><br><br>
-
-<label><input type="checkbox">she doesn't show it</label><br>
-<label><input type="checkbox">later tried to cover him as joshua (???)</label><br><br>
-
-<label><input type="checkbox">she claim's they stopped chatting by december</label><br>
-<label><input type="checkbox">yet that was january?</label><br>
-<label>when did they really stop chatting?</label><br><input style="background-color: white; color: black;" type="search"><br><br>
-
-<h4>Acceptable Conclusion:</h4>
-<label><input type="checkbox">she lied</label><br>
-<label><input type="checkbox">she's telling the truth</label><br><br>
-
-<h4>Unacceptable Conclusion:</h4>
-<label><input type="checkbox">she claims she doesn't lie but can't prove anything</label><br><br>
-
-<label><input type="checkbox">what did she do when she went to llanera during birthday, we didnt chat</label>
-
-</div>
-
-
-
-<div id="z">
+<div id="chat">
 <div id="music_position"></div>
 <form onsubmit="on_submit(event)">
 <input id="user" placeholder="User" required>
@@ -1568,8 +1527,8 @@ if(link.image) img_element(link.image, posts_div) }
 posts.replaceChildren(posts_div) }
 
 keyboard_events = ["z"]
-window.addEventListener("keydown", e => { if(!keyboard_events.includes(e.key)) return; document.getElementById(e.key).style.display = "none" })
-window.addEventListener("keyup", e => { if(!keyboard_events.includes(e.key)) return; keyboard_events.forEach(temp_key => document.getElementById(temp_key).style.display = "block") })
+window.addEventListener("keydown", e => { if(!keyboard_events.includes(e.key)) return; document.getElementById(e.key).style.visibility = "hidden" })
+window.addEventListener("keyup", e => { if(!keyboard_events.includes(e.key)) return; keyboard_events.forEach(temp_key => document.getElementById(temp_key).style.visibility = "visible") })
 
 keyboard_events.forEach(temp_key => keyboard_press(temp_key))
 function keyboard_press(key) { btn = document.getElementById(key)
@@ -1711,9 +1670,9 @@ music_list = [
 ]
 function hide_music() {
 if(!music_player_showed) { music_player_showed = true
-z.style.display = "block" }
+chat.style.display = "block" }
 else { music_player_showed = false
-z.style.display = "none" } }
+chat.style.display = "none" } }
 
 last_music = ""
 function play_music(music) {
@@ -1795,9 +1754,39 @@ iframe.src = link
 iframe.setAttribute("allow", "fullscreen")
 div.appendChild(iframe) }</script><div id="v"></div>
 
+<div style="text-align: left; background-color: black; display: none;">
+<label><input type="checkbox">she got a call</label><br>
+<label><input type="checkbox">claims it's her mom</label><br>
+<label><input type="checkbox">later claims it's magdalena</label><br>
+<label><input type="checkbox">says it's random guy hitting on her</label><br>
+<label><input type="checkbox">later claims it's college friend</label><br><br>
+<label><input type="checkbox">i was still unaware of tenshin</label><br>
+<label><input type="checkbox">did he cover for tenshin</label><br>
+<label>why didn't she just say it's him?</label><br><input style="background-color: white; color: black;" type="search"><br>
+<label><input type="checkbox">is tenshin magdalena?</label><br>
+<label>why she didn't mention she hangouts with a guy?</label><br><input style="background-color: white; color: black;" type="search"><br>
+<label><input type="checkbox">she know's i'll get jelous?</label><br>
+<label><input type="checkbox">she know's it's a bad thing?</label><br><br>
 
+<label><input type="checkbox">later claims mom called her just a few moments ago</label><br>
+<label><input type="checkbox">so she thought it's her again</label><br>
+<label><input type="checkbox">but we've been on call/chatting for a while</label><br>
+<label><input type="checkbox">and she had time to type and see who it really is</label><br><br>
 
-<div style="margin-top: 2vh;">
+<label><input type="checkbox">she doesn't show it</label><br>
+<label><input type="checkbox">later tried to cover him as joshua (???)</label><br><br>
+
+<label><input type="checkbox">she claim's they stopped chatting by december</label><br>
+<label><input type="checkbox">yet that was january?</label><br>
+<label>when did they really stop chatting?</label><br><input style="background-color: white; color: black;" type="search"><br><br>
+
+<h4>Acceptable Conclusion:</h4>
+<label><input type="checkbox">she lied</label><br>
+<label><input type="checkbox">she's telling the truth</label><br><br>
+
+<h4>Unacceptable Conclusion:</h4>
+<label><input type="checkbox">she claims she doesn't lie but can't prove anything</label><br><br>
+
 <img src="https://media.discordapp.net/attachments/1063507461748830289/1112533342919868558/Screenshot_20230529-075747_Discord.png">
 <img src="https://media.discordapp.net/attachments/1063507461748830289/1112533353627930634/Screenshot_20230529-075803_Discord.png">
 <img src="https://media.discordapp.net/attachments/1063507461748830289/1112533371948642385/Screenshot_20230529-075937_Discord.png">
