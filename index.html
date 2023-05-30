@@ -1474,6 +1474,7 @@ post_filter = false
 posts_seen.push(post.data.id)
 localStorage.setItem("posts_seen", posts_seen)
 global_url = post.data.url
+auto_type_p.href = global_url
 seen_comments = []
 comment_index = 0
 p_element(`r/${post.data.subreddit}: ${post.data.title} `)
