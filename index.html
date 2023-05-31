@@ -80,8 +80,9 @@ body { background-image: url("background2.jpg"); }
 <input type="radio" id="sort2" name="sort" class="sort" value="sort2"><button><label for="sort2">Kiri</label><button>
 </fieldset>
 
-<a onclick="v.scrollIntoView({ behavior: 'smooth' })"><button>Reddit Bot</button></a>
-<a href="#v"><button>Dis<span style="color: red; font-weight: bold;">cord</span> Bot</button></a>
+<a onclick="v.scrollIntoView({ behavior: 'smooth' })"><button>Reddit<span style="color: red; font-weight: bold;">Bot</span></button></a>
+<a href="#v"><button>Discord<span style="color: red; font-weight: bold;">Bot</span></button></a>
+<button id="z">Twitch<span style="color: red; font-weight: bold;">Bot</span></button>
 <input type="checkbox" id="music_id"><button onclick="hide_music()"><label for="music_id">Music</label></button>
 <input type="checkbox" id="hide_id"><button><label for="hide_id" id="playing_indicator" style="display: none;">Note</label><button>
 
@@ -114,10 +115,6 @@ body { background-image: url("background2.jpg"); }
 <img src="stamp2.jpg">
 <img src="stamp3.jpg">
 <img src="stamp4.jpg">
-</div>
-
-<div id="z" style="user-select: none;">
-<img src="https://cdn0.gamesports.net/content_teasers/95000/95514.jpg?1599300191">
 </div>
 
 <div id="chat">
@@ -1627,7 +1624,7 @@ auto_hide_div.style.visibility = "visible" } ) } )
 
 function binance_search(query) {
 axios.get(`https://api.binance.com/api/v3/ticker/24hr?symbol=${query || 'BTC'}USDT`)
-.then(res => crypto_position.innerHTML = `${res.data.symbol.split("USDT")[0]}-${parseFloat(res.data.lastPrice).toFixed(2)}-${parseFloat(res.data.priceChangePercent).toFixed(2)}%`) }
+.then(res => crypto_position.innerHTML = `${res.data.symbol.split("USDT")[0]}-${parseFloat(res.data.lastPrice).toFixed(2)}(${parseFloat(res.data.priceChangePercent).toFixed(2)}%)`) }
 
 mode_selector.onchange = event => {
 if(event.target.value.toLowerCase() === "nightmode") {
