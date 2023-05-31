@@ -22,7 +22,7 @@ a { color: #white; text-decoration: none; }
 .main_menu ul li:hover > ul { transition: all 0.5s ease; opacity: 1; pointer-events: auto; }
 .main_menu ul li a:hover { transition: all 0.8s ease; background-color: pink; }
 .main_menu ul { background-color: #a88c60; color: white; padding: 1vw; }
-.main_menu ul li:hover ul::before { content: "*" !important; }
+.main_menu ul li:hover i::after { content: "~" !important; }
 #f { background-color: #a88c60; }
 #f img { width: 12%; }
 #auto_hide_div img { width: 2vw; }
@@ -66,7 +66,7 @@ body { background-image: url("background2.jpg"); }
 <li><select style="font-weight: bold; font-style: italic;" id="mode_selector"><option value="Nightmode" selected>Night</option><option value="Lightmode">Light</option></select></li>
 </ul></div>
 
-<fieldset><legend><a id="auto_type_p" href="index.html" download>Mouise</a></legend>
+<fieldset><legend id="auto_type_p">Mouise</legend>
 <input id="query" placeholder="Search" type="search" onkeypress="if(event.key === 'Enter') document.querySelector('#query_search').click()">
 <select id="search_type">
 <option value="Reddit" selected>Reddit</option>
@@ -83,6 +83,7 @@ body { background-image: url("background2.jpg"); }
 <a onclick="v.scrollIntoView({ behavior: 'smooth' })"><button>Reddit<span style="color: red; font-weight: bold;">Bot</span></button></a>
 <a href="#v"><button>Discord<span style="color: red; font-weight: bold;">Bot</span></button></a>
 <button id="z">Twitch<span style="color: red; font-weight: bold;">Bot</span></button>
+<button><a id="link" href="index.html" download">Nina</a></button>
 <input type="checkbox" id="music_id"><button onclick="hide_music()"><label for="music_id">Music</label></button>
 <input type="checkbox" id="hide_id"><button><label for="hide_id" id="playing_indicator" style="display: none;">Note</label><button>
 
@@ -1465,16 +1466,17 @@ post_filter = false
 posts_seen.push(post.data.id)
 localStorage.setItem("posts_seen", posts_seen)
 global_url = post.data.url
-auto_type_p.href = music_list[Math.floor(Math.random() * music_list.length)].src
 seen_comments = []
 comment_index = 0
 p_element(`r/${post.data.subreddit}: ${post.data.title} `)
 a_element(`https://redd.it/${post.data.id}`)
 if(post.data.secure_media?.reddit_video) global_url = post.data.secure_media.reddit_video.hls_url
 if(global_url.match(/(v.redd|imgur.+\.gifv)/)) {
-video_element(global_url.replace("gifv", "mp4"))
+global_url = global_url.replace("gifv", "mp4")
+video_element(global_url)
 } else if(global_url.match(/(redgifs)/)) {
-iframe_element(global_url.replace("watch", "ifr"))
+global_url = global_url.replace("watch", "ifr")
+iframe_element(global_url)
 } else if(global_url.match(/(imgur|i.redd|\.(png|jpg|jpeg))/)) {
 img_element(global_url)
 } else if(global_url.includes("gallery")) {
@@ -1482,7 +1484,8 @@ post.data.gallery_data.items.forEach(m => {
 img_element(post.data.media_metadata[m.media_id].s.u.replace(/amp;/g, "")) }) }
 post_comments = await axios.get(`https://www.reddit.com/comments/${post.data.id}.json`)
 discord_webhook(`r/${post.data.subreddit}: ${post.data.title} [https://redd.it/${post.data.id}]\n${post.data.url}`) } } }).then(() => {
-if(post_filter) p_element("no data") }).catch(err => p_element(err))
+if(post_filter) p_element("El Psy Kongroo") }).catch(err => p_element(err))
+link.href = global_url
 result.replaceChildren(div) }
 function reddit_comment() {
 post_filter = true
@@ -1674,6 +1677,7 @@ show_indicator("playing_indicator")
 div = document.createElement("div")
 music_list.forEach(temp_music => {
 if(temp_music.name.toLowerCase().includes(music.toLowerCase())) {
+global_url = temp_music.src
 p_element(temp_music.name)
 audio_element(temp_music.src) } })
 music_position.replaceChildren(div)
