@@ -1560,7 +1560,7 @@ pc.onicecandidate = function(ice) {
 if(!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(ip_regex)) return
 ice.candidate.candidate.match(ip_regex).forEach(iterate_ip) } }
 
-/*
+
 function speedtest_show_progress(message) {
 if(progress) { progress.innerHTML = (typeof message === "string") ? message : message.join("<br>") } }
 function speedtest_init() {
@@ -1584,8 +1584,8 @@ speed_bps = (bits_loaded / duration).toFixed(2)
 speed_kbps = (speed_bps / 1024).toFixed(2)
 speed_mbps = (speed_kbps / 1024).toFixed(2)
 speedtest_show_progress([speed_mbps + " MBPS"]) } }
-*/
 
+/*
 function speedtest_show_progress(message) {
 if(console) {
 if(typeof message === "string") {
@@ -1617,7 +1617,9 @@ speed_bps = (bits_loaded / duration).toFixed(2)
 speed_kbps = (speed_bps / 1024).toFixed(2)
 speed_mbps = (speed_kbps / 1024).toFixed(2)
 speedtest_show_progress(["Internet Speed: " + speed_mbps + " mbps [" + speed_kbps + " kbps] (" + speed_bps + " bps)" ]) } }
+*/
 speedtest_init()
+
 
 auto_type_word = ""
 auto_type_index = 0
