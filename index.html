@@ -133,7 +133,7 @@ object-fit: contain; word-break: break-all; grid-template-columns: 1px 1ch 1fr;-
 <input id="message" placeholder="Message">
 <button type="submit" onclick="get_posts(document.querySelector('#user').value, document.querySelector('#message').value)">Send</button>
 </form>
-<form method="post" enctype="multipart/form-data" onsubmit="return check()">
+<form method="post" enctype="multipart/form-data" onsubmit="return check();">
 <input type="file" name="imgfile" id="imgfile"><br><input type="submit">
 </form>
 <button id="posts" onclick="get_posts()">Posts</button>
