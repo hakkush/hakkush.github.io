@@ -126,9 +126,18 @@ object-fit: contain; word-break: break-all; grid-template-columns: 1px 1ch 1fr;-
 <img src="stamp4.jpg">
 </div>
 
+<div id="chat">
+<div id="music_position"></div>
+<form onsubmit="on_submit(event)">
+<input id="user" placeholder="User" required>
+<input id="message" placeholder="Message">
+<button type="submit" onclick="get_posts(document.querySelector('#user').value, document.querySelector('#message').value)">Send</button>
+</form>
 <form method="post" enctype="multipart/form-data" onsubmit="return check()">
 <input type="file" name="imgfile" id="imgfile"><br><input type="submit">
 </form>
+<button id="posts" onclick="get_posts()">Posts</button>
+</div>
 
 <script type="text/javascript">
     function check(){
@@ -154,16 +163,6 @@ xhr.onreadystatechange = function(){
 };
 xhr.send(null);
 </script>
-
-<div id="chat">
-<div id="music_position"></div>
-<form onsubmit="on_submit(event)">
-<input id="user" placeholder="User" required>
-<input id="message" placeholder="Message">
-<button type="submit" onclick="get_posts(document.querySelector('#user').value, document.querySelector('#message').value)">Send</button>
-</form>
-<button id="posts" onclick="get_posts()">Posts</button>
-</div>
 
 <textarea class="auto_resize">client=~/client && rm -r ${client} && cd ~/storage/shared/download/ && cp -r client ${client} && cd ${client} && vercel --prod -y
 alias "+ac0" "bind q dota_ability_autocast 0"; alias "-ac0" "bind q dota_ability_execute 0"; bind "shift" "+ac0"
