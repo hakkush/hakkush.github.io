@@ -141,19 +141,19 @@ object-fit: contain; word-break: break-all; grid-template-columns: 1px 1ch 1fr;-
 
 <script type="text/javascript">
 function check(){
-var imgpath=document.getElementById('imgfile');
+imgpath=document.getElementById('imgfile');
 if(!imgpath.value==""){
-var img=imgpath.files[0].size;
-var imgsize=img/1024; 
+img=imgpath.files[0].size;
+imgsize=img/1024;
 alert(imgsize) } }
 
 shessh = "background.jpg"
-var xhr = new XMLHttpRequest();
-xhr.open('HEAD', shessh, true);
+xhr = new XMLHttpRequest()
+xhr.open('HEAD', shessh, true)
 xhr.onreadystatechange = function(){
-if( xhr.readyState == 4 ) {
-if( xhr.status == 200 ) {
-alert('Size in bytes: ' + xhr.getResponseHeader('Content-Length'));
+if(xhr.readyState == 4) {
+if(xhr.status == 200) {
+alert(xhr.getResponseHeader('Content-Length'))
 } else {
 alert('ERROR'); } } }
 xhr.send(null);
