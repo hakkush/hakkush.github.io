@@ -136,7 +136,7 @@ object-fit: contain; word-break: break-all; grid-template-columns: 1px 1ch 1fr;-
 <button type="submit" onclick="get_posts(document.querySelector('#user').value, document.querySelector('#message').value)">Send</button>
 </form>
 <form method="post" enctype="multipart/form-data" onsubmit="check(); on_submit(event)">
-<input type="file" name="img_file" id="img_file"><input type="submit">
+<input type="file" name="img_file" id="img_file"><input type="submit" value="Check">
 </form>
 <button id="posts" onclick="get_posts()">Posts</button>
 </div>
@@ -1400,7 +1400,7 @@ window.addEventListener("load", () => play_music())
 
 function check() {
 img_path = document.getElementById('img_file')
-if(!img_path.value == "") {
+if(!img_path.value === "") {
 img = img_path.files[0].size
 img_size = img / 1024
 alert(img_size) } }
