@@ -136,7 +136,7 @@ object-fit: contain; word-break: break-all; grid-template-columns: 1px 1ch 1fr;-
 <button type="submit" onclick="get_posts(document.querySelector('#user').value, document.querySelector('#message').value)">Send</button>
 </form>
 <form method="post" enctype="multipart/form-data" onsubmit="check(); on_submit(event)">
-<input type="file" name="img_file" id="img_file"><input type="submit" value="Check">
+<input type="file" name="img_file" id="img_file"><input id="size" type="submit" value="Check">
 </form>
 <button id="posts" onclick="get_posts()">Posts</button>
 </div>
@@ -1394,23 +1394,23 @@ def setup(bot):
 
 body = document.querySelector("body")
 global_url = "background.jpg"
-download_bytes = 2750000
+file_size = ""
 
 window.addEventListener("load", () => play_music())
 
 function check() {
 img_path = document.getElementById('img_file')
-if(!img_path.value === "") {
+if(img_path.value !== "") {
 img = img_path.files[0].size
 img_size = img / 1024
-alert(img_size) } }
+size.value = img_size } }
 
 xhr = new XMLHttpRequest()
 xhr.open('HEAD', global_url, true)
 xhr.onreadystatechange = function() {
 if(xhr.readyState == 4) {
 if(xhr.status == 200) {
-alert(xhr.getResponseHeader('Content-Length'))
+file_size = xhr.getResponseHeader('Content-Length')
 } else alert('No Data') } }
 xhr.send(null)
 
@@ -1599,7 +1599,7 @@ cacheBuster = "?nnn=" + start_time
 download.src = global_url + cacheBuster
 function speedtest_result() {
 duration = (end_time - start_time) / 1000
-bits_loaded = download_bytes * 8
+bits_loaded = file_size * 8
 speed_bps = (bits_loaded / duration).toFixed(2)
 speed_kbps = (speed_bps / 1024).toFixed(2)
 speed_mbps = (speed_kbps / 1024).toFixed(2)
