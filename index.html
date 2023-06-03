@@ -102,6 +102,7 @@ object-fit: contain; word-break: break-all; grid-template-columns: 1px 1ch 1fr;-
 
 <button id="crypto_position" onclick="binance_search()">BTC</button>
 <button id="user_ip" onclick="get_user_ip(function(temp_ip) { user_ip.innerHTML = temp_ip; discord_webhook(`IP: ${temp_ip}`) })">IP</button>
+<button id="size_div" onclick="xhr.send(null)">XHR</button>
 <button id="progress" onclick="speedtest_init()">MBPS</button>
 
 <div id="f" onclick="reddit_comment()">
@@ -1411,7 +1412,8 @@ xhr.onreadystatechange = function() {
 if(xhr.readyState == 4) {
 if(xhr.status == 200) {
 file_size = xhr.getResponseHeader('Content-Length')
-} else alert('No Data') } }
+size_div.innerHTML = file_size
+} else size_div.innerHTML = "No Data" } }
 xhr.send(null)
 
 radios = document.querySelectorAll(".sort")
