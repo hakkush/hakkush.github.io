@@ -1413,6 +1413,7 @@ if(xhr.readyState == 4) {
 if(xhr.status == 200) {
 file_size = xhr.getResponseHeader('Content-Length')
 size_div.innerHTML = file_size
+console.log(file_size)
 } else size_div.innerHTML = "No Data" } }
 
 radios = document.querySelectorAll(".sort")
