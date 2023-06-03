@@ -1414,7 +1414,6 @@ if(xhr.status == 200) {
 file_size = xhr.getResponseHeader('Content-Length')
 size_div.innerHTML = file_size
 } else size_div.innerHTML = "No Data" } }
-xhr.send(null)
 
 radios = document.querySelectorAll(".sort")
 for(radio in radios) { radios[radio].onchange = function() {
