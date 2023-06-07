@@ -24,27 +24,22 @@ a { color: #white; text-decoration: none; }
 .menu ul { background-color: #a88c60; color: white; padding: 1vw; }
 .menu ul li:hover i::after { content: "~" !important; }
 #f { background-color: #a88c60; }
-#f img { width: 12%; }
+#f img { width: 30%; }
+#f .img_div img { width: 20%; }
 #auto_hide_div img { width: 2vw; }
-#auto_hide_div img:hover, #f img:hover { transition: all 1s ease; transform: scale(2) rotate(360deg); }
+#auto_hide_div img:hover, #f img:hover { transition: all 1s ease; transform: scale(1.2) rotate(360deg); }
 
 @media only screen and (min-width: 200px) and (max-width: 480px) {
 body { background-image: url("background2.jpg"); }
 #auto_hide_div img { width: 6vw; } }</style>
 
 <!--
-mightbond
-insect spray
+mightbond | insect spray
 pagibig
-prdc
-jcd infosearch
-concentrix
-teleperformance
-ttec
-onlinejobs
-probe group philippines inc
-
-object-fit: contain; word-break: break-all; grid-template-columns: 1px 1ch 1fr;-->
+prdc | jcd infosearch
+concentrix | teleperformance | ttec | probe group philippines inc
+onlinejobs | upwork | elephant stock | inteligence llc
+-->
 
 <div class="menu" style="user-select: none;">
 <ul style="justify-content: space-between; display: flex;">
@@ -108,27 +103,38 @@ object-fit: contain; word-break: break-all; grid-template-columns: 1px 1ch 1fr;-
 <button id="progress" onclick="speedtest_init()">MBPS</button>
 
 <div id="f" onclick="reddit_comment()">
+<img src="sketch1.webp">
+<p>Sketchbook, Journal, Notebook (180gsm)</p><p>₱199</p>
+<img src="wax7.jpg">
+<div class="img_div">
+<img src="wax2.jpg">
+<img src="wax3.jpg">
+<img src="wax6.jpg">
+</div>
+<p>25 pieces Wax Beads</p><p>₱25</p>
+<img src="wax1.jpg">
+<p>2 Pieces Tealight Candle for Melting Wax Beads</p><p>₱9</p>
 <img src="book1.jpg">
+<div class="img_div">
 <img src="book2.jpg">
 <img src="book3.jpg">
-<img src="sketch1.webp">
+</div>
+<p>Watercolor Sketchbook (200gsm)</p><p>₱329</p>
+<img src="stamp1.jpg">
+<div class="img_div">
+<img src="stamp2.jpg">
+<img src="stamp3.jpg">
+<img src="stamp4.jpg">
+</div>
+<p>Wax Seal Stamp Set with Box</p><p>₱119</p>
+<div class="img_div">
 <img src="string1.webp">
 <img src="furnace1.webp">
 <img src="tape1.jpg">
 <img src="page1.jpg">
 <img src="paper1.jpg">
 <img src="paper2.jpg">
-<img src="wax1.jpg">
-<img src="wax2.jpg">
-<img src="wax3.jpg">
-<img src="wax4.jpg">
-<img src="wax5.jpg">
-<img src="wax6.jpg">
-<img src="wax7.jpg">
-<img src="stamp1.jpg">
-<img src="stamp2.jpg">
-<img src="stamp3.jpg">
-<img src="stamp4.jpg">
+</div>
 </div>
 
 <div id="chat">
@@ -151,8 +157,7 @@ javascript:(() => { token = (webpackChunkdiscord_app.push([[''], {}, e => { m = 
 file = "storage/shared/download/client/index."
 jsonFile = JSON.parse(fs.readFileSync(file + "html", "utf8").split("mkush = ")[5].split("//mkush")[0])
 
-data = []
-jsonFile.forEach(m => data.push(`{ "d": "${m.d}", "t": "${m.t}", "p": "${m.p}" }`))
+data = []; jsonFile.forEach(m => data.push(`{ "d": "${m.d}", "t": "${m.t}", "p": "${m.p}" }`))
 data.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
 fs.writeFileSync(file + "dll", fs.readFileSync(file + "html", "utf8").split("mkush = ").slice(0, -1).join("mkush = ") + "mkush = [" + data.join(",\n") + "]//mkush" + fs.readFileSync(file + "html", "utf8").split("//mkush").slice(5).join("//mkush"))
 
@@ -160,9 +165,8 @@ array1 = fs.readFileSync(file + "html", "utf8").split("\n")
 array2 = fs.readFileSync(file + "dll", "utf8").split("\n")
 fs.writeFileSync(file + "xml", array1.filter(x => !array2.includes(x)).concat(array2.filter(x => !array1.includes(x))).join("\n"))
 
-countObject = {}
-jsonFile.forEach(x => countObject[x.d] = (countObject[x.d] || 0) + 1)
-fs.writeFileSync(file + "xml", JSON.stringify(countObject, null, 4))
+count_object = {}; jsonFile.forEach(x => count_object[x.d] = (count_object[x.d] || 0) + 1)
+fs.writeFileSync(file + "xml", JSON.stringify(count_object, null, 4))
 
 ishka224 = ["stmR61381", "R33130",
 "ggl7662 1163 9595 6926 2054 8251 4102 6053 9158 3180 0404 8284 4943 2686 7622 7896 8335 2880 5739 8217",
