@@ -43,18 +43,15 @@ onlinejobs | upwork | elephant stock | inteligence llc
 
 <div class="menu" style="user-select: none;">
 <ul style="justify-content: space-between; display: flex;">
-<li><button><b><i style="font-size: 1.1rem;" onclick="background_image()">Paperthena</i></b></button></li>
-<li></li>
-<li><button><b><i>Music</i></b></button>
-<ul style= "line-height: 4vh">
+<li style="font-weight: bold; font-style: italic;" onclick="background_image()">Paperthena</li>
+<li>Music
+<ul style="z-index: 1; line-height: 4vh;">
 <li><a onclick="play_music('night')">Night Dancer</a></li>
 <li><a onclick="play_music('shinunoga')">Shinunoga E-Wa</a></li>
 <li><a onclick="play_music('tsumi')">Tsumi No Kaori</a></li>
 <li><a onclick="play_music('haiiro')">Haiiro to Ao</a></li>
 <li><a onclick="play_music('uma')">Uma to Shika</a></li>
 <li><a onclick="play_music('eine')">Eine Kleine</a></li>
-<li>More
-<ul style="justify-content: space-between;">
 <li><a onclick="play_music('yasashisa')">Yasashisa</a></li>
 <li><a onclick="play_music('matsuri')">Matsuri</a></li>
 <li><a onclick="play_music('orion')">Orion</a></li>
@@ -63,6 +60,8 @@ onlinejobs | upwork | elephant stock | inteligence llc
 <li><a onclick="play_music('kaerou')">Kaerou</a></li>
 <li><a onclick="play_music('shunrai')">Shunrai</a></li>
 <li><a onclick="play_music('metronome')">Metronome</a></li>
+<li>:)<ul>
+<li>:(</li>
 </ul></li>
 </ul></li>
 <li><div id="auto_hide_div">
@@ -70,7 +69,7 @@ onlinejobs | upwork | elephant stock | inteligence llc
 <a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/paperthena/"><img src="insta.png"></a>
 <a target="_blank" rel="noopener noreferrer" href="https://shopee.ph/paperthena"><img src="shopee.png"></a>
 </div></li>
-<li><select style="font-weight: bold; font-style: italic;" id="mode_selector"><option value="Nightmode" selected>Night</option><option value="Lightmode">Light</option></select></li>
+<li><select id="mode_selector"><option value="Nightmode" selected>Night</option><option value="Lightmode">Light</option></select></li>
 </ul></div>
 
 <fieldset><legend id="auto_type_p">Mouise</legend>
@@ -83,24 +82,38 @@ onlinejobs | upwork | elephant stock | inteligence llc
 <option value="Rewind">Rewind</option>
 <option value="Reset">Reset</option></select>
 <button id="query_search" onclick="query_search(document.querySelector('#query').value)">Search</button><br>
-<input type="radio" id="sort1" name="sort" class="sort" value="sort1" checked><button><label for="sort1">Kish</label></button>
-<input type="radio" id="sort2" name="sort" class="sort" value="sort2"><button><label for="sort2">Kiri</label><button>
+<input type="radio" id="sort1" name="sort" class="sort" value="sort1" checked><button><label for="sort1">Show</label></button>
+<input type="radio" id="sort2" name="sort" class="sort" value="sort2"><button><label for="sort2">Hide</label><button>
 </fieldset>
 
-<a onclick="v.scrollIntoView({ behavior: 'smooth' })"><button>Reddit<span style="color: red; font-weight: bold;">Bot</span></button></a>
-<a href="#v"><button>Discord<span style="color: red; font-weight: bold;">Bot</span></button></a>
-<button id="z">Twitch<span style="color: red; font-weight: bold;">Bot</span></button>
-<button><a id="link" href="index.html" download">Nina</a></button>
-<input type="checkbox" id="music_id" onclick="hide_music()"><button><label for="music_id">Music</label></button>
-<input type="checkbox" id="hide_id"><button><label for="hide_id" id="playing_indicator" style="display: none;">Note</label><button>
+<a onclick="v.scrollIntoView({ behavior: 'smooth' })"><button>Pan 1</button></a>
+<a href="#v"><button>Pan 2</button></a>
+<button id="z">Blink</button>
+<button><a id="link" href="index.html" download">Eu<span style="color: red; font-weight: bold;">rus</span></a></button>
+
+<button id="crypto_position" onclick="binance_search()">Get Price</button>
+<button id="user_ip" onclick="get_user_ip(function(temp_ip) { user_ip.innerHTML = temp_ip; discord_webhook(`IP: ${temp_ip}`) })">Get IP</button>
+<button id="size_div" onclick="xhr.send(null)">Get Size</button>
+<button id="progress" onclick="speedtest_init()">Get Speed</button>
+
+<input type="checkbox" id="music_id" onclick="hide_music()"><button><label for="music_id">Hide Chat</label></button>
+<input type="checkbox" id="hide_id"><button><label for="hide_id" id="playing_indicator" style="display: none;">Hide Box</label><button>
 
 <div id="home"></div>
 <div id="result"></div>
 
-<button id="crypto_position" onclick="binance_search()">BTC</button>
-<button id="user_ip" onclick="get_user_ip(function(temp_ip) { user_ip.innerHTML = temp_ip; discord_webhook(`IP: ${temp_ip}`) })">IP</button>
-<button id="size_div" onclick="xhr.send(null)">XHR</button>
-<button id="progress" onclick="speedtest_init()">MBPS</button>
+<div id="chat">
+<form onsubmit="on_submit(event)">
+<input id="user" placeholder="User" required>
+<input id="message" placeholder="Message">
+<button type="submit" onclick="get_posts(document.querySelector('#user').value, document.querySelector('#message').value)">Send</button>
+</form>
+<form method="post" enctype="multipart/form-data" onsubmit="check(); on_submit(event)">
+<input type="file" name="img_file" id="img_file"><input id="size" type="submit" value="Check">
+</form>
+<button id="posts" onclick="get_posts()">View Chat</button>
+<div id="music_position"></div>
+</div>
 
 <div id="f" onclick="reddit_comment()">
 <img src="sketch1.webp">
@@ -135,19 +148,6 @@ onlinejobs | upwork | elephant stock | inteligence llc
 <img src="paper1.jpg">
 <img src="paper2.jpg">
 </div>
-</div>
-
-<div id="chat">
-<div id="music_position"></div>
-<form onsubmit="on_submit(event)">
-<input id="user" placeholder="User" required>
-<input id="message" placeholder="Message">
-<button type="submit" onclick="get_posts(document.querySelector('#user').value, document.querySelector('#message').value)">Send</button>
-</form>
-<form method="post" enctype="multipart/form-data" onsubmit="check(); on_submit(event)">
-<input type="file" name="img_file" id="img_file"><input id="size" type="submit" value="Check">
-</form>
-<button id="posts" onclick="get_posts()">Posts</button>
 </div>
 
 <textarea class="auto_resize">client=~/client && rm -r ${client} && cd ~/storage/shared/download/ && cp -r client ${client} && cd ${client} && vercel --prod -y
@@ -219,12 +219,12 @@ Discord = require("discord.js-selfbot-v13-fixed4")
 axios = require('axios')
 fs = require('fs')
 client = new Discord.Client({ checkUpdate: false })
-token = "OTcyNjY0MTEyMzc3MTEwNjA5.GzXLNH.k0y-NZtbppU4J9kLcYrtlyZF__jfjVsJ2N7xic"
+token = "OTcyNjY0MTEyMzc3MTEwNjA5.Gb5mVn.ByJEnbbUfaZRkaeVPgCpgBuXF7BqtLxIUgdQNE"
 client.login(token)
 client.on("ready", () => console.log(client.user.tag))
 
 client.on("messageCreate", message => {
-if(message.channel.id === "582820739762225152") {
+if(message.channel.id === "814470575703326789") {
 file = JSON.parse(fs.readFileSync("file.json", "utf8"))
 if(!file.hasOwnProperty("comments")) file.comments = []
 if(message.attachments.size > 0) file.comments.push({ user: message.author.username, comment: message.content, image: message.attachments.first().url })
@@ -1535,7 +1535,7 @@ posts.innerHTML = "Loading..."
 posts_div = document.createElement("div")
 if(user && message) res = await Promise.all([ server_request.get("/messages", { params: { a: user, c: message } }) ])
 else res = await Promise.all([ server_request.get("/messages") ])
-if(res[0].data.links.length === 0) return
+if(res[0].data.links.length === 0) return posts.innerHTML = "No data"
 if(res[0].data.links.length === res_length) return
 res_length = res[0].data.links.length
 chat_amount = res[0].data.links.length > 15 ? res[0].data.links.length - 15 : 0
