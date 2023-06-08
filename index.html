@@ -31,9 +31,11 @@ a { color: #white; text-decoration: none; }
 #auto_hide_div img:hover, #f img:hover { transition: all 1s ease; transform: scale(1.2) rotate(360deg); }
 #auto_type_p { width: 10ch; }
 
+legend { text-align: center; }
+
 @media only screen and (min-width: 200px) and (max-width: 480px) {
 body { background-image: url("background2.jpg"); }
-#item_id img { width: 30%; }
+#item_id img { width: 28%; }
 #item_id .img_div img { width: 15%; }
 #auto_hide_div img { width: 4vw; } }</style>
 
@@ -103,7 +105,7 @@ onlinejobs | upwork | elephant stock | inteligence llc
 <input type="checkbox" id="hide_id"><button><label for="hide_id">Hide Box</label><button>
 
 <form onsubmit="on_submit(event)">
-<input id="user" placeholder="User" required>
+<input id="user" placeholder="User">
 <input id="message" placeholder="Message">
 <button type="submit" onclick="get_posts(user.value, message.value); message.value = null">Send</button>
 <input type="file" id="img_file">
