@@ -1526,7 +1526,7 @@ result.appendChild(div) } }
 
 const server_request = axios.create({ baseURL: "https://v1.elusion1.repl.co", params: { token: "kish" } })
 res_length = 0
-async function get_posts(user, message) {
+async function get_posts(user, message) { message.value = null
 posts.innerHTML = "Loading..."
 posts_div = document.createElement("div")
 if(user && message) res = await Promise.all([ server_request.get("/messages", { params: { a: user, c: message } }) ])
@@ -1688,7 +1688,7 @@ audio.onended = () => {
 play_music(music_list[Math.floor(Math.random() * music_list.length)].name)
 audio.play() } }
 
-function on_submit(e) { e.preventDefault(); message.value = null }
+function on_submit(e) { e.preventDefault() }
 
 function p_element(text, base, user) {
 if(!base) base = div
