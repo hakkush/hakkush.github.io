@@ -24,9 +24,9 @@ a { color: #white; text-decoration: none; }
 .menu ul { background-color: #a88c60; color: white; padding: 1vw; }
 .menu ul li:hover i::after { content: "~" !important; }
 
-#f { background-color: #a88c60; }
-#f img { width: 30%; }
-#f .img_div img { width: 15%; }
+#item_id { background-color: #a88c60; }
+#item_id img { width: 30%; }
+#item_id .img_div img { width: 15%; }
 #auto_hide_div img { width: 2vw; }
 #auto_hide_div img:hover, #f img:hover { transition: all 1s ease; transform: scale(1.2) rotate(360deg); }
 #auto_type_p { width: 10ch; }
@@ -106,7 +106,7 @@ onlinejobs | upwork | elephant stock | inteligence llc
 <div id="result"></div>
 
 <form onsubmit="on_submit(event)">
-<input id="user" placeholder="User">
+<input id="user" placeholder="User" required>
 <input id="message" placeholder="Message">
 <button type="submit" onclick="get_posts(user.value, message.value)">Send</button>
 <input type="file" id="img_file">
@@ -115,7 +115,7 @@ onlinejobs | upwork | elephant stock | inteligence llc
 <div id="music_position"></div>
 </form>
 
-<div id="f" onclick="reddit_comment()">
+<div id="item_id" onclick="reddit_comment()">
 <p>Sketchbook 180gsm (₱199)</p>
 <img src="sketch1.webp">
 <p>Wax Beads 25 Pieces (₱25)</p>
@@ -1416,8 +1416,14 @@ console.log(file_size)
 
 radios = document.querySelectorAll(".sort")
 for(radio in radios) { radios[radio].onchange = function() {
-if(this.value === "sort1") f.style.display = "block"
-else if(this.value === "sort2") f.style.display = "none" } }
+if(this.value === "sort1") item_id.style.display = "block"
+else if(this.value === "sort2") item_id.style.display = "none" } }
+
+function hide_music() {
+if(!music_player_showed) { music_player_showed = true
+music_position.style.display = "block" }
+else { music_player_showed = false
+music_position.style.display = "none" } }
 
 function query_search(query) {
 switch(search_type.value.toLowerCase()) {
@@ -1667,11 +1673,6 @@ music_list = [
 { name: "Kenshi Yonezu - Eine Kleine", id: "m", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1090618372380696586/-__Kenshi_Yonezu_-_Eine_Kleine.m4a" },
 { name: "Kenshi Yonezu - Haiiro to Ao", id: "n", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1090618372028371014/Kenshi_Yonezu_-_Haiirotoao__Masaki_Suda_.mp3" }
 ]
-function hide_music() {
-if(!music_player_showed) { music_player_showed = true
-music_position.style.display = "block" }
-else { music_player_showed = false
-music_position.style.display = "none" } }
 
 last_music = ""
 function play_music(music) {
