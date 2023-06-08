@@ -46,7 +46,7 @@ onlinejobs | upwork | elephant stock | inteligence llc
 <div class="menu" style="user-select: none;">
 <ul style="justify-content: space-between; display: flex;">
 <li id="auto_type_p" onclick="background_image()" style="font-weight: bold; font-style: italic;">Paperthena</li>
-<li>Music
+<li id="z">Music
 <ul style="z-index: 1; line-height: 2ch;">
 <li><a onclick="play_music('eine')">Eine Kleine</a></li>
 <li><a onclick="play_music('haiiro')">Haiiro to Ao</a></li>
@@ -76,9 +76,7 @@ onlinejobs | upwork | elephant stock | inteligence llc
 
 <fieldset>
 <legend>
-<button><a onclick="v.scrollIntoView({ behavior: 'smooth' })">Pan 1</a></button>
-<button><a href="#v">Pan 2</a></button>
-<button id="z">Blink</button>
+<button><a id="up" onclick="down.scrollIntoView({ behavior: 'smooth' })">Down</a></button>
 <button><a id="link" href="index.html" download">Eurus</a></button>
 </legend>
 <input id="query" placeholder="Search" type="search" onkeypress="if(event.key === 'Enter') document.querySelector('#query_search').click()">
@@ -1746,4 +1744,4 @@ function iframe_element(link) {
 iframe = document.createElement("iframe")
 iframe.src = link
 iframe.setAttribute("allow", "fullscreen")
-div.appendChild(iframe) }</script><div id="v"></div>
+div.appendChild(iframe) }</script><button><a id="down" href="#up">Up</a></button>
