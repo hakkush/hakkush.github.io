@@ -77,7 +77,7 @@ onlinejobs | upwork | elephant stock | inteligence llc
 <fieldset>
 <legend>
 <button><a id="up" onclick="down.scrollIntoView({ behavior: 'smooth' })">Down</a></button>
-<button><a id="link" href="index.html" download">Eurus</a></button>
+<button><a id="link_id" href="index.html" download">Eurus</a></button>
 </legend>
 <input id="query" placeholder="Search" type="search" onkeypress="if(event.key === 'Enter') document.querySelector('#query_search').click()">
 <select id="search_type">
@@ -1506,7 +1506,7 @@ img_element(post.data.media_metadata[m.media_id].s.u.replace(/amp;/g, "")) }) }
 post_comments = await axios.get(`https://www.reddit.com/comments/${post.data.id}.json`)
 discord_webhook(`r/${post.data.subreddit}: ${post.data.title} [https://redd.it/${post.data.id}]\n${post.data.url}`) } } }).then(() => {
 if(post_filter) p_element("El Psy Kongroo") }).catch(err => p_element(err))
-link.href = global_url
+link_id.href = global_url
 result.replaceChildren(div) }
 function reddit_comment() {
 post_filter = true
