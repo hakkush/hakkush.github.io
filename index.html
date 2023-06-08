@@ -6,7 +6,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js" integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <style>* { margin: 0; padding: 0; box-sizing: border-box; text-align: center; }
-#posts div { text-align: left; }
+#posts div, #auto_type_p { text-align: left; }
 html { scroll-behavior: smooth; }
 body { background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center; background-image: url("background.jpg"); color: white; background-color: black; }
 iframe, canvas { width: 70vw; height: calc(70vw/1.77); }
@@ -23,15 +23,17 @@ a { color: #white; text-decoration: none; }
 .menu ul li a:hover { transition: all 0.8s ease; background-color: pink; }
 .menu ul { background-color: #a88c60; color: white; padding: 1vw; }
 .menu ul li:hover i::after { content: "~" !important; }
+
 #f { background-color: #a88c60; }
 #f img { width: 30%; }
-#f .img_div img { width: 20%; }
+#f .img_div img { width: 15%; }
 #auto_hide_div img { width: 2vw; }
 #auto_hide_div img:hover, #f img:hover { transition: all 1s ease; transform: scale(1.2) rotate(360deg); }
+#auto_type_p { width: 10ch; }
 
 @media only screen and (min-width: 200px) and (max-width: 480px) {
 body { background-image: url("background2.jpg"); }
-#auto_hide_div img { width: 6vw; } }</style>
+#auto_hide_div img { width: 4vw; } }</style>
 
 <!--
 mightbond | insect spray
@@ -43,25 +45,25 @@ onlinejobs | upwork | elephant stock | inteligence llc
 
 <div class="menu" style="user-select: none;">
 <ul style="justify-content: space-between; display: flex;">
-<li style="font-weight: bold; font-style: italic;" onclick="background_image()">Paperthena</li>
+<li id="auto_type_p" onclick="background_image()" style="font-weight: bold; font-style: italic;">Paperthena</li>
 <li>Music
-<ul style="z-index: 1; line-height: 4vh;">
+<ul style="z-index: 1; line-height: 2ch;">
+<li><a onclick="play_music('eine')">Eine Kleine</a></li>
+<li><a onclick="play_music('haiiro')">Haiiro to Ao</a></li>
+<li><a onclick="play_music('kaerou')">Kaerou</a></li>
+<li><a onclick="play_music('lemon')">Lemon</a></li>
+<li><a onclick="play_music('loser')">Loser</a></li>
+<li><a onclick="play_music('matsuri')">Matsuri</a></li>
+<li><a onclick="play_music('metronome')">Metronome</a></li>
 <li><a onclick="play_music('night')">Night Dancer</a></li>
 <li><a onclick="play_music('shinunoga')">Shinunoga E-Wa</a></li>
 <li><a onclick="play_music('tsumi')">Tsumi No Kaori</a></li>
-<li><a onclick="play_music('haiiro')">Haiiro to Ao</a></li>
-<li><a onclick="play_music('uma')">Uma to Shika</a></li>
-<li><a onclick="play_music('eine')">Eine Kleine</a></li>
-<li><a onclick="play_music('yasashisa')">Yasashisa</a></li>
-<li><a onclick="play_music('matsuri')">Matsuri</a></li>
 <li><a onclick="play_music('orion')">Orion</a></li>
-<li><a onclick="play_music('lemon')">Lemon</a></li>
-<li><a onclick="play_music('loser')">Loser</a></li>
-<li><a onclick="play_music('kaerou')">Kaerou</a></li>
 <li><a onclick="play_music('shunrai')">Shunrai</a></li>
-<li><a onclick="play_music('metronome')">Metronome</a></li>
-<li>:)<ul>
-<li>:(</li>
+<li><a onclick="play_music('uma')">Uma to Shika</a></li>
+<li><a onclick="play_music('yasashisa')">Yasashisa</a></li>
+<li><span style="color: red; font-weight: bold;">Okabe</span><ul>
+<li><span style="color: red; font-weight: bold;">Makise</span></li>
 </ul></li>
 </ul></li>
 <li><div id="auto_hide_div">
@@ -72,7 +74,13 @@ onlinejobs | upwork | elephant stock | inteligence llc
 <li><select id="mode_selector"><option value="Nightmode" selected>Night</option><option value="Lightmode">Light</option></select></li>
 </ul></div>
 
-<fieldset><legend id="auto_type_p">Mouise</legend>
+<fieldset>
+<legend>
+<button><a onclick="v.scrollIntoView({ behavior: 'smooth' })">Pan 1</a></button>
+<button><a href="#v">Pan 2</a></button>
+<button id="z">Blink</button>
+<button><a id="link" href="index.html" download">Eurus</a></button>
+</legend>
 <input id="query" placeholder="Search" type="search" onkeypress="if(event.key === 'Enter') document.querySelector('#query_search').click()">
 <select id="search_type">
 <option value="Reddit" selected>Reddit</option>
@@ -82,64 +90,48 @@ onlinejobs | upwork | elephant stock | inteligence llc
 <option value="Rewind">Rewind</option>
 <option value="Reset">Reset</option></select>
 <button id="query_search" onclick="query_search(document.querySelector('#query').value)">Search</button><br>
-<input type="radio" id="sort1" name="sort" class="sort" value="sort1" checked><button><label for="sort1">Show</label></button>
-<input type="radio" id="sort2" name="sort" class="sort" value="sort2"><button><label for="sort2">Hide</label><button>
+<input type="radio" id="sort1" name="sort" class="sort" value="sort1" checked><button><label for="sort1">Show Img</label></button>
+<input type="radio" id="sort2" name="sort" class="sort" value="sort2"><button><label for="sort2">Hide Img</label><button>
 </fieldset>
-
-<a onclick="v.scrollIntoView({ behavior: 'smooth' })"><button>Pan 1</button></a>
-<a href="#v"><button>Pan 2</button></a>
-<button id="z">Blink</button>
-<button><a id="link" href="index.html" download">Eu<span style="color: red; font-weight: bold;">rus</span></a></button>
 
 <button id="crypto_position" onclick="binance_search()">Get Price</button>
 <button id="user_ip" onclick="get_user_ip(function(temp_ip) { user_ip.innerHTML = temp_ip; discord_webhook(`IP: ${temp_ip}`) })">Get IP</button>
 <button id="size_div" onclick="xhr.send(null)">Get Size</button>
 <button id="progress" onclick="speedtest_init()">Get Speed</button>
 
-<input type="checkbox" id="music_id" onclick="hide_music()"><button><label for="music_id">Hide Chat</label></button>
-<input type="checkbox" id="hide_id"><button><label for="hide_id" id="playing_indicator" style="display: none;">Hide Box</label><button>
+<input type="checkbox" id="music_id" onclick="hide_music()"><button><label for="music_id">Hide Music</label></button>
+<input type="checkbox" id="hide_id"><button><label for="hide_id">Hide Box</label><button>
 
 <div id="home"></div>
 <div id="result"></div>
 
-<div id="chat">
 <form onsubmit="on_submit(event)">
-<input id="user" placeholder="User" required>
+<input id="user" placeholder="User">
 <input id="message" placeholder="Message">
-<button type="submit" onclick="get_posts(document.querySelector('#user').value, document.querySelector('#message').value)">Send</button>
-</form>
-<form method="post" enctype="multipart/form-data" onsubmit="check(); on_submit(event)">
-<input type="file" name="img_file" id="img_file"><input id="size" type="submit" value="Check">
-</form>
+<button type="submit" onclick="get_posts(user.value, message.value)">Send</button>
+<input type="file" id="img_file">
+<input id="size" onclick="check()" type="submit" value="Check">
 <button id="posts" onclick="get_posts()">View Chat</button>
 <div id="music_position"></div>
-</div>
+</form>
 
 <div id="f" onclick="reddit_comment()">
+<p>Sketchbook 180gsm (₱199)</p>
 <img src="sketch1.webp">
-<p>Sketchbook, Journal, Notebook (180gsm)</p><p>₱199</p>
+<p>Wax Beads 25 Pieces (₱25)</p>
 <img src="wax7.jpg">
-<div class="img_div">
-<img src="wax2.jpg">
 <img src="wax3.jpg">
 <img src="wax6.jpg">
-</div>
-<p>25 pieces Wax Beads</p><p>₱25</p>
+<p>Tealight Candle 2 Pieces (₱9)</p>
 <img src="wax1.jpg">
-<p>2 Pieces Tealight Candle for Melting Wax Beads</p><p>₱9</p>
+<p>Watercolor Sketchbook 200gsm (₱329)</p>
 <img src="book1.jpg">
-<div class="img_div">
 <img src="book2.jpg">
 <img src="book3.jpg">
-</div>
-<p>Watercolor Sketchbook (200gsm)</p><p>₱329</p>
+<p>Wax Seal Stamp Set with Box (₱119)</p>
 <img src="stamp1.jpg">
-<div class="img_div">
 <img src="stamp2.jpg">
 <img src="stamp3.jpg">
-<img src="stamp4.jpg">
-</div>
-<p>Wax Seal Stamp Set with Box</p><p>₱119</p>
 <div class="img_div">
 <img src="string1.webp">
 <img src="furnace1.webp">
@@ -1677,16 +1669,15 @@ music_list = [
 ]
 function hide_music() {
 if(!music_player_showed) { music_player_showed = true
-chat.style.display = "block" }
+music_position.style.display = "block" }
 else { music_player_showed = false
-chat.style.display = "none" } }
+music_position.style.display = "none" } }
 
 last_music = ""
 function play_music(music) {
 if(!music) music = music_list[Math.floor(Math.random() * music_list.length)].name
 if(music === last_music) return
 last_music = music
-show_indicator("playing_indicator")
 div = document.createElement("div")
 music_list.forEach(temp_music => {
 if(temp_music.name.toLowerCase().includes(music.toLowerCase())) {
@@ -1697,13 +1688,6 @@ music_position.replaceChildren(div)
 audio.onended = () => {
 play_music(music_list[Math.floor(Math.random() * music_list.length)].name)
 audio.play() } }
-
-player_hotkeys = ["playing_indicator"]
-playing_indicator_showed = false
-function show_indicator(player_key) { playing_indicator_showed = true
-player_hotkeys.forEach(temp_player_key => {
-document.getElementById(temp_player_key).style.display = "none" } )
-document.getElementById(player_key).style.display = "inline" }
 
 function on_submit(e) { e.preventDefault(); message.value = null }
 
