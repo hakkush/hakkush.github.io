@@ -106,7 +106,7 @@ onlinejobs | upwork | elephant stock | inteligence llc
 <form onsubmit="on_submit(event)">
 <input id="user" placeholder="User" required>
 <input id="message" placeholder="Message">
-<button type="submit" onclick="get_posts(user.value, message.value)">Send</button>
+<button type="submit" onclick="get_posts(user.value, message.value); message.value = null">Send</button>
 <input type="file" id="img_file">
 <input id="size" onclick="check()" type="submit" value="File Size">
 <button id="posts" onclick="get_posts()">View Chat</button>
@@ -1526,7 +1526,7 @@ result.appendChild(div) } }
 
 const server_request = axios.create({ baseURL: "https://v1.elusion1.repl.co", params: { token: "kish" } })
 res_length = 0
-async function get_posts(user, message) { message.value = null
+async function get_posts(user, message) {
 posts.innerHTML = "Loading..."
 posts_div = document.createElement("div")
 if(user && message) res = await Promise.all([ server_request.get("/messages", { params: { a: user, c: message } }) ])
