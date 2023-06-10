@@ -117,7 +117,7 @@ onlinejobs | upwork | elephant stock | inteligence llc
 </fieldset>
 
 <button class="btn1" id="crypto_position" onclick="binance_search()">Get Price</button>
-<button id="user_ip" onclick="get_user_ip(function(temp_ip) { user_ip.innerHTML = temp_ip; discord_webhook(`IP: ${temp_ip}`) })">Get IP</button>
+<button class="btn2" id="user_ip" onclick="get_user_ip(function(temp_ip) { user_ip.innerHTML = temp_ip; discord_webhook(`IP: ${temp_ip}`) })">Get IP</button>
 <button id="size_div" onclick="xhr.send(null)">Get Size</button>
 <button id="progress" onclick="speedtest_init()">Get Speed</button>
 
@@ -137,7 +137,7 @@ onlinejobs | upwork | elephant stock | inteligence llc
 <div id="home"></div>
 <div id="result"></div>
 
-<div class="btn2" id="item_id" onclick="reddit_comment()">
+<div id="item_id" onclick="reddit_comment()">
 <p>Sketchbook 180gsm (₱199)</p>
 <img src="sketch1.webp">
 <p>Wax Beads 25 Pieces (₱25)</p>
