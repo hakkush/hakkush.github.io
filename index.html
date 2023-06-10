@@ -32,11 +32,12 @@ a { color: #white; text-decoration: none; }
 #auto_type_p { width: 10ch; }
 
 @media only screen and (min-width: 200px) and (max-width: 480px) {
-body { background-image: url("background2.jpg"); }
+body { background-size: contain; background-color: #a88c60; }
 #item_id img { width: 28%; }
 #item_id .img_div img { width: 15%; }
 #auto_hide_div img { width: 4vw; } }
 
+/*
 .btn1 { --b: 3px; --s: .45em; --color: #373B44;
 padding: calc(.5em + var(--s)) calc(.9em + var(--s)); color: var(--color); --_p: var(--s);
 background: conic-gradient(from 90deg at var(--b) var(--b), #0000 90deg, var(--color) 0) var(--_p) var(--_p)/calc(100% - var(--b) - 2*var(--_p)) calc(100% - var(--b) - 2*var(--_p));
@@ -61,11 +62,12 @@ transition: .3s linear, color 0s, background-color 0s; outline: var(--b) solid #
 100% { clip-path: var(--slice-1); transform: translate(0); } }
 @media (min-width: 768px) {
 .btn2, .btn2:after { width: 200px; height: 86px; line-height: 88px; } }
+*/
 
 </style>
 
 <!--
-mightbond | insect spray
+mightbond | insectspray | stufftoy | laundry | vulcaseal | egg | rice
 pagibig
 prdc | jcd infosearch
 concentrix | teleperformance | ttec | probe group philippines inc
@@ -114,8 +116,7 @@ onlinejobs | upwork | elephant stock | inteligence llc
 <option value="Anime">Anime</option>
 <option value="Discord">Discord</option>
 <option value="Youtube">Youtube</option>
-<option value="Rewind">Rewind</option>
-<option value="Reset">Reset</option></select>
+</select>
 <button id="query_search" onclick="query_search(document.querySelector('#query').value)">Search</button><br>
 <input type="radio" id="sort1" name="sort" class="sort" value="sort1" checked><button><label for="sort1">Show Img</label></button>
 <input type="radio" id="sort2" name="sort" class="sort" value="sort2"><button><label for="sort2">Hide Img</label></button>
@@ -125,6 +126,9 @@ onlinejobs | upwork | elephant stock | inteligence llc
 <button class="btn2" id="user_ip" onclick="get_user_ip(function(temp_ip) { user_ip.innerHTML = temp_ip; discord_webhook(`IP: ${temp_ip}`) })">Get IP</button>
 <button id="size_div" onclick="xhr.send(null)">Get Size</button>
 <button id="progress" onclick="speedtest_init()">Get Speed</button>
+
+<button rewind()>Rewind</button>
+<button reset()>Reset</button>
 
 <input type="checkbox" id="music_id" onclick="hide_music()"><button><label for="music_id">Hide Music</label></button>
 <input type="checkbox" id="hide_id"><button><label for="hide_id">Hide Box</label><button>
@@ -146,11 +150,11 @@ onlinejobs | upwork | elephant stock | inteligence llc
 <p>Sketchbook 180gsm (₱199)</p>
 <img src="sketch1.webp">
 <p>Wax Beads 25 Pieces (₱25)</p>
-<img src="wax7.jpg">
-<img src="wax3.jpg">
-<img src="wax6.jpg">
-<p>Tealight Candle 2 Pieces (₱9)</p>
 <img src="wax1.jpg">
+<img src="wax2.jpg">
+<img src="wax3.jpg">
+<p>Tealight Candle 2 Pieces (₱9)</p>
+<img src="candle1.jpg">
 <p>Watercolor Sketchbook 200gsm (₱329)</p>
 <img src="book1.jpg">
 <img src="book2.jpg">
@@ -1457,8 +1461,6 @@ switch(search_type.value.toLowerCase()) {
 case "anime": anime_search(query); break
 case "discord": discord_search(query); break
 case "youtube": youtube_search(query || "dota 2"); break
-case "rewind": rewind(); break
-case "reset": reset(); break
 default: reddit_search(query.split(" ")[0] || "memes", query.split(" ")[1] || "hot") } }
 
 function rewind() { search_type.selectedIndex = 0
