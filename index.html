@@ -1,123 +1,41 @@
 <!DOCTYPE html>
-<title>Paperthena</title>
 <meta charset="utf-8">
+<title>Paperthena</title>
 <link href="icon.png" rel="icon" type="image/png" sizes="32x32">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js" integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-<style>:root { --theme: #cb9f6e; }
-
-* { margin: 0; padding: 0; box-sizing: border-box; text-align: center; }
-body { background-size: cover; /*background-image: url("background.jpg");*/ background-repeat: no-repeat; background-attachment: fixed; background-position: center;
-color: white; background-color: var(--theme); }
-
-#auto_hide_div img { width: 20vw; }
-#auto_hide_div img:hover { transition: all 1s ease; transform: scale(1.2) rotate(360deg); }
-
-#item_id img { width: 40%; }
-#item_id .img_div img { width: 30%; }
-
-@media only screen and (min-width: 200px) and (max-width: 480px) {}
-</style>
-
-<h1 id="auto_type_p" onclick="background_image()" style="font-weight: bold; font-style: italic;">Paperthena</h1>
-
-<div id="item_id" onclick="reddit_comment()">
-<p>Sketchbook 180gsm (₱199)</p>
-<img src="sketch1.webp">
-<p>Wax Beads 25 Pieces (₱25)</p>
-<img src="wax1.jpg">
-<img src="wax2.jpg">
-<img src="wax3.jpg">
-<p>Tealight Candle 2 Pieces (₱9)</p>
-<img src="candle1.jpg">
-<p>Watercolor Sketchbook 200gsm (₱329)</p>
-<img src="book1.jpg">
-<img src="book2.jpg">
-<img src="book3.jpg">
-<p>Wax Seal Stamp Set with Box (₱119)</p>
-<img src="stamp1.jpg">
-<img src="stamp2.jpg">
-<img src="stamp3.jpg">
-<p>Miscellaneous (₱0)</p>
-<div class="img_div">
-<img src="string1.webp">
-<img src="furnace1.webp">
-<img src="tape1.jpg">
-<img src="page1.jpg">
-<img src="paper1.jpg">
-<img src="paper2.jpg">
-</div>
-</div>
-
-<div id="auto_hide_div">
-<a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/paperthena"><img src="facebook.png"><p>https://www.facebook.com/paperthena</p></a><br>
-<a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/paperthena"><img src="insta.png"><p>https://www.instagram.com/paperthena</p></a><br>
-<a target="_blank" rel="noopener noreferrer" href="https://shopee.ph/paperthena"><img src="shopee.png"><p>https://shopee.ph/paperthena</p></a>
-</div>
-
-<script>
-body = document.querySelector("body")
-global_url = "background.jpg"
-
-auto_type_word = ""
-auto_type_index = 0
-auto_type_running = true
-
-function auto_type_init() {
-if(!auto_type_running) return
-auto_type_word = auto_type_p.innerHTML
-auto_type_index = 0
-auto_type_p.innerHTML = ""
-auto_type() }
-
-function auto_type() {
-if(auto_type_index < auto_type_word.length) {
-auto_type_running = false
-auto_type_p.innerHTML += auto_type_word.charAt(auto_type_index)
-auto_type_index++
-setTimeout(auto_type, 100)
-} else { auto_type_running = true } }
-
-["touchstart", "mousedown"].forEach(e_list => {
-window.addEventListener(e_list, () => { auto_type_init()
-auto_hide_div.style.visibility = "hidden" } ) } );
-["touchend", "mouseup"].forEach(e_list => {
-window.addEventListener(e_list, () => {
-auto_hide_div.style.visibility = "visible" } ) } )
-
-background_image_showed = true
-function background_image() {
-if(background_image_showed) { background_image_showed = false
-body.style.backgroundImage = "none"
-global_url = "background.jpg"
-} else {
-background_image_showed = true
-body.style.backgroundImage = `url(${global_url})` }}
-
-</script>
-
-
-
-<!--
-<style>
-
+<style>* { margin: 0; padding: 0; box-sizing: border-box; text-align: center; }
 #posts div, #auto_type_p { text-align: left; }
 html { scroll-behavior: smooth; }
+body { background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center; background-image: url("background.jpg"); color: white; background-color: black; }
 iframe, canvas { width: 70vw; height: calc(70vw/1.77); }
 img { max-width: 70vw; }
 textarea { width: 50%; }
 
 #hide_id:checked ~ .auto_resize { display: none; }
-input[type="search"], input, select, button, textarea { padding: 0.1vw; background-color: var(--theme); color: white; border: none; }
+input[type="search"], input, select, button, textarea { padding: 0.1vw; background-color: #a88c60; color: white; border: none; }
 a { color: #white; text-decoration: none; }
 
 .menu ul { list-style-type: none; cursor: pointer; }
 .menu ul li ul { position: absolute; opacity: 0; flex-direction: column; display: flex; pointer-events: none; }
 .menu ul li:hover > ul { transition: all 0.5s ease; opacity: 1; pointer-events: auto; }
 .menu ul li a:hover { transition: all 0.8s ease; background-color: pink; }
-.menu ul { background-color: var(--theme); color: white; padding: 1vw; }
+.menu ul { background-color: #a88c60; color: white; padding: 1vw; }
 .menu ul li:hover i::after { content: "~" !important; }
+
+#item_id { background-color: #a88c60; }
+#item_id img { width: 13%; }
+#item_id .img_div img { width: 8%; }
+#auto_hide_div img { width: 1.5vw; }
+#auto_hide_div img:hover, #item_id img:hover { transition: all 1s ease; transform: scale(1.2) rotate(360deg); }
+#auto_type_p { width: 10ch; }
+
+@media only screen and (min-width: 200px) and (max-width: 480px) {
+body { background-size: contain; background-color: #a88c60; }
+#item_id img { width: 28%; }
+#item_id .img_div img { width: 15%; }
+#auto_hide_div img { width: 4vw; } }
 
 /*
 .btn1 { --b: 3px; --s: .45em; --color: #373B44;
@@ -148,16 +66,17 @@ transition: .3s linear, color 0s, background-color 0s; outline: var(--b) solid #
 
 </style>
 
-<textarea>
-mightbond | insectspray | stufftoy | laundry | vulcaseal | egg | rice | blanket | underwears
+<!--
+mightbond | insectspray | stufftoy | laundry | vulcaseal | egg | rice
 pagibig
 prdc | jcd infosearch
 concentrix | teleperformance | ttec | probe group philippines inc
 onlinejobs | upwork | elephant stock | inteligence llc
-</textarea>
+-->
 
 <div class="menu" style="user-select: none;">
 <ul style="justify-content: space-between; display: flex;">
+<li id="auto_type_p" onclick="background_image()" style="font-weight: bold; font-style: italic;">Paperthena</li>
 <li id="z">Music
 <ul style="z-index: 1; line-height: 2ch;">
 <li><a onclick="play_music('eine')">Eine Kleine</a></li>
@@ -178,6 +97,11 @@ onlinejobs | upwork | elephant stock | inteligence llc
 <li><span style="color: red; font-weight: bold;">Makise</span></li>
 </ul></li>
 </ul></li>
+<li><div id="auto_hide_div">
+<a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/paperthena"><img src="facebook.png"></a>
+<a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/paperthena/"><img src="insta.png"></a>
+<a target="_blank" rel="noopener noreferrer" href="https://shopee.ph/paperthena"><img src="shopee.png"></a>
+</div></li>
 <li><select id="mode_selector"><option value="Nightmode" selected>Night</option><option value="Lightmode">Light</option></select></li>
 </ul></div>
 
@@ -221,6 +145,33 @@ onlinejobs | upwork | elephant stock | inteligence llc
 
 <div id="home"></div>
 <div id="result"></div>
+
+<div id="item_id" onclick="reddit_comment()">
+<p>Sketchbook 180gsm (₱199)</p>
+<img src="sketch1.webp">
+<p>Wax Beads 25 Pieces (₱25)</p>
+<img src="wax1.jpg">
+<img src="wax2.jpg">
+<img src="wax3.jpg">
+<p>Tealight Candle 2 Pieces (₱9)</p>
+<img src="candle1.jpg">
+<p>Watercolor Sketchbook 200gsm (₱329)</p>
+<img src="book1.jpg">
+<img src="book2.jpg">
+<img src="book3.jpg">
+<p>Wax Seal Stamp Set with Box (₱119)</p>
+<img src="stamp1.jpg">
+<img src="stamp2.jpg">
+<img src="stamp3.jpg">
+<div class="img_div">
+<img src="string1.webp">
+<img src="furnace1.webp">
+<img src="tape1.jpg">
+<img src="page1.jpg">
+<img src="paper1.jpg">
+<img src="paper2.jpg">
+</div>
+</div>
 
 <textarea class="auto_resize">client=~/client && rm -r ${client} && cd ~/storage/shared/download/ && cp -r client ${client} && cd ${client} && vercel --prod -y
 alias "+ac0" "bind q dota_ability_autocast 0"; alias "-ac0" "bind q dota_ability_execute 0"; bind "shift" "+ac0"
@@ -1471,6 +1422,8 @@ def setup(bot):
 { "d": "MKR_", "t": "Young Mom and Daughter", "p": "7/32" },
 { "d": "MKRD", "t": "Under Observation: My First Loves and I", "p": "52/52" }]//mkush
 
+body = document.querySelector("body")
+global_url = "background.jpg"
 file_size = ""
 
 window.addEventListener("load", () => play_music())
@@ -1687,6 +1640,30 @@ speed_kbps = (speed_bps / 1024).toFixed(2)
 speed_mbps = (speed_kbps / 1024).toFixed(2)
 speedtest_show_progress([speed_mbps + " MBPS"]) } }
 
+auto_type_word = ""
+auto_type_index = 0
+auto_type_running = true
+function auto_type_init() {
+if(!auto_type_running) return
+auto_type_word = auto_type_p.innerHTML
+auto_type_index = 0
+auto_type_p.innerHTML = ""
+auto_type() }
+function auto_type() {
+if(auto_type_index < auto_type_word.length) {
+auto_type_running = false
+auto_type_p.innerHTML += auto_type_word.charAt(auto_type_index)
+auto_type_index++
+setTimeout(auto_type, 500)
+} else { auto_type_running = true } }
+
+["touchstart", "mousedown"].forEach(e_list => {
+body.addEventListener(e_list, () => { auto_type_init()
+auto_hide_div.style.visibility = "hidden" } ) } );
+["touchend", "mouseup"].forEach(e_list => {
+body.addEventListener(e_list, () => {
+auto_hide_div.style.visibility = "visible" } ) } )
+
 function binance_search(query) {
 axios.get(`https://api.binance.com/api/v3/ticker/24hr?symbol=${query || 'BTC'}USDT`)
 .then(res => crypto_position.innerHTML = `${res.data.symbol.split("USDT")[0]} | ${parseFloat(res.data.lastPrice).toFixed(2)} | ${parseFloat(res.data.priceChangePercent).toFixed(2)}%`) }
@@ -1698,6 +1675,15 @@ body.style.backgroundColor = "black"
 } else {
 body.style.color = "black"
 body.style.backgroundColor = "white" } }
+
+background_image_showed = true
+function background_image() {
+if(background_image_showed) { background_image_showed = false
+body.style.backgroundImage = "none"
+global_url = "background.jpg"
+} else {
+background_image_showed = true
+body.style.backgroundImage = `url(${global_url})` }}
 
 music_player_showed = true
 music_list = [
@@ -1789,4 +1775,4 @@ function iframe_element(link) {
 iframe = document.createElement("iframe")
 iframe.src = link
 iframe.setAttribute("allow", "fullscreen")
-div.appendChild(iframe) }</script><button><a id="down" href="#up">Up</a></button>-->
+div.appendChild(iframe) }</script><button><a id="down" href="#up">Up</a></button>
