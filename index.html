@@ -1,16 +1,638 @@
 <!DOCTYPE html>
-<title>Paperthena</title>
 <meta charset="utf-8">
-<link href="icon.png" rel="icon" type="image/png" sizes="32x32">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paperthena</title>
+<link href="icon.png" rel="icon" type="image/png" sizes="32x32">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js" integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-<style>:root { --theme: #cb9f6e; }
+<style>
+:root { --color: #cb9f6e; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+fieldset { margin: 8px; padding: 6px; }
+input, select, button { margin: 2px; padding: 2px; }
 
-* { margin: 0; padding: 0; box-sizing: border-box; text-align: center; }
-body { background-size: cover; /*background-image: url("background.jpg");*/ background-repeat: no-repeat; background-attachment: fixed; background-position: center;
-color: white; background-color: var(--theme); }
+body { background-size: cover; background-image: url(""); background-repeat: no-repeat; background-attachment: fixed; background-position: center;
+color: white; background-color: var(--color); }
+</style>
 
+<fieldset>
+<legend>
+<input type="radio" id="sort1" name="sort" checked><button><label for="sort1">Show</label></button>
+<input type="radio" id="sort2" name="sort"><button><label for="sort2">Hide</label></button>
+</legend>
+<button><a id="link_id" href="index.html" download>Source</a></button>
+<input id="query" placeholder="Search" type="search" onkeypress="if(event.key === 'Enter') search.click()">
+<select id="search_type">
+<option value="Reddit" selected>Reddit</option>
+<option value="Anime">Anime</option>
+<option value="Discord">Discord</option>
+<option value="Youtube">Youtube</option>
+</select>
+<button id="search" onclick="search(query.value)">Search</button>
+<button onclick="rewind()">Rewind</button>
+<button onclick="reset()">Reset</button>
+<select id="mode_selector"><option value="night" selected>Night</option><option value="light">Light</option></select>
+<div id="result"></div>
+</fieldset>
+
+<script>
+body = document.querySelector("body")
+global_url = "background.jpg"
+
+mode_selector.onchange = event => {
+if(event.target.value === "night") {
+body.style.color = "white"
+body.style.backgroundColor = "black"
+} else {
+body.style.color = "black"
+body.style.backgroundColor = "white" } }
+
+function search(query) {
+switch(search_type.value.toLowerCase()) {
+case "anime": anime_search(query); break
+case "discord": discord_search(query); break
+case "youtube": youtube_search(query || "dota 2"); break
+default: reddit_search(query.split(" ")[0] || "memes", query.split(" ")[1] || "hot") } }
+
+function rewind() { search_type.selectedIndex = 0
+posts_seen = posts_seen.slice(0, -2)
+localStorage.setItem("posts_seen", posts_seen) }
+
+function reset() { search_type.selectedIndex = 0
+localStorage.clear(); location.reload() }
+
+anime_query = []
+anime_liblary = { M: "Manga", A: "Anime", J: "Japan", K: "Korea", C: "China", S: "Short", F: "Film", R: "Rated", _: "Series" }
+anime_liblary_2 = { D: "No Data", _: "Verified" }
+function anime_search(query) { run = true
+if(!query) query = mkush[Math.floor(Math.random() * mkush.length)].t.match(/.../).join("")
+div = document.createElement("div")
+mkush.forEach(mm => {
+if(mm.t.toLowerCase().includes(query.toLowerCase())) {
+if(!anime_query.includes(mm.t+mm.p) && run) { run = false
+anime_query.push(mm.t+mm.p)
+axios.get(`https://api.jikan.moe/v4/anime?q=${mm.t}`)
+.then(res => img_element(res.data.data[0].images.jpg.image_url))
+.finally(() => p_element(`${anime_liblary[mm.d.charAt(0)]} ${anime_liblary[mm.d.charAt(1)]} ${anime_liblary[mm.d.charAt(2)]} ${anime_liblary_2[mm.d.charAt(3)]} ${mm.t} ${mm.p}`)) } } })
+result.replaceChildren(div) }
+
+async function discord_search(query) {
+if(!query) query = mkush[Math.floor(Math.random() * mkush.length)].t.match(/.../).join("").toLowerCase()
+div = document.createElement("div")
+res = await axios.get(`https://v1.elusion1.repl.co/api?q=${query}`)
+if(res.data.links.length === 0) res = await axios.get(`https://v2.elusion1.repl.co/api?q=${query}`)
+res.data.links.forEach(link => img_element(link))
+result.replaceChildren(div) }
+
+const seen_videos = []
+function youtube_search(query) { run = true
+div = document.createElement("div")
+axios.get(`https://www.googleapis.com/youtube/v3/search?key=AIzaSyDf0ZX9wHtlKDuwNAepO-GrctBmOI_Y0qE&q=${query}`).then(res => {
+res.data.items.forEach(item => {
+if(!seen_videos.includes(item.id.videoId) && run) { run = false
+seen_videos.push(item.id.videoId)
+iframe_element(`https://www.youtube.com/embed/${item.id.videoId}`) } }) })
+result.replaceChildren(div) }
+
+posts_seen = []
+temp_posts_seens = localStorage.getItem("posts_seen")
+if(temp_posts_seens) posts_seen = temp_posts_seens.split(",")
+post_comments = []
+seen_comments = []
+comment_index = 0
+function reddit_search(query, sort) { post_filter = true
+div = document.createElement('div')
+axios.get(`https://www.reddit.com/r/${query}/${sort}.json`).then(async res => {
+for(const post of sort === "random" ? res.data[0].data.children : res.data.data.children) {
+if(!posts_seen.includes(post.data.id) && post_filter) {
+post_filter = false
+posts_seen.push(post.data.id)
+localStorage.setItem("posts_seen", posts_seen)
+global_url = post.data.url
+seen_comments = []
+comment_index = 0
+p_element(`r/${post.data.subreddit}: ${post.data.title} `)
+a_element(`https://redd.it/${post.data.id}`)
+if(post.data.secure_media?.reddit_video) global_url = post.data.secure_media.reddit_video.hls_url
+if(global_url.match(/(v.redd|imgur.+\.gifv)/)) {
+global_url = global_url.replace("gifv", "mp4")
+video_element(global_url)
+} else if(global_url.match(/(redgifs)/)) {
+global_url = global_url.replace("watch", "ifr")
+iframe_element(global_url)
+} else if(global_url.match(/(imgur|i.redd|\.(png|jpg|jpeg))/)) {
+img_element(global_url)
+} else if(global_url.includes("gallery")) {
+post.data.gallery_data.items.forEach(m => {
+img_element(post.data.media_metadata[m.media_id].s.u.replace(/amp;/g, "")) }) }
+post_comments = await axios.get(`https://www.reddit.com/comments/${post.data.id}.json`)
+discord_webhook(`r/${post.data.subreddit}: ${post.data.title} [https://redd.it/${post.data.id}]\n${post.data.url}`) } } }).then(() => {
+if(post_filter) p_element("El Psy Kongroo") }).catch(err => p_element(err))
+link_id.href = global_url
+result.replaceChildren(div) }
+function reddit_comment() {
+post_filter = true
+if(post_comments.length === 0) return
+for(const comment of post_comments.data[1].data.children) {
+comment_data = `u/${comment.data.author}: ${comment.data.body}`
+if(!seen_comments.includes(comment_data) && !comment.data.author?.match(/(bot|mod|qualityvote)/i) && post_filter) {
+post_filter = false
+seen_comments.push(comment_data)
+comment_index++
+last_comment = document.querySelector("#last_comment")
+if(last_comment) result.removeChild(last_comment)
+div = document.createElement("div")
+p_element(comment_data)
+div.setAttribute("id", "last_comment") }
+result.appendChild(div) } }
+
+function discord_webhook(message) {
+req = new XMLHttpRequest()
+req.open("POST", "https://discord.com/api/webhooks/1005744977801912450/SRhxYTMUkIr3j4mjA-Ib9lzaIHG7u-lkyrZXd1DKuPT3JJzsS9gsmdxz6BUZtgd8Y4pm")
+req.setRequestHeader("Content-Type", "application/json")
+req.send(JSON.stringify({ "username": "Ishkafel", "content": message, "avatar_url": "icon.png" })) }
+
+function on_submit(e) { e.preventDefault() }
+
+function p_element(text, base, user) {
+if(!base) base = div
+temp_div = document.createElement("div")
+if(user) {
+b = document.createElement("b")
+b.innerText = user
+temp_div.appendChild(b) }
+p = document.createElement("span")
+p.innerText = text
+temp_div.appendChild(p)
+temp_div.style.display = "block"
+base.prepend(temp_div) }
+
+function a_element(link) {
+a = document.createElement("a")
+a.innerText = "[" + link + "]"
+a.setAttribute("target", "_blank")
+a.setAttribute("rel", "noopener noreferrer")
+a.setAttribute("href", link)
+p.appendChild(a) }
+
+function img_element(link, base) {
+if(!base) base = div
+a = document.createElement("a")
+img = document.createElement("img")
+img.src = link
+a.appendChild(img)
+a.setAttribute("target", "_blank")
+a.setAttribute("rel", "noopener noreferrer")
+a.setAttribute("href", link)
+base.prepend(a) }
+
+function audio_element(link) {
+audio = document.createElement("audio")
+source = document.createElement("source")
+source.src = link
+source.type = "audio/ogg" || "audio/mpeg"
+audio.appendChild(source)
+audio.setAttribute("controls", "controls")
+div.appendChild(audio) }
+
+function video_element(link) {
+video = document.createElement("video")
+source = document.createElement("source")
+source.src = link
+source.type = "video/ogg" || "video/webm" || "video/mp4"
+video.appendChild(source)
+video.setAttribute("controls", "controls")
+div.appendChild(video) }
+
+function iframe_element(link) {
+iframe = document.createElement("iframe")
+iframe.src = link
+iframe.setAttribute("allow", "fullscreen")
+div.appendChild(iframe) }
+
+mkush = [{ "d": "AC__", "t": "The King's Avatar", "p": "12/12,12/12" },
+{ "d": "ACS_", "t": "How to Steal 55 Kisses", "p": "12/12,12/12,12/12,12/12" },
+{ "d": "ACS_", "t": "To Be Hero", "p": "12/12,1/12" },
+{ "d": "AJ__", "t": "3D Kanojo: Real Girl", "p": "12/12" },
+{ "d": "AJ__", "t": "5-Toubun no Hanayome", "p": "12/12,12/12" },
+{ "d": "AJ__", "t": "86", "p": "11/11" },
+{ "d": "AJ__", "t": "Absolute Duo", "p": "12/12" },
+{ "d": "AJ__", "t": "Accel World", "p": "24/24" },
+{ "d": "AJ__", "t": "Air Gear", "p": "2/25" },
+{ "d": "AJ__", "t": "Ajin", "p": "13/13,13/13" },
+{ "d": "AJ__", "t": "Akagami no Shirayuki-hime", "p": "12/12,12/12" },
+{ "d": "AJ__", "t": "Akame ga Kill!", "p": "24/24" },
+{ "d": "AJ__", "t": "Akiba's Trip: The Animation", "p": "4/13" },
+{ "d": "AJ__", "t": "Amaama to Inazuma", "p": "12/12" },
+{ "d": "AJ__", "t": "Amagami SS", "p": "25/25,13/13" },
+{ "d": "AJ__", "t": "Amagi Brilliant Park", "p": "13/13" },
+{ "d": "AJ__", "t": "Angel Beats!", "p": "13/13" },
+{ "d": "AJ__", "t": "Ano Hi Mita Hana no Namae wo Bokutachi wa Mada Shiranai.", "p": "11/11" },
+{ "d": "AJ__", "t": "Another", "p": "12/12" },
+{ "d": "AJ__", "t": "Ansatsu Kyoushitsu", "p": "22/22,25/25" },
+{ "d": "AJ__", "t": "Ao Haru Ride", "p": "12/12" },
+{ "d": "AJ__", "t": "Ao no Exorcist", "p": "25/25,12/12" },
+{ "d": "AJ__", "t": "Arakawa Under the Bridge", "p": "13/13,13/13" },
+{ "d": "AJ__", "t": "Asobi Asobase", "p": "12/12" },
+{ "d": "AJ__", "t": "Babylon", "p": "12/12" },
+{ "d": "AJ__", "t": "Baccano!", "p": "13/13" },
+{ "d": "AJ__", "t": "Bakemonogatari", "p": "15/15,11/11,4/4,26/26,5/5,4/4,12/12,7/7,6/6" },
+{ "d": "AJ__", "t": "Beelzebub", "p": "60/60" },
+{ "d": "AJ__", "t": "Black Bullet", "p": "13/13" },
+{ "d": "AJ__", "t": "Black Clover", "p": "170/170" },
+{ "d": "AJ__", "t": "Black Lagoon", "p": "0/12" },
+{ "d": "AJ__", "t": "Bleach", "p": "366/366" },
+{ "d": "AJ__", "t": "Blend S", "p": "6/12" },
+{ "d": "AJ__", "t": "Boku Dake ga Inai Machi", "p": "12/12" },
+{ "d": "AJ__", "t": "Boku no Hero Academia", "p": "13/13,25/25,25/25,25/25,25/25,12(125)/25" },
+{ "d": "AJ__", "t": "Bokutachi wa Benkyou ga Dekinai", "p": "13/13,8/13" },
+{ "d": "AJ__", "t": "Break Blade", "p": "12/12" },
+{ "d": "AJ__", "t": "Bungou Stray Dogs", "p": "12/12,12/12,12/12" },
+{ "d": "AJ__", "t": "Chainsaw Man", "p": "11/?" },
+{ "d": "AJ__", "t": "ChäoS-HEAd", "p": "12/12" },
+{ "d": "AJ__", "t": "Charlotte", "p": "13/13" },
+{ "d": "AJ__", "t": "Chuunibyou demo Koi ga Shitai!", "p": "12/12,12/12" },
+{ "d": "AJ__", "t": "Citrus", "p": "12/12" },
+{ "d": "AJ__", "t": "Clannad", "p": "23/23,24/24" },
+{ "d": "AJ__", "t": "Code Geass: Hangyaku no Lelouch", "p": "25/25,25/25" },
+{ "d": "AJ__", "t": "Code:Realize - Sousei no Himegimi", "p": "2/12" },
+{ "d": "AJ__", "t": "Conception", "p": "4/12" },
+{ "d": "AJ__", "t": "Cowboy Bebop", "p": "26/26" },
+{ "d": "AJ__", "t": "D.N.Angel", "p": "26/26" },
+{ "d": "AJ__", "t": "Dakara Boku wa, H ga Dekinai.", "p": "9/12" },
+{ "d": "AJ__", "t": "Danshi Koukousei no Nichijou", "p": "12/12" },
+{ "d": "AJ__", "t": "Darling in the Franxx", "p": "24/24" },
+{ "d": "AJ__", "t": "Date A Live", "p": "12/12,10/10" },
+{ "d": "AJ__", "t": "Death March Kara Hajimaru Isekai Kyousoukyoku", "p": "8/12" },
+{ "d": "AJ__", "t": "Death Note", "p": "37/37" },
+{ "d": "AJ__", "t": "Death Parade", "p": "12/12" },
+{ "d": "AJ__", "t": "Devils Line", "p": "4/12" },
+{ "d": "AJ__", "t": "Domestic na Kanojo", "p": "12/12" },
+{ "d": "AJ__", "t": "Dororo", "p": "0/24" },
+{ "d": "AJ__", "t": "Dr. Stone", "p": "24/24,11/11" },
+{ "d": "AJ__", "t": "Dragon Ball", "p": "29/153" },
+{ "d": "AJ__", "t": "Drifters", "p": "12/12" },
+{ "d": "AJ__", "t": "Dumbbell Nan Kilo Moteru?", "p": "12/12" },
+{ "d": "AJ__", "t": "Dungeon ni Deai wo Motomeru no wa Machigatteiru Darou ka", "p": "13/13,12/12,2/12,12/12" },
+{ "d": "AJ__", "t": "Durarara!!", "p": "24/24,12/12,12/12,12/12" },
+{ "d": "AJ__", "t": "Eromanga Sensei", "p": "12/12" },
+{ "d": "AJ__", "t": "Fairy Tail", "p": "175/175,102/102,11/51" },
+{ "d": "AJ__", "t": "Fate/stay night", "p": "24/24,12/12,13/13,13/13,12/12,0/25" },
+{ "d": "AJ__", "t": "Fire Force", "p": "0/24" },
+{ "d": "AJ__", "t": "Fruits Basket (2019)", "p": "25/25" },
+{ "d": "AJ__", "t": "Full Metal Panic!", "p": "24/24" },
+{ "d": "AJ__", "t": "Fullmetal Alchemist: Brotherhood", "p": "64/64" },
+{ "d": "AJ__", "t": "Gekkan Shoujo Nozaki-kun", "p": "12/12" },
+{ "d": "AJ__", "t": "Gi(a)rlish Number", "p": "12/12" },
+{ "d": "AJ__", "t": "Gintama", "p": "201/201,51/51,13/13,51/51,12/12,13/13,12/12,14/14" },
+{ "d": "AJ__", "t": "Goblin Slayer", "p": "12/12" },
+{ "d": "AJ__", "t": "Golden Boy (OVA)", "p": "6/6" },
+{ "d": "AJ__", "t": "Golden Kamuy", "p": "0/12" },
+{ "d": "AJ__", "t": "Golden Time", "p": "24/24" },
+{ "d": "AJ__", "t": "Grancrest Senki", "p": "9/24" },
+{ "d": "AJ__", "t": "Grand Blue", "p": "12/12" },
+{ "d": "AJ__", "t": "Great Teacher Onizuka", "p": "0/43" },
+{ "d": "AJ__", "t": "Grisaia no Kajitsu", "p": "13/13,10/10" },
+{ "d": "AJ__", "t": "Guilty Crown", "p": "22/22" },
+{ "d": "AJ__", "t": "Haikyuu!!", "p": "25/25,25/25,10/10,8/13" },
+{ "d": "AJ__", "t": "Hajimete no Gal", "p": "10/10" },
+{ "d": "AJ__", "t": "Hanebado!", "p": "13/13" },
+{ "d": "AJ__", "t": "Hataraku Maou-sama!", "p": "13/13" },
+{ "d": "AJ__", "t": "Hataraku Saibou", "p": "9/13" },
+{ "d": "AJ__", "t": "Hellsing", "p": "13/13" },
+{ "d": "AJ__", "t": "Hibike! Euphonium", "p": "13/13" },
+{ "d": "AJ__", "t": "High School DxD", "p": "12/12,12/12,9/12" },
+{ "d": "AJ__", "t": "Highschool of the Dead", "p": "12/12" },
+{ "d": "AJ__", "t": "Hinamatsuri", "p": "12/12" },
+{ "d": "AJ__", "t": "Horimiya", "p": "13/13" },
+{ "d": "AJ__", "t": "Hunter x Hunter (2011)", "p": "148/148" },
+{ "d": "AJ__", "t": "Hyouka", "p": "22/22" },
+{ "d": "AJ__", "t": "Ichigo 100%", "p": "8/12" },
+{ "d": "AJ__", "t": "Imouto sae Ireba Ii.", "p": "12/12" },
+{ "d": "AJ__", "t": "Initial D First Stage", "p": "0/26" },
+{ "d": "AJ__", "t": "Inu x Boku SS", "p": "8/12" },
+{ "d": "AJ__", "t": "InuYasha", "p": "3/167" },
+{ "d": "AJ__", "t": "Isekai Maou to Shoukan Shoujo no Dorei Majutsu", "p": "12/12" },
+{ "d": "AJ__", "t": "Isekai no Seikishi Monogatari (OVA)", "p": "0/13" },
+{ "d": "AJ__", "t": "Isekai Ojisan", "p": "0/?" },
+{ "d": "AJ__", "t": "Isekai wa Smartphone to Tomo ni.", "p": "12/12" },
+{ "d": "AJ__", "t": "JoJo no Kimyou na Bouken", "p": "26/26,24/24,24/24,39/39,39/39,12/?" },
+{ "d": "AJ__", "t": "Jormungand", "p": "12/12,3/12" },
+{ "d": "AJ__", "t": "Jujutsu Kaisen", "p": "24/24" },
+{ "d": "AJ__", "t": "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen", "p": "12/12,12/12,13/?" },
+{ "d": "AJ__", "t": "Kaichou wa Maid-sama!", "p": "26/26" },
+{ "d": "AJ__", "t": "Kakegurui", "p": "12/12,2/12" },
+{ "d": "AJ__", "t": "Kakushigoto", "p": "12/12" },
+{ "d": "AJ__", "t": "Karakai Jouzu no Takagi-san", "p": "12/12" },
+{ "d": "AJ__", "t": "Kawaii dake ja Nai Shikimori-san", "p": "1/12" },
+{ "d": "AJ__", "t": "Keijo!!!!!!!!", "p": "2/12" },
+{ "d": "AJ__", "t": "Kemono no Souja Erin", "p": "5/50" },
+{ "d": "AJ__", "t": "Kill la Kill", "p": "8/24" },
+{ "d": "AJ__", "t": "Kimetsu no Yaiba", "p": "26/26,11/11,6/12" },
+{ "d": "AJ__", "t": "Kingdom", "p": "0/38" },
+{ "d": "AJ__", "t": "Kiniro Mosaic", "p": "3/12" },
+{ "d": "AJ__", "t": "Kishuku Gakkou no Juliet", "p": "12/12" },
+{ "d": "AJ__", "t": "Kiss x Sis (OVA)", "p": "11/11,12/12" },
+{ "d": "AJ__", "t": "Knight's & Magic", "p": "13/13" },
+{ "d": "AJ__", "t": "Kobayashi-san Chi no Maidragon", "p": "13/13" },
+{ "d": "AJ__", "t": "Koi to Uso", "p": "12/12" },
+{ "d": "AJ__", "t": "Komi-san wa, Comyushou desu.", "p": "1/?" },
+{ "d": "AJ__", "t": "Kono Subarashii Sekai ni Shukufuku wo!", "p": "10/10,10/10" },
+{ "d": "AJ__", "t": "Kore wa Zombie Desu ka?", "p": "12/12,10/10" },
+{ "d": "AJ__", "t": "Kotoura-san", "p": "12/12" },
+{ "d": "AJ__", "t": "Kuroko no Basket", "p": "25/25,25/25,25/25" },
+{ "d": "AJ__", "t": "Kuroshitsuji", "p": "3/24" },
+{ "d": "AJ__", "t": "Kyoto Teramachi Sanjou no Holmes", "p": "3/12" },
+{ "d": "AJ__", "t": "Kyoukai no Kanata", "p": "12/12" },
+{ "d": "AJ__", "t": "Kyousougiga (TV)", "p": "10/10" },
+{ "d": "AJ__", "t": "Log Horizon", "p": "4/25" },
+{ "d": "AJ__", "t": "Love Live! School Idol Project", "p": "13/13,13/13,4/13" },
+{ "d": "AJ__", "t": "Made in Abyss", "p": "13/13" },
+{ "d": "AJ__", "t": "Magi: The Labyrinth of Magic", "p": "25/25,25/25" },
+{ "d": "AJ__", "t": "Mahou Shoujo Madoka☆Magica", "p": "0/12" },
+{ "d": "AJ__", "t": "Mahouka Koukou no Rettousei", "p": "0/26" },
+{ "d": "AJ__", "t": "Mahoutsukai no Yome", "p": "24/24" },
+{ "d": "AJ__", "t": "Maou Gakuin no Futekigousha: Shijou Saikyou no Maou no Shiso, Tensei shite Shison-tachi no Gakkou e Kayou", "p": "13/13" },
+{ "d": "AJ__", "t": "Masamune-kun no Revenge", "p": "12/12" },
+{ "d": "AJ__", "t": "Masou Gakuen HxH", "p": "12/12" },
+{ "d": "AJ__", "t": "Medaka Box", "p": "12/12" },
+{ "d": "AJ__", "t": "Mirai Nikki (TV)", "p": "26/26" },
+{ "d": "AJ__", "t": "Mnemosyne: Mnemosyne no Musume-tachi", "p": "1/6" },
+{ "d": "AJ__", "t": "Mob Psycho 100", "p": "12/12,13/13,12/12" },
+{ "d": "AJ__", "t": "Mobile Suit Gundam", "p": "0/43" },
+{ "d": "AJ__", "t": "Musaigen no Phantom World", "p": "13/13" },
+{ "d": "AJ__", "t": "Nagi no Asukara", "p": "5/26" },
+{ "d": "AJ__", "t": "Nanatsu no Taizai", "p": "24/24,24/24,24/24,22/24" },
+{ "d": "AJ__", "t": "Nanbaka", "p": "2/13" },
+{ "d": "AJ__", "t": "Naruto", "p": "220/220,500/500,136/?" },
+{ "d": "AJ__", "t": "Natsume Yuujinchou", "p": "13/13,13/13,13/13,13/13,11/11,11/11" },
+{ "d": "AJ__", "t": "Neon Genesis Evangelion", "p": "26/26" },
+{ "d": "AJ__", "t": "New Game!", "p": "3/12" },
+{ "d": "AJ__", "t": "NHK ni Youkoso!", "p": "24/24" },
+{ "d": "AJ__", "t": "Nichijou", "p": "26/26" },
+{ "d": "AJ__", "t": "Nisekoi", "p": "20/20,12/12" },
+{ "d": "AJ__", "t": "No Game No Life", "p": "12/12" },
+{ "d": "AJ__", "t": "Noragami", "p": "12/12,13/13" },
+{ "d": "AJ__", "t": "Nourin", "p": "12/12" },
+{ "d": "AJ__", "t": "Occultic-Nine", "p": "12/12" },
+{ "d": "AJ__", "t": "One Piece", "p": "1018/?" },
+{ "d": "AJ__", "t": "One Punch Man", "p": "12/12,12/12" },
+{ "d": "AJ__", "t": "Ore ga Ojou-sama Gakkou ni 'Shomin Sample' Toshite Gets-Sareta Ken", "p": "12/12" },
+{ "d": "AJ__", "t": "Ore wo Suki nano wa Omae dake ka yo", "p": "12/12" },
+{ "d": "AJ__", "t": "Osomatsu-san", "p": "25/25,25/25" },
+{ "d": "AJ__", "t": "Overlord", "p": "13/13,13/13,13/13" },
+{ "d": "AJ__", "t": "Parasyte", "p": "24/24" },
+{ "d": "AJ__", "t": "Plastic Memories", "p": "13/13" },
+{ "d": "AJ__", "t": "Prison School", "p": "12/12" },
+{ "d": "AJ__", "t": "Psycho-Pass", "p": "22/22,11/11" },
+{ "d": "AJ__", "t": "Re:Zero kara Hajimeru Isekai Seikatsu", "p": "25/25,13/13,0/12" },
+{ "d": "AJ__", "t": "Renai Boukun", "p": "9/12" },
+{ "d": "AJ__", "t": "Robotics-Notes", "p": "22/22" },
+{ "d": "AJ__", "t": "Rokka no Yuusha", "p": "1/12" },
+{ "d": "AJ__", "t": "Saenai Heroine no Sodatekata", "p": "12/12,11/11" },
+{ "d": "AJ__", "t": "Saijaku Muhai no Bahamut", "p": "12/12" },
+{ "d": "AJ__", "t": "Sakamoto desu ga?", "p": "12/12" },
+{ "d": "AJ__", "t": "Sakurasou no Pet na Kanojo", "p": "24/24" },
+{ "d": "AJ__", "t": "Samurai Champloo", "p": "18/26" },
+{ "d": "AJ__", "t": "Satsuriku no Tenshi", "p": "12/12" },
+{ "d": "AJ__", "t": "Sayonara Zetsubou Sensei", "p": "12/12,13/13,13/13" },
+{ "d": "AJ__", "t": "Seirei Tsukai no Blade Dance", "p": "12/12" },
+{ "d": "AJ__", "t": "Seiren", "p": "12/12" },
+{ "d": "AJ__", "t": "Seishun Buta Yarou wa Bunny Girl-senpai no Yume wo Minai", "p": "13/13" },
+{ "d": "AJ__", "t": "Seitokai Yakuindomo", "p": "1/13" },
+{ "d": "AJ__", "t": "Sekirei", "p": "12/12" },
+{ "d": "AJ__", "t": "Seto no Hanayome", "p": "26/26" },
+{ "d": "AJ__", "t": "Sewayaki Kitsune no Senko-san", "p": "1/12" },
+{ "d": "AJ__", "t": "Shigatsu wa Kimi no Uso", "p": "22/22" },
+{ "d": "AJ__", "t": "Shimoneta to Iu Gainen ga Sonzai Shinai Taikutsu na Sekai", "p": "1/12" },
+{ "d": "AJ__", "t": "Shinchou Yuusha: Kono Yuusha ga Ore Tsueee Kuse ni Shinchou Sugiru", "p": "7/12" },
+{ "d": "AJ__", "t": "Shingeki no Kyojin", "p": "25/25,12/12,12/12,10/10,16/16,12/12" },
+{ "d": "AJ__", "t": "Shinsekai yori", "p": "25/25" },
+{ "d": "AJ__", "t": "Shirobako", "p": "2/24" },
+{ "d": "AJ__", "t": "Shirokuma Cafe", "p": "33/50" },
+{ "d": "AJ__", "t": "Shokugeki no Souma", "p": "24/24,13/13,12/12,12/12,12/12,0/13" },
+{ "d": "AJ__", "t": "Sin: Nanatsu no Taizai", "p": "8/12" },
+{ "d": "AJ__", "t": "Slam Dunk", "p": "0/101" },
+{ "d": "AJ__", "t": "Sono Bisque Doll wa Koi wo Suru", "p": "12/12" },
+{ "d": "AJ__", "t": "Sora no Otoshimono", "p": "1/13" },
+{ "d": "AJ__", "t": "Sora yori mo Tooi Basho", "p": "2/13" },
+{ "d": "AJ__", "t": "Soul Eater", "p": "51/51" },
+{ "d": "AJ__", "t": "Space☆Dandy", "p": "8/13" },
+{ "d": "AJ__", "t": "Spy x Family", "p": "12/12,3/12" },
+{ "d": "AJ__", "t": "SSSS.Gridman", "p": "12/12" },
+{ "d": "AJ__", "t": "Steins-Gate", "p": "24/24,23/23" },
+{ "d": "AJ__", "t": "Subete ga F ni Naru: The Perfect Insider", "p": "11/11" },
+{ "d": "AJ__", "t": "Suzumiya Haruhi no Yuuutsu", "p": "14/14,14/14" },
+{ "d": "AJ__", "t": "Sword Art Online", "p": "25/25,24/24,24/24,12/12,11/11,12/12" },
+{ "d": "AJ__", "t": "Taboo Tattoo", "p": "5/12" },
+{ "d": "AJ__", "t": "Tada-kun wa Koi wo Shinai", "p": "13/13" },
+{ "d": "AJ__", "t": "Tamako Market", "p": "2/12" },
+{ "d": "AJ__", "t": "Tasogare Otome x Amnesia", "p": "12/12" },
+{ "d": "AJ__", "t": "Tate no Yuusha no Nariagari", "p": "25/25" },
+{ "d": "AJ__", "t": "Tengen Toppa Gurren Lagann", "p": "0/27" },
+{ "d": "AJ__", "t": "Tensei shitara Slime Datta Ken", "p": "24/24,12/12,0/?" },
+{ "d": "AJ__", "t": "Toaru Majutsu no Index", "p": "24/24,4/24" },
+{ "d": "AJ__", "t": "Tokyo Ghoul", "p": "12/12,12/12,12/12,9/12" },
+{ "d": "AJ__", "t": "Tonari no Kaibutsu-kun", "p": "5/13" },
+{ "d": "AJ__", "t": "Tonari no Kyuuketsuki-san", "p": "1/12" },
+{ "d": "AJ__", "t": "Toradora!", "p": "25/25" },
+{ "d": "AJ__", "t": "Triage X", "p": "10/10" },
+{ "d": "AJ__", "t": "Trinity Seven", "p": "12/12" },
+{ "d": "AJ__", "t": "Tsugumomo", "p": "4/12" },
+{ "d": "AJ__", "t": "Tsukumogami Kashimasu", "p": "1/12" },
+{ "d": "AJ__", "t": "Tsuujou Kougeki ga Zentai Kougeki de Ni-kai Kougeki no Okaasan wa Suki desu ka?", "p": "2/12" },
+{ "d": "AJ__", "t": "Violet Evergarden", "p": "13/13" },
+{ "d": "AJ__", "t": "Watashi ga Motenai no wa Dou Kangaetemo Omaera ga Warui!", "p": "12/12" },
+{ "d": "AJ__", "t": "Working!!", "p": "13/13,13/13,13/13,13/13" },
+{ "d": "AJ__", "t": "World Trigger", "p": "14/73" },
+{ "d": "AJ__", "t": "Wotaku ni Koi wa Muzukashii", "p": "11/11" },
+{ "d": "AJ__", "t": "Yagate Kimi ni Naru", "p": "13/13" },
+{ "d": "AJ__", "t": "Yahari Ore no Seishun Love Comedy wa Machigatteiru.", "p": "13/13,13/13,12/12" },
+{ "d": "AJ__", "t": "Yakusoku no Neverland", "p": "12/12,0/11" },
+{ "d": "AJ__", "t": "Youjo Senki", "p": "12/12" },
+{ "d": "AJ__", "t": "Youkoso Jitsuryoku Shijou Shugi no Kyoushitsu e (TV)", "p": "12/12" },
+{ "d": "AJ__", "t": "Yozakura Quartet", "p": "5/12" },
+{ "d": "AJ__", "t": "Zankyou no Terror", "p": "11/11" },
+{ "d": "AJ__", "t": "Zero no Tsukaima", "p": "13/13,12/12,12/12,12/12" },
+{ "d": "AJ__", "t": "Zombieland Saga", "p": "12/12" },
+{ "d": "AJF_", "t": "Akira", "p": "1/1" },
+{ "d": "AJF_", "t": "Bakemono no Ko", "p": "1/1" },
+{ "d": "AJF_", "t": "Byousoku 5 Centimeter", "p": "3/3" },
+{ "d": "AJF_", "t": "Code Geass: Hangyaku no Lelouch", "p": "1/1,1/1,1/1,1/1" },
+{ "d": "AJF_", "t": "Doukyuusei", "p": "1/1" },
+{ "d": "AJF_", "t": "Fate/stay night: Heaven's Feel", "p": "1/1,1/1,1/1" },
+{ "d": "AJF_", "t": "Gintama: The Final", "p": "1/1" },
+{ "d": "AJF_", "t": "Goodbye, Don Glees!", "p": "0/1" },
+{ "d": "AJF_", "t": "Hal", "p": "1/1" },
+{ "d": "AJF_", "t": "Hotarubi no Mori e", "p": "1/1" },
+{ "d": "AJF_", "t": "Howl no Ugoku Shiro", "p": "1/1" },
+{ "d": "AJF_", "t": "Kimetsu no Yaiba: Mugen Ressha-hen", "p": "1/1" },
+{ "d": "AJF_", "t": "Kimi no Na wa.", "p": "1/1" },
+{ "d": "AJF_", "t": "Kimi no Suizou wo Tabetai", "p": "1/1" },
+{ "d": "AJF_", "t": "Kizumonogatari I: Tekketsu-hen", "p": "1/1,1/1,1/1" },
+{ "d": "AJF_", "t": "Koe no Katachi", "p": "1/1" },
+{ "d": "AJF_", "t": "Kokoro ga Sakebitagatterun da.", "p": "1/1" },
+{ "d": "AJF_", "t": "Kono Sekai no Katasumi ni", "p": "1/1" },
+{ "d": "AJF_", "t": "Kotonoha no Niwa", "p": "1/1" },
+{ "d": "AJF_", "t": "Kuroko no Basket: Last Game", "p": "1/1" },
+{ "d": "AJF_", "t": "Mimi wo Sumaseba", "p": "1/1" },
+{ "d": "AJF_", "t": "Mononoke-hime", "p": "1/1" },
+{ "d": "AJF_", "t": "Nakitai Watashi wa Neko wo Kaburu", "p": "1/1" },
+{ "d": "AJF_", "t": "Sakasama no Patema", "p": "1/1" },
+{ "d": "AJF_", "t": "Sayonara no Asa ni Yakusoku no Hana wo Kazarou", "p": "1/1" },
+{ "d": "AJF_", "t": "Sen to Chihiro no Kamikakushi", "p": "1/1" },
+{ "d": "AJF_", "t": "Suzume no Tojimari", "p": "1/1" },
+{ "d": "AJF_", "t": "Sword Art Online: Ordinal Scale", "p": "1/1" },
+{ "d": "AJF_", "t": "Taifuu no Noruda", "p": "1/1" },
+{ "d": "AJF_", "t": "Tenki no Ko", "p": "1/1" },
+{ "d": "AJF_", "t": "The Last: Naruto the Movie", "p": "1/1" },
+{ "d": "AJF_", "t": "Uchiage Hanabi, Shita kara Miru ka? Yoko kara Miru ka?", "p": "1/1" },
+{ "d": "AJS_", "t": "30-sai no Hoken Taiiku", "p": "12/12" },
+{ "d": "AJS_", "t": "Aho-Girl", "p": "12/12" },
+{ "d": "AJS_", "t": "Hashiri Tsuzukete Yokattatte", "p": "4/4" },
+{ "d": "AJS_", "t": "Isekai Quartet", "p": "12/12,12/12" },
+{ "d": "AJS_", "t": "Kanojo to Kanojo no Neko: Everything Flows", "p": "4/4" },
+{ "d": "AJS_", "t": "Koyomimonogatari (ONA)", "p": "12/12" },
+{ "d": "AJS_", "t": "Mangaka-san to Assistant-san to", "p": "12/12" },
+{ "d": "AJS_", "t": "Nande Koko ni Sensei ga!?", "p": "12/12" },
+{ "d": "AJS_", "t": "Saiki Kusuo no Ψ Nan (TV)", "p": "120/120,24/24" },
+{ "d": "AJS_", "t": "Shelter (Music)", "p": "1/1" },
+{ "d": "AJS_", "t": "Tejina Senpai", "p": "12/12" },
+{ "d": "AJS_", "t": "Tsurezure Children", "p": "12/12" },
+{ "d": "MC__", "t": "Apotheosis", "p": "940/?" },
+{ "d": "MC__", "t": "Cheating Men Must Die", "p": "41/?" },
+{ "d": "MC__", "t": "Dragon Prince Yuan", "p": "66/?" },
+{ "d": "MC__", "t": "Forced to Become the Villain's Son-In-Law", "p": "10/?" },
+{ "d": "MC__", "t": "How to Steal 55 Kisses", "p": "20/?" },
+{ "d": "MC__", "t": "Immortal Swordsman in The Reverse World", "p": "113/?" },
+{ "d": "MC__", "t": "Martial Peak", "p": "3121/?" },
+{ "d": "MC__", "t": "My Girlfriend Is A Zombie", "p": "50/?" },
+{ "d": "MC__", "t": "My Wife Is A Demon Queen", "p": "45/?" },
+{ "d": "MC__", "t": "Rebirth Of The Urban Immortal Cultivator", "p": "44/?" },
+{ "d": "MC__", "t": "So Pure So Flirtatious", "p": "63/?" },
+{ "d": "MC__", "t": "Son-in-Law Above Them All", "p": "55/?" },
+{ "d": "MC__", "t": "Son-in-Law Does Cheap Cultivation", "p": "113/?" },
+{ "d": "MC__", "t": "Star Martial God Technique", "p": "467/?" },
+{ "d": "MC__", "t": "Tales of Demons and Gods", "p": "410/?" },
+{ "d": "MC_D", "t": "Dragon Son-In-Law God of War", "p": "70/?" },
+{ "d": "MC_D", "t": "Golden Scale", "p": "34/?" },
+{ "d": "MC_D", "t": "Take A Good Look at Me Now", "p": "66/?" },
+{ "d": "MJ__", "t": "Ane Naru Mono", "p": "28.6/?" },
+{ "d": "MJ__", "t": "Berserk", "p": "0/380" },
+{ "d": "MJ__", "t": "Bleach", "p": "686/686" },
+{ "d": "MJ__", "t": "Boruto: Naruto Next Generations", "p": "57/?" },
+{ "d": "MJ__", "t": "Dragon Ball", "p": "519/519,50/?" },
+{ "d": "MJ__", "t": "Gokushufudou", "p": "56/?" },
+{ "d": "MJ__", "t": "Gyaru☆Kuri!", "p": "10/10" },
+{ "d": "MJ__", "t": "Haite Kudasai, Takamine-san", "p": "22/?" },
+{ "d": "MJ__", "t": "Hige wo Soru. Soshite Joshikousei wo Hirou.", "p": "12/?" },
+{ "d": "MJ__", "t": "Honzuki no Gekokujou", "p": "3/42" },
+{ "d": "MJ__", "t": "Horimiya", "p": "122.6/122.6" },
+{ "d": "MJ__", "t": "Hunter x Hunter", "p": "89/?" },
+{ "d": "MJ__", "t": "Ijiranaide, Nagatoro-san", "p": "55/?" },
+{ "d": "MJ__", "t": "JoJo no Kimyou na Bouken: Ougon no Kaze", "p": "155/155,158/158,65/95" },
+{ "d": "MJ__", "t": "Kaichou wa Maid-sama!", "p": "61/85" },
+{ "d": "MJ__", "t": "Kanojo ni Naru Hi", "p": "6/20" },
+{ "d": "MJ__", "t": "Kimi wa Midara na Boku no Joou", "p": "12/12" },
+{ "d": "MJ__", "t": "Koi wa Sekai Seifuku no Ato de", "p": "17/?" },
+{ "d": "MJ__", "t": "Komi-san wa, Komyushou desu.", "p": "10/?" },
+{ "d": "MJ__", "t": "Kusanagi-sensei Is Being Tested", "p": "85/?" },
+{ "d": "MJ__", "t": "Minamoto-kun Monogatari", "p": "180/358" },
+{ "d": "MJ__", "t": "Mushoku no Eiyuu: Betsu ni Skill Nanka Iranakatta n da ga", "p": "26/?" },
+{ "d": "MJ__", "t": "Musuko ga Kawaikute Shikataganai Mazoku no Hahaoya", "p": "4/220" },
+{ "d": "MJ__", "t": "Nande Koko ni Sensei ga!?", "p": "48/?" },
+{ "d": "MJ__", "t": "Nisekoi", "p": "229/229" },
+{ "d": "MJ__", "t": "One Piece", "p": "1086/?" },
+{ "d": "MJ__", "t": "One Punch-Man", "p": "185/?" },
+{ "d": "MJ__", "t": "Oshi no Ko", "p": "0/?" },
+{ "d": "MJ__", "t": "ReLife", "p": "63/222" },
+{ "d": "MJ__", "t": "SAKAMOTO DAYS", "p": "0/?" },
+{ "d": "MJ__", "t": "Sensei wa Koi wo Oshierarenai", "p": "10/?" },
+{ "d": "MJ__", "t": "Shingeki no Kyojin", "p": "139.5/139.5" },
+{ "d": "MJ__", "t": "Sono Bisque Doll wa Koi wo Suru", "p": "42/?" },
+{ "d": "MJ__", "t": "Tokyo Ghoul", "p": "144/144,163/181" },
+{ "d": "MJ__", "t": "Tonikaku Kawaii", "p": "33/?" },
+{ "d": "MJ__", "t": "Wolf Guy: Ookami no Monshou", "p": "117/117" },
+{ "d": "MJS_", "t": "Bokura wa Minna Yatteiru.", "p": "1/1" },
+{ "d": "MJS_", "t": "Nante Nasakenai Bokura da.", "p": "1/1" },
+{ "d": "MJS_", "t": "Tokidoki", "p": "0/1" },
+{ "d": "MJSD", "t": "A Crossdresser Who Thought They Hadn't Been Found", "p": "1/1" },
+{ "d": "MJSD", "t": "Hunter x Hunter In Love", "p": "1/1" },
+{ "d": "MJSD", "t": "The Crossdresser Who Was Caught up in the Moment", "p": "1/1" },
+{ "d": "MJSD", "t": "The Wife Hates to Lose", "p": "1/1" },
+{ "d": "MK__", "t": "Bastard", "p": "0/94" },
+{ "d": "MK__", "t": "DICE: The Cube that Changes Everything", "p": "0/388" },
+{ "d": "MK__", "t": "Eleceed", "p": "0/?" },
+{ "d": "MK__", "t": "Girl the Wild's", "p": "260/260" },
+{ "d": "MK__", "t": "Just for a Meowment", "p": "0/103" },
+{ "d": "MK__", "t": "Solo Leveling", "p": "199/?" },
+{ "d": "MK__", "t": "The God of High School", "p": "0/?" },
+{ "d": "MK__", "t": "The Legendary Moonlight Sculptor", "p": "106/?" },
+{ "d": "MK__", "t": "Undercover Empress", "p": "0/?" },
+{ "d": "MK_D", "t": "Empress of Another World", "p": "0/?" },
+{ "d": "MK_D", "t": "The Beginning After the End", "p": "47/?" },
+{ "d": "MKR_", "t": "A Pervert's Daily Life", "p": "111/?" },
+{ "d": "MKR_", "t": "A Wonderful New World", "p": "32/?" },
+{ "d": "MKR_", "t": "Beach Goddess", "p": "0/?" },
+{ "d": "MKR_", "t": "Beauty Salon Sisters", "p": "28/?" },
+{ "d": "MKR_", "t": "Boarding Diary", "p": "116/?" },
+{ "d": "MKR_", "t": "By Chance", "p": "52/52" },
+{ "d": "MKR_", "t": "Cartoonists NSFW", "p": "31/97" },
+{ "d": "MKR_", "t": "Circles", "p": "0/?" },
+{ "d": "MKR_", "t": "Cohabitation!", "p": "54/54" },
+{ "d": "MKR_", "t": "Daddy’s Wild Oats", "p": "0/?" },
+{ "d": "MKR_", "t": "Don’t Be Like This! Son-In-Law", "p": "67/67" },
+{ "d": "MKR_", "t": "Drug Candy", "p": "44/44" },
+{ "d": "MKR_", "t": "Eunhye's Supermarket", "p": "74/?" },
+{ "d": "MKR_", "t": "Ex-Wife", "p": "0/?" },
+{ "d": "MKR_", "t": "Excuse me, This is my Room", "p": "81/?" },
+{ "d": "MKR_", "t": "Fitness", "p": "93/?" },
+{ "d": "MKR_", "t": "Goddess Stagram", "p": "50/?" },
+{ "d": "MKR_", "t": "Hardcore Vanilla", "p": "0/34" },
+{ "d": "MKR_", "t": "Household Affairs", "p": "21/90" },
+{ "d": "MKR_", "t": "Housekeeper", "p": "49/49" },
+{ "d": "MKR_", "t": "In The Summer", "p": "27/?" },
+{ "d": "MKR_", "t": "Is It Okay to Get Wet?", "p": "30/?" },
+{ "d": "MKR_", "t": "Is There an Empty Room?", "p": "64/64" },
+{ "d": "MKR_", "t": "Keep It a Secret from Your Mother!", "p": "3/?" },
+{ "d": "MKR_", "t": "Lady Long Legs", "p": "0/51" },
+{ "d": "MKR_", "t": "Learning the Hard Way", "p": "0/?" },
+{ "d": "MKR_", "t": "Lightning Rod", "p": "0/?" },
+{ "d": "MKR_", "t": "Living with a MILF", "p": "0/?" },
+{ "d": "MKR_", "t": "Love Limit Exceeded", "p": "0/?" },
+{ "d": "MKR_", "t": "Lucky Guy", "p": "9/73" },
+{ "d": "MKR_", "t": "Lust Awakening", "p": "103/103" },
+{ "d": "MKR_", "t": "Maidens In-Laws", "p": "0/?" },
+{ "d": "MKR_", "t": "Mother Hunting", "p": "31/?" },
+{ "d": "MKR_", "t": "My Aunt", "p": "42/?" },
+{ "d": "MKR_", "t": "My High School Bully", "p": "0/?" },
+{ "d": "MKR_", "t": "My Landlady Noona", "p": "0/?" },
+{ "d": "MKR_", "t": "My Stepmom", "p": "0/51" },
+{ "d": "MKR_", "t": "Never Too Late", "p": "132/132" },
+{ "d": "MKR_", "t": "PC Goddess Room", "p": "0/60" },
+{ "d": "MKR_", "t": "Queen Bee", "p": "219/?" },
+{ "d": "MKR_", "t": "Run Away", "p": "61/61" },
+{ "d": "MKR_", "t": "Secret Class", "p": "141/?" },
+{ "d": "MKR_", "t": "Seductive Uniform", "p": "21/38" },
+{ "d": "MKR_", "t": "Shall we study at Noryangjin?", "p": "0/?" },
+{ "d": "MKR_", "t": "Silent War", "p": "18/?" },
+{ "d": "MKR_", "t": "Soothe Me", "p": "33/60" },
+{ "d": "MKR_", "t": "Stepmother’s Friends", "p": "114/?" },
+{ "d": "MKR_", "t": "Sweet Guy", "p": "41/75" },
+{ "d": "MKR_", "t": "The Family Tree", "p": "52/53" },
+{ "d": "MKR_", "t": "The Mother and Daughter Next Door", "p": "28/52" },
+{ "d": "MKR_", "t": "The Woman Who Lives In My Room", "p": "38/?" },
+{ "d": "MKR_", "t": "Touch to Unlock", "p": "92.5/?" },
+{ "d": "MKR_", "t": "Water Overflow", "p": "0/?" },
+{ "d": "MKR_", "t": "Weak Point", "p": "120/120" },
+{ "d": "MKR_", "t": "Young Mom and Daughter", "p": "7/32" },
+{ "d": "MKRD", "t": "Under Observation: My First Loves and I", "p": "52/52" }]//mkush
+</script>
+
+<!--
+<button><a id="up" onclick="down.scrollIntoView({ behavior: 'smooth' })">Down</a></button>
+
+<style>
 #auto_hide_div img { width: 20vw; }
 #auto_hide_div img:hover { transition: all 1s ease; transform: scale(1.2) rotate(360deg); }
 
@@ -68,12 +690,7 @@ transition: .3s linear, color 0s, background-color 0s; outline: var(--b) solid #
 
 </style>
 
-<textarea>
-pagibig
-prdc | jcd infosearch
-concentrix | teleperformance | ttec | probe group philippines inc
-onlinejobs | upwork | elephant stock | inteligence llc
-</textarea>
+pagibig | onlinejobs | upwork | sai | prdc | jcd
 
 <div class="menu" style="user-select: none;">
 <ul style="justify-content: space-between; display: flex;">
@@ -97,33 +714,12 @@ onlinejobs | upwork | elephant stock | inteligence llc
 <li><span style="color: red; font-weight: bold;">Makise</span></li>
 </ul></li>
 </ul></li>
-<li><select id="mode_selector"><option value="Nightmode" selected>Night</option><option value="Lightmode">Light</option></select></li>
 </ul></div>
-
-<fieldset>
-<legend>
-<button><a id="up" onclick="down.scrollIntoView({ behavior: 'smooth' })">Down</a></button>
-<button><a id="link_id" href="index.html" download>Eurus</a></button>
-</legend>
-<input id="query" placeholder="Search" type="search" onkeypress="if(event.key === 'Enter') document.querySelector('#query_search').click()">
-<select id="search_type">
-<option value="Reddit" selected>Reddit</option>
-<option value="Anime">Anime</option>
-<option value="Discord">Discord</option>
-<option value="Youtube">Youtube</option>
-</select>
-<button id="query_search" onclick="query_search(document.querySelector('#query').value)">Search</button><br>
-<input type="radio" id="sort1" name="sort" class="sort" value="sort1" checked><button><label for="sort1">Show Img</label></button>
-<input type="radio" id="sort2" name="sort" class="sort" value="sort2"><button><label for="sort2">Hide Img</label></button>
-</fieldset>
 
 <button class="btn1" id="crypto_position" onclick="binance_search()">Get Price</button>
 <button class="btn2" id="user_ip" onclick="get_user_ip(function(temp_ip) { user_ip.innerHTML = temp_ip; discord_webhook(`IP: ${temp_ip}`) })">Get IP</button>
 <button id="size_div" onclick="xhr.send(null)">Get Size</button>
 <button id="progress" onclick="speedtest_init()">Get Speed</button>
-
-<button rewind()>Rewind</button>
-<button reset()>Reset</button>
 
 <input type="checkbox" id="music_id" onclick="hide_music()"><button><label for="music_id">Hide Music</label></button>
 <input type="checkbox" id="hide_id"><button><label for="hide_id">Hide Box</label><button>
@@ -139,7 +735,6 @@ onlinejobs | upwork | elephant stock | inteligence llc
 </form>
 
 <div id="home"></div>
-<div id="result"></div>
 
 <div id="item_id" onclick="reddit_comment()">
 <p>Sketchbook 180gsm (₱199)</p>
@@ -176,8 +771,7 @@ onlinejobs | upwork | elephant stock | inteligence llc
 </div>
 
 <script>
-body = document.querySelector("body")
-global_url = "background.jpg"
+
 
 auto_type_word = ""
 auto_type_index = 0
@@ -1047,423 +1641,7 @@ class emoji(commands.Cog):
 
 def setup(bot):
     bot.add_cog(emoji(bot))</textarea>
-<script>mkush = [{ "d": "AC__", "t": "The King's Avatar", "p": "12/12,12/12" },
-{ "d": "ACS_", "t": "How to Steal 55 Kisses", "p": "12/12,12/12,12/12,12/12" },
-{ "d": "ACS_", "t": "To Be Hero", "p": "12/12,1/12" },
-{ "d": "AJ__", "t": "3D Kanojo: Real Girl", "p": "12/12" },
-{ "d": "AJ__", "t": "5-Toubun no Hanayome", "p": "12/12,12/12" },
-{ "d": "AJ__", "t": "86", "p": "11/11" },
-{ "d": "AJ__", "t": "Absolute Duo", "p": "12/12" },
-{ "d": "AJ__", "t": "Accel World", "p": "24/24" },
-{ "d": "AJ__", "t": "Air Gear", "p": "2/25" },
-{ "d": "AJ__", "t": "Ajin", "p": "13/13,13/13" },
-{ "d": "AJ__", "t": "Akagami no Shirayuki-hime", "p": "12/12,12/12" },
-{ "d": "AJ__", "t": "Akame ga Kill!", "p": "24/24" },
-{ "d": "AJ__", "t": "Akiba's Trip: The Animation", "p": "4/13" },
-{ "d": "AJ__", "t": "Amaama to Inazuma", "p": "12/12" },
-{ "d": "AJ__", "t": "Amagami SS", "p": "25/25,13/13" },
-{ "d": "AJ__", "t": "Amagi Brilliant Park", "p": "13/13" },
-{ "d": "AJ__", "t": "Angel Beats!", "p": "13/13" },
-{ "d": "AJ__", "t": "Ano Hi Mita Hana no Namae wo Bokutachi wa Mada Shiranai.", "p": "11/11" },
-{ "d": "AJ__", "t": "Another", "p": "12/12" },
-{ "d": "AJ__", "t": "Ansatsu Kyoushitsu", "p": "22/22,25/25" },
-{ "d": "AJ__", "t": "Ao Haru Ride", "p": "12/12" },
-{ "d": "AJ__", "t": "Ao no Exorcist", "p": "25/25,12/12" },
-{ "d": "AJ__", "t": "Arakawa Under the Bridge", "p": "13/13,13/13" },
-{ "d": "AJ__", "t": "Asobi Asobase", "p": "12/12" },
-{ "d": "AJ__", "t": "Babylon", "p": "12/12" },
-{ "d": "AJ__", "t": "Baccano!", "p": "13/13" },
-{ "d": "AJ__", "t": "Bakemonogatari", "p": "15/15,11/11,4/4,26/26,5/5,4/4,12/12,7/7,6/6" },
-{ "d": "AJ__", "t": "Beelzebub", "p": "60/60" },
-{ "d": "AJ__", "t": "Black Bullet", "p": "13/13" },
-{ "d": "AJ__", "t": "Black Clover", "p": "170/170" },
-{ "d": "AJ__", "t": "Black Lagoon", "p": "0/12" },
-{ "d": "AJ__", "t": "Bleach", "p": "366/366" },
-{ "d": "AJ__", "t": "Blend S", "p": "6/12" },
-{ "d": "AJ__", "t": "Boku Dake ga Inai Machi", "p": "12/12" },
-{ "d": "AJ__", "t": "Boku no Hero Academia", "p": "13/13,25/25,25/25,25/25,25/25,12(125)/25" },
-{ "d": "AJ__", "t": "Bokutachi wa Benkyou ga Dekinai", "p": "13/13,8/13" },
-{ "d": "AJ__", "t": "Break Blade", "p": "12/12" },
-{ "d": "AJ__", "t": "Bungou Stray Dogs", "p": "12/12,12/12,12/12" },
-{ "d": "AJ__", "t": "Chainsaw Man", "p": "11/?" },
-{ "d": "AJ__", "t": "ChäoS-HEAd", "p": "12/12" },
-{ "d": "AJ__", "t": "Charlotte", "p": "13/13" },
-{ "d": "AJ__", "t": "Chuunibyou demo Koi ga Shitai!", "p": "12/12,12/12" },
-{ "d": "AJ__", "t": "Citrus", "p": "12/12" },
-{ "d": "AJ__", "t": "Clannad", "p": "23/23,24/24" },
-{ "d": "AJ__", "t": "Code Geass: Hangyaku no Lelouch", "p": "25/25,25/25" },
-{ "d": "AJ__", "t": "Code:Realize - Sousei no Himegimi", "p": "2/12" },
-{ "d": "AJ__", "t": "Conception", "p": "4/12" },
-{ "d": "AJ__", "t": "Cowboy Bebop", "p": "26/26" },
-{ "d": "AJ__", "t": "D.N.Angel", "p": "26/26" },
-{ "d": "AJ__", "t": "Dakara Boku wa, H ga Dekinai.", "p": "9/12" },
-{ "d": "AJ__", "t": "Danshi Koukousei no Nichijou", "p": "12/12" },
-{ "d": "AJ__", "t": "Darling in the Franxx", "p": "24/24" },
-{ "d": "AJ__", "t": "Date A Live", "p": "12/12,10/10" },
-{ "d": "AJ__", "t": "Death March Kara Hajimaru Isekai Kyousoukyoku", "p": "8/12" },
-{ "d": "AJ__", "t": "Death Note", "p": "37/37" },
-{ "d": "AJ__", "t": "Death Parade", "p": "12/12" },
-{ "d": "AJ__", "t": "Devils Line", "p": "4/12" },
-{ "d": "AJ__", "t": "Domestic na Kanojo", "p": "12/12" },
-{ "d": "AJ__", "t": "Dororo", "p": "0/24" },
-{ "d": "AJ__", "t": "Dr. Stone", "p": "24/24,11/11" },
-{ "d": "AJ__", "t": "Dragon Ball", "p": "29/153" },
-{ "d": "AJ__", "t": "Drifters", "p": "12/12" },
-{ "d": "AJ__", "t": "Dumbbell Nan Kilo Moteru?", "p": "12/12" },
-{ "d": "AJ__", "t": "Dungeon ni Deai wo Motomeru no wa Machigatteiru Darou ka", "p": "13/13,12/12,2/12,12/12" },
-{ "d": "AJ__", "t": "Durarara!!", "p": "24/24,12/12,12/12,12/12" },
-{ "d": "AJ__", "t": "Eromanga Sensei", "p": "12/12" },
-{ "d": "AJ__", "t": "Fairy Tail", "p": "175/175,102/102,11/51" },
-{ "d": "AJ__", "t": "Fate/stay night", "p": "24/24,12/12,13/13,13/13,12/12,0/25" },
-{ "d": "AJ__", "t": "Fire Force", "p": "0/24" },
-{ "d": "AJ__", "t": "Fruits Basket (2019)", "p": "25/25" },
-{ "d": "AJ__", "t": "Full Metal Panic!", "p": "24/24" },
-{ "d": "AJ__", "t": "Fullmetal Alchemist: Brotherhood", "p": "64/64" },
-{ "d": "AJ__", "t": "Gekkan Shoujo Nozaki-kun", "p": "12/12" },
-{ "d": "AJ__", "t": "Gi(a)rlish Number", "p": "12/12" },
-{ "d": "AJ__", "t": "Gintama", "p": "201/201,51/51,13/13,51/51,12/12,13/13,12/12,14/14" },
-{ "d": "AJ__", "t": "Goblin Slayer", "p": "12/12" },
-{ "d": "AJ__", "t": "Golden Boy (OVA)", "p": "6/6" },
-{ "d": "AJ__", "t": "Golden Kamuy", "p": "0/12" },
-{ "d": "AJ__", "t": "Golden Time", "p": "24/24" },
-{ "d": "AJ__", "t": "Grancrest Senki", "p": "9/24" },
-{ "d": "AJ__", "t": "Grand Blue", "p": "12/12" },
-{ "d": "AJ__", "t": "Great Teacher Onizuka", "p": "0/43" },
-{ "d": "AJ__", "t": "Grisaia no Kajitsu", "p": "13/13,10/10" },
-{ "d": "AJ__", "t": "Guilty Crown", "p": "22/22" },
-{ "d": "AJ__", "t": "Haikyuu!!", "p": "25/25,25/25,10/10,8/13" },
-{ "d": "AJ__", "t": "Hajimete no Gal", "p": "10/10" },
-{ "d": "AJ__", "t": "Hanebado!", "p": "13/13" },
-{ "d": "AJ__", "t": "Hataraku Maou-sama!", "p": "13/13" },
-{ "d": "AJ__", "t": "Hataraku Saibou", "p": "9/13" },
-{ "d": "AJ__", "t": "Hellsing", "p": "13/13" },
-{ "d": "AJ__", "t": "Hibike! Euphonium", "p": "13/13" },
-{ "d": "AJ__", "t": "High School DxD", "p": "12/12,12/12,9/12" },
-{ "d": "AJ__", "t": "Highschool of the Dead", "p": "12/12" },
-{ "d": "AJ__", "t": "Hinamatsuri", "p": "12/12" },
-{ "d": "AJ__", "t": "Horimiya", "p": "13/13" },
-{ "d": "AJ__", "t": "Hunter x Hunter (2011)", "p": "148/148" },
-{ "d": "AJ__", "t": "Hyouka", "p": "22/22" },
-{ "d": "AJ__", "t": "Ichigo 100%", "p": "8/12" },
-{ "d": "AJ__", "t": "Imouto sae Ireba Ii.", "p": "12/12" },
-{ "d": "AJ__", "t": "Initial D First Stage", "p": "0/26" },
-{ "d": "AJ__", "t": "Inu x Boku SS", "p": "8/12" },
-{ "d": "AJ__", "t": "InuYasha", "p": "3/167" },
-{ "d": "AJ__", "t": "Isekai Maou to Shoukan Shoujo no Dorei Majutsu", "p": "12/12" },
-{ "d": "AJ__", "t": "Isekai no Seikishi Monogatari (OVA)", "p": "0/13" },
-{ "d": "AJ__", "t": "Isekai Ojisan", "p": "0/?" },
-{ "d": "AJ__", "t": "Isekai wa Smartphone to Tomo ni.", "p": "12/12" },
-{ "d": "AJ__", "t": "JoJo no Kimyou na Bouken", "p": "26/26,24/24,24/24,39/39,39/39,12/?" },
-{ "d": "AJ__", "t": "Jormungand", "p": "12/12,3/12" },
-{ "d": "AJ__", "t": "Jujutsu Kaisen", "p": "24/24" },
-{ "d": "AJ__", "t": "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen", "p": "12/12,12/12,13/?" },
-{ "d": "AJ__", "t": "Kaichou wa Maid-sama!", "p": "26/26" },
-{ "d": "AJ__", "t": "Kakegurui", "p": "12/12,2/12" },
-{ "d": "AJ__", "t": "Kakushigoto", "p": "12/12" },
-{ "d": "AJ__", "t": "Karakai Jouzu no Takagi-san", "p": "12/12" },
-{ "d": "AJ__", "t": "Kawaii dake ja Nai Shikimori-san", "p": "1/12" },
-{ "d": "AJ__", "t": "Keijo!!!!!!!!", "p": "2/12" },
-{ "d": "AJ__", "t": "Kemono no Souja Erin", "p": "5/50" },
-{ "d": "AJ__", "t": "Kill la Kill", "p": "8/24" },
-{ "d": "AJ__", "t": "Kimetsu no Yaiba", "p": "26/26,11/11,6/12" },
-{ "d": "AJ__", "t": "Kingdom", "p": "0/38" },
-{ "d": "AJ__", "t": "Kiniro Mosaic", "p": "3/12" },
-{ "d": "AJ__", "t": "Kishuku Gakkou no Juliet", "p": "12/12" },
-{ "d": "AJ__", "t": "Kiss x Sis (OVA)", "p": "11/11,12/12" },
-{ "d": "AJ__", "t": "Knight's & Magic", "p": "13/13" },
-{ "d": "AJ__", "t": "Kobayashi-san Chi no Maidragon", "p": "13/13" },
-{ "d": "AJ__", "t": "Koi to Uso", "p": "12/12" },
-{ "d": "AJ__", "t": "Komi-san wa, Comyushou desu.", "p": "1/?" },
-{ "d": "AJ__", "t": "Kono Subarashii Sekai ni Shukufuku wo!", "p": "10/10,10/10" },
-{ "d": "AJ__", "t": "Kore wa Zombie Desu ka?", "p": "12/12,10/10" },
-{ "d": "AJ__", "t": "Kotoura-san", "p": "12/12" },
-{ "d": "AJ__", "t": "Kuroko no Basket", "p": "25/25,25/25,25/25" },
-{ "d": "AJ__", "t": "Kuroshitsuji", "p": "3/24" },
-{ "d": "AJ__", "t": "Kyoto Teramachi Sanjou no Holmes", "p": "3/12" },
-{ "d": "AJ__", "t": "Kyoukai no Kanata", "p": "12/12" },
-{ "d": "AJ__", "t": "Kyousougiga (TV)", "p": "10/10" },
-{ "d": "AJ__", "t": "Log Horizon", "p": "4/25" },
-{ "d": "AJ__", "t": "Love Live! School Idol Project", "p": "13/13,13/13,4/13" },
-{ "d": "AJ__", "t": "Made in Abyss", "p": "13/13" },
-{ "d": "AJ__", "t": "Magi: The Labyrinth of Magic", "p": "25/25,25/25" },
-{ "d": "AJ__", "t": "Mahou Shoujo Madoka☆Magica", "p": "0/12" },
-{ "d": "AJ__", "t": "Mahouka Koukou no Rettousei", "p": "0/26" },
-{ "d": "AJ__", "t": "Mahoutsukai no Yome", "p": "24/24" },
-{ "d": "AJ__", "t": "Maou Gakuin no Futekigousha: Shijou Saikyou no Maou no Shiso, Tensei shite Shison-tachi no Gakkou e Kayou", "p": "13/13" },
-{ "d": "AJ__", "t": "Masamune-kun no Revenge", "p": "12/12" },
-{ "d": "AJ__", "t": "Masou Gakuen HxH", "p": "12/12" },
-{ "d": "AJ__", "t": "Medaka Box", "p": "12/12" },
-{ "d": "AJ__", "t": "Mirai Nikki (TV)", "p": "26/26" },
-{ "d": "AJ__", "t": "Mnemosyne: Mnemosyne no Musume-tachi", "p": "1/6" },
-{ "d": "AJ__", "t": "Mob Psycho 100", "p": "12/12,13/13,12/12" },
-{ "d": "AJ__", "t": "Mobile Suit Gundam", "p": "0/43" },
-{ "d": "AJ__", "t": "Musaigen no Phantom World", "p": "13/13" },
-{ "d": "AJ__", "t": "Nagi no Asukara", "p": "5/26" },
-{ "d": "AJ__", "t": "Nanatsu no Taizai", "p": "24/24,24/24,24/24,22/24" },
-{ "d": "AJ__", "t": "Nanbaka", "p": "2/13" },
-{ "d": "AJ__", "t": "Naruto", "p": "220/220,500/500,136/?" },
-{ "d": "AJ__", "t": "Natsume Yuujinchou", "p": "13/13,13/13,13/13,13/13,11/11,11/11" },
-{ "d": "AJ__", "t": "Neon Genesis Evangelion", "p": "26/26" },
-{ "d": "AJ__", "t": "New Game!", "p": "3/12" },
-{ "d": "AJ__", "t": "NHK ni Youkoso!", "p": "24/24" },
-{ "d": "AJ__", "t": "Nichijou", "p": "26/26" },
-{ "d": "AJ__", "t": "Nisekoi", "p": "20/20,12/12" },
-{ "d": "AJ__", "t": "No Game No Life", "p": "12/12" },
-{ "d": "AJ__", "t": "Noragami", "p": "12/12,13/13" },
-{ "d": "AJ__", "t": "Nourin", "p": "12/12" },
-{ "d": "AJ__", "t": "Occultic-Nine", "p": "12/12" },
-{ "d": "AJ__", "t": "One Piece", "p": "1018/?" },
-{ "d": "AJ__", "t": "One Punch Man", "p": "12/12,12/12" },
-{ "d": "AJ__", "t": "Ore ga Ojou-sama Gakkou ni 'Shomin Sample' Toshite Gets-Sareta Ken", "p": "12/12" },
-{ "d": "AJ__", "t": "Ore wo Suki nano wa Omae dake ka yo", "p": "12/12" },
-{ "d": "AJ__", "t": "Osomatsu-san", "p": "25/25,25/25" },
-{ "d": "AJ__", "t": "Overlord", "p": "13/13,13/13,13/13" },
-{ "d": "AJ__", "t": "Parasyte", "p": "24/24" },
-{ "d": "AJ__", "t": "Plastic Memories", "p": "13/13" },
-{ "d": "AJ__", "t": "Prison School", "p": "12/12" },
-{ "d": "AJ__", "t": "Psycho-Pass", "p": "22/22,11/11" },
-{ "d": "AJ__", "t": "Re:Zero kara Hajimeru Isekai Seikatsu", "p": "25/25,13/13,0/12" },
-{ "d": "AJ__", "t": "Renai Boukun", "p": "9/12" },
-{ "d": "AJ__", "t": "Robotics-Notes", "p": "22/22" },
-{ "d": "AJ__", "t": "Rokka no Yuusha", "p": "1/12" },
-{ "d": "AJ__", "t": "Saenai Heroine no Sodatekata", "p": "12/12,11/11" },
-{ "d": "AJ__", "t": "Saijaku Muhai no Bahamut", "p": "12/12" },
-{ "d": "AJ__", "t": "Sakamoto desu ga?", "p": "12/12" },
-{ "d": "AJ__", "t": "Sakurasou no Pet na Kanojo", "p": "24/24" },
-{ "d": "AJ__", "t": "Samurai Champloo", "p": "18/26" },
-{ "d": "AJ__", "t": "Satsuriku no Tenshi", "p": "12/12" },
-{ "d": "AJ__", "t": "Sayonara Zetsubou Sensei", "p": "12/12,13/13,13/13" },
-{ "d": "AJ__", "t": "Seirei Tsukai no Blade Dance", "p": "12/12" },
-{ "d": "AJ__", "t": "Seiren", "p": "12/12" },
-{ "d": "AJ__", "t": "Seishun Buta Yarou wa Bunny Girl-senpai no Yume wo Minai", "p": "13/13" },
-{ "d": "AJ__", "t": "Seitokai Yakuindomo", "p": "1/13" },
-{ "d": "AJ__", "t": "Sekirei", "p": "12/12" },
-{ "d": "AJ__", "t": "Seto no Hanayome", "p": "26/26" },
-{ "d": "AJ__", "t": "Sewayaki Kitsune no Senko-san", "p": "1/12" },
-{ "d": "AJ__", "t": "Shigatsu wa Kimi no Uso", "p": "22/22" },
-{ "d": "AJ__", "t": "Shimoneta to Iu Gainen ga Sonzai Shinai Taikutsu na Sekai", "p": "1/12" },
-{ "d": "AJ__", "t": "Shinchou Yuusha: Kono Yuusha ga Ore Tsueee Kuse ni Shinchou Sugiru", "p": "7/12" },
-{ "d": "AJ__", "t": "Shingeki no Kyojin", "p": "25/25,12/12,12/12,10/10,16/16,12/12" },
-{ "d": "AJ__", "t": "Shinsekai yori", "p": "25/25" },
-{ "d": "AJ__", "t": "Shirobako", "p": "2/24" },
-{ "d": "AJ__", "t": "Shirokuma Cafe", "p": "33/50" },
-{ "d": "AJ__", "t": "Shokugeki no Souma", "p": "24/24,13/13,12/12,12/12,12/12,0/13" },
-{ "d": "AJ__", "t": "Sin: Nanatsu no Taizai", "p": "8/12" },
-{ "d": "AJ__", "t": "Slam Dunk", "p": "0/101" },
-{ "d": "AJ__", "t": "Sono Bisque Doll wa Koi wo Suru", "p": "12/12" },
-{ "d": "AJ__", "t": "Sora no Otoshimono", "p": "1/13" },
-{ "d": "AJ__", "t": "Sora yori mo Tooi Basho", "p": "2/13" },
-{ "d": "AJ__", "t": "Soul Eater", "p": "51/51" },
-{ "d": "AJ__", "t": "Space☆Dandy", "p": "8/13" },
-{ "d": "AJ__", "t": "Spy x Family", "p": "12/12,3/12" },
-{ "d": "AJ__", "t": "SSSS.Gridman", "p": "12/12" },
-{ "d": "AJ__", "t": "Steins-Gate", "p": "24/24,23/23" },
-{ "d": "AJ__", "t": "Subete ga F ni Naru: The Perfect Insider", "p": "11/11" },
-{ "d": "AJ__", "t": "Suzumiya Haruhi no Yuuutsu", "p": "14/14,14/14" },
-{ "d": "AJ__", "t": "Sword Art Online", "p": "25/25,24/24,24/24,12/12,11/11,12/12" },
-{ "d": "AJ__", "t": "Taboo Tattoo", "p": "5/12" },
-{ "d": "AJ__", "t": "Tada-kun wa Koi wo Shinai", "p": "13/13" },
-{ "d": "AJ__", "t": "Tamako Market", "p": "2/12" },
-{ "d": "AJ__", "t": "Tasogare Otome x Amnesia", "p": "12/12" },
-{ "d": "AJ__", "t": "Tate no Yuusha no Nariagari", "p": "25/25" },
-{ "d": "AJ__", "t": "Tengen Toppa Gurren Lagann", "p": "0/27" },
-{ "d": "AJ__", "t": "Tensei shitara Slime Datta Ken", "p": "24/24,12/12,0/?" },
-{ "d": "AJ__", "t": "Toaru Majutsu no Index", "p": "24/24,4/24" },
-{ "d": "AJ__", "t": "Tokyo Ghoul", "p": "12/12,12/12,12/12,9/12" },
-{ "d": "AJ__", "t": "Tonari no Kaibutsu-kun", "p": "5/13" },
-{ "d": "AJ__", "t": "Tonari no Kyuuketsuki-san", "p": "1/12" },
-{ "d": "AJ__", "t": "Toradora!", "p": "25/25" },
-{ "d": "AJ__", "t": "Triage X", "p": "10/10" },
-{ "d": "AJ__", "t": "Trinity Seven", "p": "12/12" },
-{ "d": "AJ__", "t": "Tsugumomo", "p": "4/12" },
-{ "d": "AJ__", "t": "Tsukumogami Kashimasu", "p": "1/12" },
-{ "d": "AJ__", "t": "Tsuujou Kougeki ga Zentai Kougeki de Ni-kai Kougeki no Okaasan wa Suki desu ka?", "p": "2/12" },
-{ "d": "AJ__", "t": "Violet Evergarden", "p": "13/13" },
-{ "d": "AJ__", "t": "Watashi ga Motenai no wa Dou Kangaetemo Omaera ga Warui!", "p": "12/12" },
-{ "d": "AJ__", "t": "Working!!", "p": "13/13,13/13,13/13,13/13" },
-{ "d": "AJ__", "t": "World Trigger", "p": "14/73" },
-{ "d": "AJ__", "t": "Wotaku ni Koi wa Muzukashii", "p": "11/11" },
-{ "d": "AJ__", "t": "Yagate Kimi ni Naru", "p": "13/13" },
-{ "d": "AJ__", "t": "Yahari Ore no Seishun Love Comedy wa Machigatteiru.", "p": "13/13,13/13,12/12" },
-{ "d": "AJ__", "t": "Yakusoku no Neverland", "p": "12/12,0/11" },
-{ "d": "AJ__", "t": "Youjo Senki", "p": "12/12" },
-{ "d": "AJ__", "t": "Youkoso Jitsuryoku Shijou Shugi no Kyoushitsu e (TV)", "p": "12/12" },
-{ "d": "AJ__", "t": "Yozakura Quartet", "p": "5/12" },
-{ "d": "AJ__", "t": "Zankyou no Terror", "p": "11/11" },
-{ "d": "AJ__", "t": "Zero no Tsukaima", "p": "13/13,12/12,12/12,12/12" },
-{ "d": "AJ__", "t": "Zombieland Saga", "p": "12/12" },
-{ "d": "AJF_", "t": "Akira", "p": "1/1" },
-{ "d": "AJF_", "t": "Bakemono no Ko", "p": "1/1" },
-{ "d": "AJF_", "t": "Byousoku 5 Centimeter", "p": "3/3" },
-{ "d": "AJF_", "t": "Code Geass: Hangyaku no Lelouch", "p": "1/1,1/1,1/1,1/1" },
-{ "d": "AJF_", "t": "Doukyuusei", "p": "1/1" },
-{ "d": "AJF_", "t": "Fate/stay night: Heaven's Feel", "p": "1/1,1/1,1/1" },
-{ "d": "AJF_", "t": "Gintama: The Final", "p": "1/1" },
-{ "d": "AJF_", "t": "Goodbye, Don Glees!", "p": "0/1" },
-{ "d": "AJF_", "t": "Hal", "p": "1/1" },
-{ "d": "AJF_", "t": "Hotarubi no Mori e", "p": "1/1" },
-{ "d": "AJF_", "t": "Howl no Ugoku Shiro", "p": "1/1" },
-{ "d": "AJF_", "t": "Kimetsu no Yaiba: Mugen Ressha-hen", "p": "1/1" },
-{ "d": "AJF_", "t": "Kimi no Na wa.", "p": "1/1" },
-{ "d": "AJF_", "t": "Kimi no Suizou wo Tabetai", "p": "1/1" },
-{ "d": "AJF_", "t": "Kizumonogatari I: Tekketsu-hen", "p": "1/1,1/1,1/1" },
-{ "d": "AJF_", "t": "Koe no Katachi", "p": "1/1" },
-{ "d": "AJF_", "t": "Kokoro ga Sakebitagatterun da.", "p": "1/1" },
-{ "d": "AJF_", "t": "Kono Sekai no Katasumi ni", "p": "1/1" },
-{ "d": "AJF_", "t": "Kotonoha no Niwa", "p": "1/1" },
-{ "d": "AJF_", "t": "Kuroko no Basket: Last Game", "p": "1/1" },
-{ "d": "AJF_", "t": "Mimi wo Sumaseba", "p": "1/1" },
-{ "d": "AJF_", "t": "Mononoke-hime", "p": "1/1" },
-{ "d": "AJF_", "t": "Nakitai Watashi wa Neko wo Kaburu", "p": "1/1" },
-{ "d": "AJF_", "t": "Sakasama no Patema", "p": "1/1" },
-{ "d": "AJF_", "t": "Sayonara no Asa ni Yakusoku no Hana wo Kazarou", "p": "1/1" },
-{ "d": "AJF_", "t": "Sen to Chihiro no Kamikakushi", "p": "1/1" },
-{ "d": "AJF_", "t": "Suzume no Tojimari", "p": "1/1" },
-{ "d": "AJF_", "t": "Sword Art Online: Ordinal Scale", "p": "1/1" },
-{ "d": "AJF_", "t": "Taifuu no Noruda", "p": "1/1" },
-{ "d": "AJF_", "t": "Tenki no Ko", "p": "1/1" },
-{ "d": "AJF_", "t": "The Last: Naruto the Movie", "p": "1/1" },
-{ "d": "AJF_", "t": "Uchiage Hanabi, Shita kara Miru ka? Yoko kara Miru ka?", "p": "1/1" },
-{ "d": "AJS_", "t": "30-sai no Hoken Taiiku", "p": "12/12" },
-{ "d": "AJS_", "t": "Aho-Girl", "p": "12/12" },
-{ "d": "AJS_", "t": "Hashiri Tsuzukete Yokattatte", "p": "4/4" },
-{ "d": "AJS_", "t": "Isekai Quartet", "p": "12/12,12/12" },
-{ "d": "AJS_", "t": "Kanojo to Kanojo no Neko: Everything Flows", "p": "4/4" },
-{ "d": "AJS_", "t": "Koyomimonogatari (ONA)", "p": "12/12" },
-{ "d": "AJS_", "t": "Mangaka-san to Assistant-san to", "p": "12/12" },
-{ "d": "AJS_", "t": "Nande Koko ni Sensei ga!?", "p": "12/12" },
-{ "d": "AJS_", "t": "Saiki Kusuo no Ψ Nan (TV)", "p": "120/120,24/24" },
-{ "d": "AJS_", "t": "Shelter (Music)", "p": "1/1" },
-{ "d": "AJS_", "t": "Tejina Senpai", "p": "12/12" },
-{ "d": "AJS_", "t": "Tsurezure Children", "p": "12/12" },
-{ "d": "MC__", "t": "Apotheosis", "p": "940/?" },
-{ "d": "MC__", "t": "Cheating Men Must Die", "p": "41/?" },
-{ "d": "MC__", "t": "Dragon Prince Yuan", "p": "66/?" },
-{ "d": "MC__", "t": "Forced to Become the Villain's Son-In-Law", "p": "10/?" },
-{ "d": "MC__", "t": "How to Steal 55 Kisses", "p": "20/?" },
-{ "d": "MC__", "t": "Immortal Swordsman in The Reverse World", "p": "113/?" },
-{ "d": "MC__", "t": "Martial Peak", "p": "3121/?" },
-{ "d": "MC__", "t": "My Girlfriend Is A Zombie", "p": "50/?" },
-{ "d": "MC__", "t": "My Wife Is A Demon Queen", "p": "45/?" },
-{ "d": "MC__", "t": "Rebirth Of The Urban Immortal Cultivator", "p": "44/?" },
-{ "d": "MC__", "t": "So Pure So Flirtatious", "p": "63/?" },
-{ "d": "MC__", "t": "Son-in-Law Above Them All", "p": "55/?" },
-{ "d": "MC__", "t": "Son-in-Law Does Cheap Cultivation", "p": "113/?" },
-{ "d": "MC__", "t": "Star Martial God Technique", "p": "467/?" },
-{ "d": "MC__", "t": "Tales of Demons and Gods", "p": "410/?" },
-{ "d": "MC_D", "t": "Dragon Son-In-Law God of War", "p": "70/?" },
-{ "d": "MC_D", "t": "Golden Scale", "p": "34/?" },
-{ "d": "MC_D", "t": "Take A Good Look at Me Now", "p": "66/?" },
-{ "d": "MJ__", "t": "Ane Naru Mono", "p": "28.6/?" },
-{ "d": "MJ__", "t": "Berserk", "p": "0/380" },
-{ "d": "MJ__", "t": "Bleach", "p": "686/686" },
-{ "d": "MJ__", "t": "Boruto: Naruto Next Generations", "p": "57/?" },
-{ "d": "MJ__", "t": "Dragon Ball", "p": "519/519,50/?" },
-{ "d": "MJ__", "t": "Gokushufudou", "p": "56/?" },
-{ "d": "MJ__", "t": "Gyaru☆Kuri!", "p": "10/10" },
-{ "d": "MJ__", "t": "Haite Kudasai, Takamine-san", "p": "22/?" },
-{ "d": "MJ__", "t": "Hige wo Soru. Soshite Joshikousei wo Hirou.", "p": "12/?" },
-{ "d": "MJ__", "t": "Honzuki no Gekokujou", "p": "3/42" },
-{ "d": "MJ__", "t": "Horimiya", "p": "122.6/122.6" },
-{ "d": "MJ__", "t": "Hunter x Hunter", "p": "89/?" },
-{ "d": "MJ__", "t": "Ijiranaide, Nagatoro-san", "p": "55/?" },
-{ "d": "MJ__", "t": "JoJo no Kimyou na Bouken: Ougon no Kaze", "p": "155/155,158/158,65/95" },
-{ "d": "MJ__", "t": "Kaichou wa Maid-sama!", "p": "61/85" },
-{ "d": "MJ__", "t": "Kanojo ni Naru Hi", "p": "6/20" },
-{ "d": "MJ__", "t": "Kimi wa Midara na Boku no Joou", "p": "12/12" },
-{ "d": "MJ__", "t": "Koi wa Sekai Seifuku no Ato de", "p": "17/?" },
-{ "d": "MJ__", "t": "Komi-san wa, Komyushou desu.", "p": "10/?" },
-{ "d": "MJ__", "t": "Kusanagi-sensei Is Being Tested", "p": "85/?" },
-{ "d": "MJ__", "t": "Minamoto-kun Monogatari", "p": "180/358" },
-{ "d": "MJ__", "t": "Mushoku no Eiyuu: Betsu ni Skill Nanka Iranakatta n da ga", "p": "26/?" },
-{ "d": "MJ__", "t": "Musuko ga Kawaikute Shikataganai Mazoku no Hahaoya", "p": "4/220" },
-{ "d": "MJ__", "t": "Nande Koko ni Sensei ga!?", "p": "48/?" },
-{ "d": "MJ__", "t": "Nisekoi", "p": "229/229" },
-{ "d": "MJ__", "t": "One Piece", "p": "1086/?" },
-{ "d": "MJ__", "t": "One Punch-Man", "p": "185/?" },
-{ "d": "MJ__", "t": "Oshi no Ko", "p": "0/?" },
-{ "d": "MJ__", "t": "ReLife", "p": "63/222" },
-{ "d": "MJ__", "t": "SAKAMOTO DAYS", "p": "0/?" },
-{ "d": "MJ__", "t": "Sensei wa Koi wo Oshierarenai", "p": "10/?" },
-{ "d": "MJ__", "t": "Shingeki no Kyojin", "p": "139.5/139.5" },
-{ "d": "MJ__", "t": "Sono Bisque Doll wa Koi wo Suru", "p": "42/?" },
-{ "d": "MJ__", "t": "Tokyo Ghoul", "p": "144/144,163/181" },
-{ "d": "MJ__", "t": "Tonikaku Kawaii", "p": "33/?" },
-{ "d": "MJ__", "t": "Wolf Guy: Ookami no Monshou", "p": "117/117" },
-{ "d": "MJS_", "t": "Bokura wa Minna Yatteiru.", "p": "1/1" },
-{ "d": "MJS_", "t": "Nante Nasakenai Bokura da.", "p": "1/1" },
-{ "d": "MJS_", "t": "Tokidoki", "p": "0/1" },
-{ "d": "MJSD", "t": "A Crossdresser Who Thought They Hadn't Been Found", "p": "1/1" },
-{ "d": "MJSD", "t": "Hunter x Hunter In Love", "p": "1/1" },
-{ "d": "MJSD", "t": "The Crossdresser Who Was Caught up in the Moment", "p": "1/1" },
-{ "d": "MJSD", "t": "The Wife Hates to Lose", "p": "1/1" },
-{ "d": "MK__", "t": "Bastard", "p": "0/94" },
-{ "d": "MK__", "t": "DICE: The Cube that Changes Everything", "p": "0/388" },
-{ "d": "MK__", "t": "Eleceed", "p": "0/?" },
-{ "d": "MK__", "t": "Girl the Wild's", "p": "260/260" },
-{ "d": "MK__", "t": "Just for a Meowment", "p": "0/103" },
-{ "d": "MK__", "t": "Solo Leveling", "p": "199/?" },
-{ "d": "MK__", "t": "The God of High School", "p": "0/?" },
-{ "d": "MK__", "t": "The Legendary Moonlight Sculptor", "p": "106/?" },
-{ "d": "MK__", "t": "Undercover Empress", "p": "0/?" },
-{ "d": "MK_D", "t": "Empress of Another World", "p": "0/?" },
-{ "d": "MK_D", "t": "The Beginning After the End", "p": "47/?" },
-{ "d": "MKR_", "t": "A Pervert's Daily Life", "p": "111/?" },
-{ "d": "MKR_", "t": "A Wonderful New World", "p": "32/?" },
-{ "d": "MKR_", "t": "Beach Goddess", "p": "0/?" },
-{ "d": "MKR_", "t": "Beauty Salon Sisters", "p": "28/?" },
-{ "d": "MKR_", "t": "Boarding Diary", "p": "116/?" },
-{ "d": "MKR_", "t": "By Chance", "p": "52/52" },
-{ "d": "MKR_", "t": "Cartoonists NSFW", "p": "31/97" },
-{ "d": "MKR_", "t": "Circles", "p": "0/?" },
-{ "d": "MKR_", "t": "Cohabitation!", "p": "54/54" },
-{ "d": "MKR_", "t": "Daddy’s Wild Oats", "p": "0/?" },
-{ "d": "MKR_", "t": "Don’t Be Like This! Son-In-Law", "p": "67/67" },
-{ "d": "MKR_", "t": "Drug Candy", "p": "44/44" },
-{ "d": "MKR_", "t": "Eunhye's Supermarket", "p": "74/?" },
-{ "d": "MKR_", "t": "Ex-Wife", "p": "0/?" },
-{ "d": "MKR_", "t": "Excuse me, This is my Room", "p": "81/?" },
-{ "d": "MKR_", "t": "Fitness", "p": "93/?" },
-{ "d": "MKR_", "t": "Goddess Stagram", "p": "50/?" },
-{ "d": "MKR_", "t": "Hardcore Vanilla", "p": "0/34" },
-{ "d": "MKR_", "t": "Household Affairs", "p": "21/90" },
-{ "d": "MKR_", "t": "Housekeeper", "p": "49/49" },
-{ "d": "MKR_", "t": "In The Summer", "p": "27/?" },
-{ "d": "MKR_", "t": "Is It Okay to Get Wet?", "p": "30/?" },
-{ "d": "MKR_", "t": "Is There an Empty Room?", "p": "64/64" },
-{ "d": "MKR_", "t": "Keep It a Secret from Your Mother!", "p": "3/?" },
-{ "d": "MKR_", "t": "Lady Long Legs", "p": "0/51" },
-{ "d": "MKR_", "t": "Learning the Hard Way", "p": "0/?" },
-{ "d": "MKR_", "t": "Lightning Rod", "p": "0/?" },
-{ "d": "MKR_", "t": "Living with a MILF", "p": "0/?" },
-{ "d": "MKR_", "t": "Love Limit Exceeded", "p": "0/?" },
-{ "d": "MKR_", "t": "Lucky Guy", "p": "9/73" },
-{ "d": "MKR_", "t": "Lust Awakening", "p": "103/103" },
-{ "d": "MKR_", "t": "Maidens In-Laws", "p": "0/?" },
-{ "d": "MKR_", "t": "Mother Hunting", "p": "31/?" },
-{ "d": "MKR_", "t": "My Aunt", "p": "42/?" },
-{ "d": "MKR_", "t": "My High School Bully", "p": "0/?" },
-{ "d": "MKR_", "t": "My Landlady Noona", "p": "0/?" },
-{ "d": "MKR_", "t": "My Stepmom", "p": "0/51" },
-{ "d": "MKR_", "t": "Never Too Late", "p": "132/132" },
-{ "d": "MKR_", "t": "PC Goddess Room", "p": "0/60" },
-{ "d": "MKR_", "t": "Queen Bee", "p": "219/?" },
-{ "d": "MKR_", "t": "Run Away", "p": "61/61" },
-{ "d": "MKR_", "t": "Secret Class", "p": "141/?" },
-{ "d": "MKR_", "t": "Seductive Uniform", "p": "21/38" },
-{ "d": "MKR_", "t": "Shall we study at Noryangjin?", "p": "0/?" },
-{ "d": "MKR_", "t": "Silent War", "p": "18/?" },
-{ "d": "MKR_", "t": "Soothe Me", "p": "33/60" },
-{ "d": "MKR_", "t": "Stepmother’s Friends", "p": "114/?" },
-{ "d": "MKR_", "t": "Sweet Guy", "p": "41/75" },
-{ "d": "MKR_", "t": "The Family Tree", "p": "52/53" },
-{ "d": "MKR_", "t": "The Mother and Daughter Next Door", "p": "28/52" },
-{ "d": "MKR_", "t": "The Woman Who Lives In My Room", "p": "38/?" },
-{ "d": "MKR_", "t": "Touch to Unlock", "p": "92.5/?" },
-{ "d": "MKR_", "t": "Water Overflow", "p": "0/?" },
-{ "d": "MKR_", "t": "Weak Point", "p": "120/120" },
-{ "d": "MKR_", "t": "Young Mom and Daughter", "p": "7/32" },
-{ "d": "MKRD", "t": "Under Observation: My First Loves and I", "p": "52/52" }]//mkush
+<script>
 
 file_size = ""
 
@@ -1497,105 +1675,6 @@ music_position.style.display = "block" }
 else { music_player_showed = false
 music_position.style.display = "none" } }
 
-function query_search(query) {
-switch(search_type.value.toLowerCase()) {
-case "anime": anime_search(query); break
-case "discord": discord_search(query); break
-case "youtube": youtube_search(query || "dota 2"); break
-default: reddit_search(query.split(" ")[0] || "memes", query.split(" ")[1] || "hot") } }
-
-function rewind() { search_type.selectedIndex = 0
-posts_seen = posts_seen.slice(0, -2)
-localStorage.setItem("posts_seen", posts_seen) }
-
-function reset() { search_type.selectedIndex = 0
-localStorage.clear(); location.reload() }
-
-anime_query = []
-anime_liblary = { M: "Manga", A: "Anime", J: "Japan", K: "Korea", C: "China", S: "Short", F: "Film", R: "Rated", _: "Series" }
-anime_liblary_2 = { D: "No Data", _: "Verified" }
-function anime_search(query) { run = true
-if(!query) query = mkush[Math.floor(Math.random() * mkush.length)].t.match(/.../).join("")
-div = document.createElement("div")
-mkush.forEach(mm => {
-if(mm.t.toLowerCase().includes(query.toLowerCase())) {
-if(!anime_query.includes(mm.t+mm.p) && run) { run = false
-anime_query.push(mm.t+mm.p)
-axios.get(`https://api.jikan.moe/v4/anime?q=${mm.t}`)
-.then(res => img_element(res.data.data[0].images.jpg.image_url))
-.finally(() => p_element(`${anime_liblary[mm.d.charAt(0)]} ${anime_liblary[mm.d.charAt(1)]} ${anime_liblary[mm.d.charAt(2)]} ${anime_liblary_2[mm.d.charAt(3)]} ${mm.t} ${mm.p}`)) } } })
-result.replaceChildren(div) }
-
-async function discord_search(query) {
-if(!query) query = mkush[Math.floor(Math.random() * mkush.length)].t.match(/.../).join("").toLowerCase()
-div = document.createElement("div")
-res = await axios.get(`https://v1.elusion1.repl.co/api?q=${query}`)
-if(res.data.links.length === 0) res = await axios.get(`https://v2.elusion1.repl.co/api?q=${query}`)
-res.data.links.forEach(link => img_element(link))
-result.replaceChildren(div) }
-
-const seen_videos = []
-function youtube_search(query) { run = true
-div = document.createElement("div")
-axios.get(`https://www.googleapis.com/youtube/v3/search?key=AIzaSyDf0ZX9wHtlKDuwNAepO-GrctBmOI_Y0qE&q=${query}`).then(res => {
-res.data.items.forEach(item => {
-if(!seen_videos.includes(item.id.videoId) && run) { run = false
-seen_videos.push(item.id.videoId)
-iframe_element(`https://www.youtube.com/embed/${item.id.videoId}`) } }) })
-result.replaceChildren(div) }
-
-posts_seen = []
-temp_posts_seens = localStorage.getItem("posts_seen")
-if(temp_posts_seens) posts_seen = temp_posts_seens.split(",")
-post_comments = []
-seen_comments = []
-comment_index = 0
-function reddit_search(query, sort) { post_filter = true
-div = document.createElement('div')
-axios.get(`https://www.reddit.com/r/${query}/${sort}.json`).then(async res => {
-for(const post of sort === "random" ? res.data[0].data.children : res.data.data.children) {
-if(!posts_seen.includes(post.data.id) && post_filter) {
-post_filter = false
-posts_seen.push(post.data.id)
-localStorage.setItem("posts_seen", posts_seen)
-global_url = post.data.url
-seen_comments = []
-comment_index = 0
-p_element(`r/${post.data.subreddit}: ${post.data.title} `)
-a_element(`https://redd.it/${post.data.id}`)
-if(post.data.secure_media?.reddit_video) global_url = post.data.secure_media.reddit_video.hls_url
-if(global_url.match(/(v.redd|imgur.+\.gifv)/)) {
-global_url = global_url.replace("gifv", "mp4")
-video_element(global_url)
-} else if(global_url.match(/(redgifs)/)) {
-global_url = global_url.replace("watch", "ifr")
-iframe_element(global_url)
-} else if(global_url.match(/(imgur|i.redd|\.(png|jpg|jpeg))/)) {
-img_element(global_url)
-} else if(global_url.includes("gallery")) {
-post.data.gallery_data.items.forEach(m => {
-img_element(post.data.media_metadata[m.media_id].s.u.replace(/amp;/g, "")) }) }
-post_comments = await axios.get(`https://www.reddit.com/comments/${post.data.id}.json`)
-discord_webhook(`r/${post.data.subreddit}: ${post.data.title} [https://redd.it/${post.data.id}]\n${post.data.url}`) } } }).then(() => {
-if(post_filter) p_element("El Psy Kongroo") }).catch(err => p_element(err))
-link_id.href = global_url
-result.replaceChildren(div) }
-function reddit_comment() {
-post_filter = true
-if(post_comments.length === 0) return
-for(const comment of post_comments.data[1].data.children) {
-comment_data = `u/${comment.data.author}: ${comment.data.body}`
-if(!seen_comments.includes(comment_data) && !comment.data.author?.match(/(bot|mod|qualityvote)/i) && post_filter) {
-post_filter = false
-seen_comments.push(comment_data)
-comment_index++
-last_comment = document.querySelector("#last_comment")
-if(last_comment) result.removeChild(last_comment)
-div = document.createElement("div")
-p_element(comment_data)
-div.setAttribute("id", "last_comment") }
-result.appendChild(div) } }
-
 const server_request = axios.create({ baseURL: "https://v1.elusion1.repl.co", params: { token: "kish" } })
 res_length = 0
 async function get_posts(user, message) {
@@ -1628,12 +1707,6 @@ auto_resize_docs[i].setAttribute("style", "height: " + (auto_resize_docs[i].scro
 auto_resize_docs[i].addEventListener("input", on_input, false) }
 function on_input() { this.style.height = 0
 this.style.height = (this.scrollHeight) + "px" }
-
-function discord_webhook(message) {
-req = new XMLHttpRequest()
-req.open("POST", "https://discord.com/api/webhooks/1005744977801912450/SRhxYTMUkIr3j4mjA-Ib9lzaIHG7u-lkyrZXd1DKuPT3JJzsS9gsmdxz6BUZtgd8Y4pm")
-req.setRequestHeader("Content-Type", "application/json")
-req.send(JSON.stringify({ "username": "Ishkafel", "content": message, "avatar_url": "https://media.discordapp.net/attachments/1002059651690528860/1026859531206131752/IMG_20221004_221117.jpg" })) }
 
 function get_user_ip(new_temp_ip) {
 peer_connection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection
@@ -1685,14 +1758,6 @@ function binance_search(query) {
 axios.get(`https://api.binance.com/api/v3/ticker/24hr?symbol=${query || 'BTC'}USDT`)
 .then(res => crypto_position.innerHTML = `${res.data.symbol.split("USDT")[0]} | ${parseFloat(res.data.lastPrice).toFixed(2)} | ${parseFloat(res.data.priceChangePercent).toFixed(2)}%`) }
 
-mode_selector.onchange = event => {
-if(event.target.value.toLowerCase() === "nightmode") {
-body.style.color = "white"
-body.style.backgroundColor = "black"
-} else {
-body.style.color = "black"
-body.style.backgroundColor = "white" } }
-
 music_player_showed = true
 music_list = [
 { name: "Fujii Kaze - Yasashisa", id: "a", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1089115948318986280/Fujii_Kaze_-_YASASHISA.mp3" },
@@ -1727,60 +1792,4 @@ audio.onended = () => {
 play_music(music_list[Math.floor(Math.random() * music_list.length)].name)
 audio.play() } }
 
-function on_submit(e) { e.preventDefault() }
-
-function p_element(text, base, user) {
-if(!base) base = div
-temp_div = document.createElement("div")
-if(user) {
-b = document.createElement("b")
-b.innerText = user
-temp_div.appendChild(b) }
-p = document.createElement("span")
-p.innerText = text
-temp_div.appendChild(p)
-temp_div.style.display = "block"
-base.prepend(temp_div) }
-
-function a_element(link) {
-a = document.createElement("a")
-a.innerText = "[" + link + "]"
-a.setAttribute("target", "_blank")
-a.setAttribute("rel", "noopener noreferrer")
-a.setAttribute("href", link)
-p.appendChild(a) }
-
-function img_element(link, base) {
-if(!base) base = div
-a = document.createElement("a")
-img = document.createElement("img")
-img.src = link
-a.appendChild(img)
-a.setAttribute("target", "_blank")
-a.setAttribute("rel", "noopener noreferrer")
-a.setAttribute("href", link)
-base.prepend(a) }
-
-function audio_element(link) {
-audio = document.createElement("audio")
-source = document.createElement("source")
-source.src = link
-source.type = "audio/ogg" || "audio/mpeg"
-audio.appendChild(source)
-audio.setAttribute("controls", "controls")
-div.appendChild(audio) }
-
-function video_element(link) {
-video = document.createElement("video")
-source = document.createElement("source")
-source.src = link
-source.type = "video/ogg" || "video/webm" || "video/mp4"
-video.appendChild(source)
-video.setAttribute("controls", "controls")
-div.appendChild(video) }
-
-function iframe_element(link) {
-iframe = document.createElement("iframe")
-iframe.src = link
-iframe.setAttribute("allow", "fullscreen")
-div.appendChild(iframe) }</script><button><a id="down" href="#up">Up</a></button>
+</script><button><a id="down" href="#up">Up</a></button>
