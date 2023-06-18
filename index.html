@@ -248,10 +248,7 @@ iframe.setAttribute("allow", "fullscreen")
 div.appendChild(iframe) }
 </script>
 
-<!--
-<link rel="stylesheet" href="style.css">
-<script src="js/script.js"></script>
--->
+<!---->
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap')
@@ -294,49 +291,25 @@ li:not(:first-child) span{ font-weight: 500; }
 .content button{ margin-top: 10px; } }
 </style>
 
-<html lang="en" dir="ltr">
-<head>
-<meta charset="utf-8">
-<title>Typing Speed Test Game | CodingNepal</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
 <div class="wrapper">
 <input type="text" class="input-field">
 <div class="content-box">
-<div class="typing-text">
-<p></p>
+<div class="typing-text"><p></p>
 </div>
 <div class="content">
 <ul class="result-details">
-<li class="time">
-<p>Time Left:</p>
-<span><b>60</b>s</span>
-</li>
-<li class="mistake">
-<p>Mistakes:</p>
-<span>0</span>
-</li>
-<li class="wpm">
-<p>WPM:</p>
-<span>0</span>
-</li>
-<li class="cpm">
-<p>CPM:</p>
-<span>0</span>
-</li>
+<li class="time"><p>Time Left:</p><span><b>60</b>s</span></li>
+<li class="mistake"><p>Mistakes:</p><span>0</span></li>
+<li class="wpm"><p>WPM:</p><span>0</span></li>
+<li class="cpm"><p>CPM:</p><span>0</span></li>
 </ul>
 <button>Try Again</button>
 </div>
 </div>
 </div>
 
-</body>
-</html>
-
 <script>
-const paragraphs = [
-"Authors often misinterpret the lettuce as a folklore rabbi, when in actuality it feels more like an uncursed bacon. Pursued distances show us how mother-in-laws can be charleses. Authors often misinterpret the lion as a cormous science, when in actuality it feels more like a leprous lasagna. Recent controversy aside, their band was, in this moment, a racemed suit. The clutch of a joke becomes a togaed chair. The first pickled chess is.",
+const paragraphs = ["Authors often misinterpret the lettuce as a folklore rabbi, when in actuality it feels more like an uncursed bacon. Pursued distances show us how mother-in-laws can be charleses. Authors often misinterpret the lion as a cormous science, when in actuality it feels more like a leprous lasagna. Recent controversy aside, their band was, in this moment, a racemed suit. The clutch of a joke becomes a togaed chair. The first pickled chess is.",
 "In modern times the first scrawny kitten is, in its own way, an input. An ostrich is the beginner of a roast. An appressed exhaust is a gun of the mind. A recorder is a grade from the right perspective. A hygienic is the cowbell of a skin. Few can name a dun brazil that isn't a highbrow playroom. The unwished beast comes from a thorny oxygen. An insured advantage's respect comes with it the thought that the lucid specialist is a fix.",
 "In ancient times the legs could be said to resemble stroppy vegetables. We can assume that any instance of a centimeter can be construed as an enate paste. One cannot separate pairs from astute managers. Those americas are nothing more than fish. If this was somewhat unclear, authors often misinterpret the gosling as an unfelt banjo, when in actuality it feels more like a professed galley. A bow of the squirrel is assumed.",
 "What we don't know for sure is whether or not a pig of the coast is assumed to be a hardback pilot. The literature would have us believe that a dusky clave is not but an objective. Few can name a limbate leo that isn't a sunlit silver. The bow is a mitten. However, the drawer is a bay. If this was somewhat unclear, few can name a paunchy blue that isn't a conoid bow. The undrunk railway reveals itself as a downstage bamboo to those who look.",
@@ -355,8 +328,7 @@ const paragraphs = [
 "The hefty opinion reveals itself as a sterile peer-to-peer to those who look. This could be, or perhaps the watch of a diamond becomes a bosom baboon. In recent years, some posit the unstuffed road to be less than altern. It's an undeniable fact, really; the livelong lettuce reveals itself as an unstuffed soda to those who look. In ancient times a bit is a balance's season. The popcorn of a morning becomes a moonless beauty.",
 "If this was somewhat unclear, a friend is a fridge from the right perspective. An upset carriage is a stitch of the mind. To be more specific, a temper is a pair from the right perspective. Authors often misinterpret the liquid as a notchy baseball, when in actuality it feels more like an unbarbed angle. Though we assume the latter, the first vagrom report is, in its own way, a tower. We know that the octopus of a cd becomes an unrent dahlia.",
 "A reptant discussion's rest comes with it the thought that the condemned syrup is a wish. The drake of a wallaby becomes a sonant harp. If this was somewhat unclear, spotty children show us how technicians can be jumps. Their honey was, in this moment, an intime direction. A ship is the lion of a hate. They were lost without the croupous jeep that composed their lily. In modern times a butcher of the birth is assumed to be a spiral bean.",
-"Those cowbells are nothing more than elements. This could be, or perhaps before stockings, thoughts were only opinions. A coil of the exclamation is assumed to be a hurtless toy. A board is the cast of a religion. In ancient times the first stinko sailboat is, in its own way, an exchange. Few can name a tutti channel that isn't a footless operation. Extending this logic, an oatmeal is the rooster of a shake. Those step-sons are nothing more than matches."
-];
+"Those cowbells are nothing more than elements. This could be, or perhaps before stockings, thoughts were only opinions. A coil of the exclamation is assumed to be a hurtless toy. A board is the cast of a religion. In ancient times the first stinko sailboat is, in its own way, an exchange. Few can name a tutti channel that isn't a footless operation. Extending this logic, an oatmeal is the rooster of a shake. Those step-sons are nothing more than matches."]
 
 const typingText = document.querySelector(".typing-text p"),
 inpField = document.querySelector(".wrapper .input-field"),
@@ -364,122 +336,94 @@ tryAgainBtn = document.querySelector(".content button"),
 timeTag = document.querySelector(".time span b"),
 mistakeTag = document.querySelector(".mistake span"),
 wpmTag = document.querySelector(".wpm span"),
-cpmTag = document.querySelector(".cpm span");
+cpmTag = document.querySelector(".cpm span")
 
 let timer,
-maxTime = 60,
+maxTime = 120,
 timeLeft = maxTime,
-charIndex = mistakes = isTyping = 0;
+charIndex = mistakes = isTyping = 0
 
 function loadParagraph() {
-const ranIndex = Math.floor(Math.random() * paragraphs.length);
-typingText.innerHTML = "";
+const ranIndex = Math.floor(Math.random() * paragraphs.length)
+typingText.innerHTML = ""
 paragraphs[ranIndex].split("").forEach(char => {
 let span = `<span>${char}</span>`
-typingText.innerHTML += span;
-});
-typingText.querySelectorAll("span")[0].classList.add("active");
-document.addEventListener("keydown", () => inpField.focus());
-typingText.addEventListener("click", () => inpField.focus());
-}
+typingText.innerHTML += span })
+typingText.querySelectorAll("span")[0].classList.add("active")
+document.addEventListener("keydown", () => inpField.focus())
+typingText.addEventListener("click", () => inpField.focus()) }
 
 function initTyping() {
 let characters = typingText.querySelectorAll("span");
 let typedChar = inpField.value.split("")[charIndex];
 if(charIndex < characters.length - 1 && timeLeft > 0) {
 if(!isTyping) {
-timer = setInterval(initTimer, 1000);
-isTyping = true;
-}
+timer = setInterval(initTimer, 1000)
+isTyping = true }
 if(typedChar == null) {
 if(charIndex > 0) {
-charIndex--;
-if(characters[charIndex].classList.contains("incorrect")) {
-mistakes--;
-}
-characters[charIndex].classList.remove("correct", "incorrect");
-}
+charIndex--
+if(characters[charIndex].classList.contains("incorrect")) { mistakes-- }
+characters[charIndex].classList.remove("correct", "incorrect") }
 } else {
-if(characters[charIndex].innerText == typedChar) {
-characters[charIndex].classList.add("correct");
-} else {
-mistakes++;
-characters[charIndex].classList.add("incorrect");
-}
-charIndex++;
-}
-characters.forEach(span => span.classList.remove("active"));
-characters[charIndex].classList.add("active");
+if(characters[charIndex].innerText == typedChar) { characters[charIndex].classList.add("correct");
+} else { mistakes++
+characters[charIndex].classList.add("incorrect") }
+charIndex++ }
+characters.forEach(span => span.classList.remove("active"))
+characters[charIndex].classList.add("active")
 
-let wpm = Math.round(((charIndex - mistakes)/ 5) / (maxTime - timeLeft) * 60);
-wpm = wpm < 0 || !wpm || wpm === Infinity ? 0 : wpm;
+let wpm = Math.round(((charIndex - mistakes)/ 5) / (maxTime - timeLeft) * 60)
+wpm = wpm < 0 || !wpm || wpm === Infinity ? 0 : wpm
 
-wpmTag.innerText = wpm;
-mistakeTag.innerText = mistakes;
-cpmTag.innerText = charIndex - mistakes;
+wpmTag.innerText = wpm
+mistakeTag.innerText = mistakes
+cpmTag.innerText = charIndex - mistakes
 } else {
-clearInterval(timer);
-inpField.value = "";
-} 
-}
+clearInterval(timer)
+inpField.value = "" } }
 
 function initTimer() {
-if(timeLeft > 0) {
-timeLeft--;
-timeTag.innerText = timeLeft;
-let wpm = Math.round(((charIndex - mistakes)/ 5) / (maxTime - timeLeft) * 60);
-wpmTag.innerText = wpm;
-} else {
-clearInterval(timer);
-}
-}
+if(timeLeft > 0) { timeLeft--
+timeTag.innerText = timeLeft
+let wpm = Math.round(((charIndex - mistakes)/ 5) / (maxTime - timeLeft) * 60)
+wpmTag.innerText = wpm
+} else { clearInterval(timer) } }
 
 function resetGame() {
-loadParagraph();
-clearInterval(timer);
-timeLeft = maxTime;
-charIndex = mistakes = isTyping = 0;
-inpField.value = "";
-timeTag.innerText = timeLeft;
-wpmTag.innerText = 0;
-mistakeTag.innerText = 0;
-cpmTag.innerText = 0;
-}
+loadParagraph()
+clearInterval(timer)
+timeLeft = maxTime
+charIndex = mistakes = isTyping = 0
+inpField.value = ""
+timeTag.innerText = timeLeft
+wpmTag.innerText = 0
+mistakeTag.innerText = 0
+cpmTag.innerText = 0 }
 
-loadParagraph();
-inpField.addEventListener("input", initTyping);
-tryAgainBtn.addEventListener("click", resetGame);
+loadParagraph()
+inpField.addEventListener("input", initTyping)
+tryAgainBtn.addEventListener("click", resetGame)
 </script>
 
 <!---->
 
 <style>
 body { height: 100vh; width: 100vw; background-color: black; margin: 0rem; overflow: hidden; }
-
 #image-track { display: flex; gap: 4vmin; position: absolute; left: 50%; top: 50%; transform: translate(0%, -50%);  user-select: none; /* -- Prevent image highlighting -- */ }
-
 #image-track > .image { width: 40vmin; height: 56vmin; object-fit: cover; object-position: 100% center; }
 
-/* -- YouTube Link Styles -- */
-
 body.menu-toggled > .meta-link > span { color: rgb(30, 30, 30); }
- #source-link { bottom: 60px; }
-
+#source-link { bottom: 60px; }
 #source-link > i { color: rgb(94, 106, 210); }
-
 #yt-link > i { color: rgb(239, 83, 80); }
-
 .meta-link { align-items: center; backdrop-filter: blur(3px); background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; bottom: 10px; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1); cursor: pointer; display: inline-flex; gap: 5px; left: 10px; padding: 10px 20px; position: fixed; text-decoration: none; transition: background-color 400ms, border-color 400ms; z-index: 10000; }
-
 .meta-link:hover { background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); }
-
 .meta-link > i, .meta-link > span { height: 20px; line-height: 20px; }
-
 .meta-link > span { color: white; font-family: "Rubik", sans-serif; font-weight: 500; }
 </style>
 
 <div id="image-track" data-mouse-down-at="0" data-prev-percentage="0">
-
 <img class="image" src="sketch1.webp" draggable="false" />
 <img class="image" src="wax1.jpg" draggable="false" />
 <img class="image" src="wax2.jpg" draggable="false" />
@@ -497,7 +441,6 @@ body.menu-toggled > .meta-link > span { color: rgb(30, 30, 30); }
 <img class="image" src="page1.jpg" draggable="false" />
 <img class="image" src="paper1.jpg" draggable="false" />
 <img class="image" src="paper2.jpg" draggable="false" />
-
 <!--
 <img class="image" src="https://images.unsplash.com/photo-1524781289445-ddf8f5695861?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
 <img class="image" src="https://images.unsplash.com/photo-1610194352361-4c81a6a8967e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1674&q=80" draggable="false" />
@@ -511,66 +454,43 @@ body.menu-toggled > .meta-link > span { color: rgb(30, 30, 30); }
 </div>
 
 <a id="source-link" class="meta-link" href="https://camillemormal.com" target="_blank">
-<i class="fa-solid fa-link"></i>
-<span>Source</span>
-</a>
+<i class="fa-solid fa-link"></i><span>Source</span></a>
 
 <a id="yt-link" class="meta-link" href="https://youtu.be/PkADl0HubMY" target="_blank">
-<i class="fa-brands fa-youtube"></i>
-<span>7 min tutorial</span>
-</a>
+<i class="fa-brands fa-youtube"></i><span>7 min tutorial</span></a>
 
 <script>
-const track = document.getElementById("image-track");
-
-const handleOnDown = e => track.dataset.mouseDownAt = e.clientX;
-
-const handleOnUp = () => {
-track.dataset.mouseDownAt = "0";
-track.dataset.prevPercentage = track.dataset.percentage;
-}
-
-const handleOnMove = e => {
-if(track.dataset.mouseDownAt === "0") return;
+const track = document.getElementById("image-track")
+const handleOnDown = e => track.dataset.mouseDownAt = e.clientX
+const handleOnUp = () => { track.dataset.mouseDownAt = "0"
+track.dataset.prevPercentage = track.dataset.percentage }
+const handleOnMove = e => { if(track.dataset.mouseDownAt === "0") return
 
 const mouseDelta = parseFloat(track.dataset.mouseDownAt) - e.clientX,
-maxDelta = window.innerWidth / 2;
+maxDelta = window.innerWidth / 2
 
 const percentage = (mouseDelta / maxDelta) * -100,
 nextPercentageUnconstrained = parseFloat(track.dataset.prevPercentage) + percentage,
-nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), -100);
+nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), -100)
 
-track.dataset.percentage = nextPercentage;
+track.dataset.percentage = nextPercentage
 
-track.animate({
-transform: `translate(${nextPercentage}%, -50%)`
-}, { duration: 1200, fill: "forwards" });
+track.animate({ transform: `translate(${nextPercentage}%, -50%)`
+}, { duration: 1200, fill: "forwards" })
 
 for(const image of track.getElementsByClassName("image")) {
-image.animate({
-objectPosition: `${100 + nextPercentage}% center`
-}, { duration: 1200, fill: "forwards" });
-}
-}
+image.animate({ objectPosition: `${100 + nextPercentage}% center`
+}, { duration: 1200, fill: "forwards" }) } }
 
-/* -- Had to add extra lines for touch events -- */
-
-window.onmousedown = e => handleOnDown(e);
-
-window.ontouchstart = e => handleOnDown(e.touches[0]);
-
-window.onmouseup = e => handleOnUp(e);
-
-window.ontouchend = e => handleOnUp(e.touches[0]);
-
-window.onmousemove = e => handleOnMove(e);
-
-window.ontouchmove = e => handleOnMove(e.touches[0]);
+window.onmousedown = e => handleOnDown(e)
+window.ontouchstart = e => handleOnDown(e.touches[0])
+window.onmouseup = e => handleOnUp(e)
+window.ontouchend = e => handleOnUp(e.touches[0])
+window.onmousemove = e => handleOnMove(e)
+window.ontouchmove = e => handleOnMove(e.touches[0])
 </script>
 
 <!---->
-
-<!--
 
 pagibig | onlinejobs | upwork | taskus | sai | prdc | jcd | dbp service group
 pineapple virtual assistant hub
@@ -834,8 +754,7 @@ axios.get(`https://api.binance.com/api/v3/ticker/24hr?symbol=${query || 'BTC'}US
 .then(res => crypto_position.innerHTML = `${res.data.symbol.split("USDT")[0]} | ${parseFloat(res.data.lastPrice).toFixed(2)} | ${parseFloat(res.data.priceChangePercent).toFixed(2)}%`) }
 
 music_player_showed = true
-music_list = [
-{ name: "Fujii Kaze - Yasashisa", id: "a", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1089115948318986280/Fujii_Kaze_-_YASASHISA.mp3" },
+music_list = [{ name: "Fujii Kaze - Yasashisa", id: "a", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1089115948318986280/Fujii_Kaze_-_YASASHISA.mp3" },
 { name: "Fujii Kaze - Kaerou", id: "b", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1089115947610148934/Fujii_Kaze_-_Kaerou.mp3" },
 { name: "Fujii Kaze - Shinunoga E-Wa", id: "c", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1089115947941494864/Fujii_Kaze_-_Shinunoga_E-Wa.mp3" },
 { name: "Fujii Kaze - Matsuri", id: "d", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1089180079164248115/Fujii_Kaze_-_Matsuri.mp3" },
@@ -848,8 +767,7 @@ music_list = [
 { name: "Kenshi Yonezu - Uma to Shika", id: "k", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1090618371252424785/Kenshi_Yonezu_-_Uma_to_Shika.mp3" },
 { name: "Kenshi Yonezu - Orion", id: "l", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1090618371705425940/Kenshi_Yonezu_-_Orion.mp3" },
 { name: "Kenshi Yonezu - Eine Kleine", id: "m", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1090618372380696586/-__Kenshi_Yonezu_-_Eine_Kleine.m4a" },
-{ name: "Kenshi Yonezu - Haiiro to Ao", id: "n", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1090618372028371014/Kenshi_Yonezu_-_Haiirotoao__Masaki_Suda_.mp3" }
-]
+{ name: "Kenshi Yonezu - Haiiro to Ao", id: "n", src: "https://cdn.discordapp.com/attachments/1063507461748830289/1090618372028371014/Kenshi_Yonezu_-_Haiirotoao__Masaki_Suda_.mp3" }]
 
 last_music = ""
 function play_music(music) {
@@ -868,8 +786,6 @@ play_music(music_list[Math.floor(Math.random() * music_list.length)].name)
 audio.play() } }
 
 </script><button><a id="down" href="#up">Up</a></button>-->
-
-
 
 <textarea class="auto_resize">
 client=~/client && rm -r ${client} && cd ~/storage/shared/download/ && cp -r client ${client} && cd ${client} && vercel --prod -y
