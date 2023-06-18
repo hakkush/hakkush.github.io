@@ -5,527 +5,6 @@
 <link href="icon.png" rel="icon" type="image/png" sizes="32x32">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js" integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-<!--
-<link rel="stylesheet" href="style.css">
-<script src="js/script.js"></script>
--->
-
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-font-family: 'Poppins', sans-serif; }
-body{
-  display: flex;
-  padding: 0 10px;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background: #17A2B8;
-}
-::selection{
-  color: #fff;
-  background: #17A2B8;
-}
-.wrapper{
-  width: 770px;
-  padding: 35px;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 10px 15px rgba(0,0,0,0.05);
-}
-.wrapper .input-field{
-  opacity: 0;
-  z-index: -999;
-  position: absolute;
-}
-.wrapper .content-box{
-  padding: 13px 20px 0;
-  border-radius: 10px;
-  border: 1px solid #bfbfbf;
-}
-.content-box .typing-text{
-  overflow: hidden;
-  max-height: 256px;
-}
-.typing-text::-webkit-scrollbar{
-  width: 0;
-}
-.typing-text p{
-  font-size: 21px;
-  text-align: justify;
-  letter-spacing: 1px;
-  word-break: break-all;
-}
-.typing-text p span{
-  position: relative;
-}
-.typing-text p span.correct{
-  color: #56964f;
-}
-.typing-text p span.incorrect{
-  color: #cb3439;
-  outline: 1px solid #fff;
-  background: #ffc0cb;
-  border-radius: 4px;
-}
-.typing-text p span.active{
-  color: #17A2B8;
-}
-.typing-text p span.active::before{
-  position: absolute;
-  content: "";
-  height: 2px;
-  width: 100%;
-  bottom: 0;
-  left: 0;
-  opacity: 0;
-  border-radius: 5px;
-  background: #17A2B8;
-  animation: blink 1s ease-in-out infinite;
-}
-@keyframes blink{
-  50%{ 
-    opacity: 1; 
-  }
-}
-.content-box .content{
-  margin-top: 17px;
-  display: flex;
-  padding: 12px 0;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  border-top: 1px solid #bfbfbf;
-}
-.content button{
-  outline: none;
-  border: none;
-  width: 105px;
-  color: #fff;
-  padding: 8px 0;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 5px;
-  background: #17A2B8;
-  transition: transform 0.3s ease;
-}
-.content button:active{
-  transform: scale(0.97);
-}
-.content .result-details{
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  width: calc(100% - 140px);
-  justify-content: space-between;
-}
-.result-details li{
-  display: flex;
-  height: 20px;
-  list-style: none;
-  position: relative;
-  align-items: center;
-}
-.result-details li:not(:first-child){
-  padding-left: 22px;
-  border-left: 1px solid #bfbfbf;
-}
-.result-details li p{
-  font-size: 19px;
-}
-.result-details li span{
-  display: block;
-  font-size: 20px;
-  margin-left: 10px;
-}
-li span b{
-  font-weight: 500;
-}
-li:not(:first-child) span{
-  font-weight: 500;
-}
-@media (max-width: 745px) {
-  .wrapper{
-    padding: 20px;
-  }
-  .content-box .content{
-    padding: 20px 0;
-  }
-  .content-box .typing-text{
-    max-height: 100%;
-  }
-  .typing-text p{
-    font-size: 19px;
-    text-align: left;
-  }
-  .content button{
-    width: 100%;
-    font-size: 15px;
-    padding: 10px 0;
-    margin-top: 20px;
-  }
-  .content .result-details{
-    width: 100%;
-  }
-  .result-details li:not(:first-child){
-    border-left: 0;
-    padding: 0;
-  }
-  .result-details li p, 
-  .result-details li span{
-    font-size: 17px;
-  }
-}
-@media (max-width: 518px) {
-  .wrapper .content-box{
-    padding: 10px 15px 0;
-  }
-  .typing-text p{
-    font-size: 18px;
-  }
-  .result-details li{
-    margin-bottom: 10px;
-  }
-  .content button{
-    margin-top: 10px;
-  }
-}
-</style>
-
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">  
-    <title>Typing Speed Test Game | CodingNepal</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  </head>
-  <body>
-    <div class="wrapper">
-      <input type="text" class="input-field">
-      <div class="content-box">
-        <div class="typing-text">
-          <p></p>
-        </div>
-        <div class="content">
-          <ul class="result-details">
-            <li class="time">
-              <p>Time Left:</p>
-              <span><b>60</b>s</span>
-            </li>
-            <li class="mistake">
-              <p>Mistakes:</p>
-              <span>0</span>
-            </li>
-            <li class="wpm">
-              <p>WPM:</p>
-              <span>0</span>
-            </li>
-            <li class="cpm">
-              <p>CPM:</p>
-              <span>0</span>
-            </li>
-          </ul>
-          <button>Try Again</button>
-        </div>
-      </div>
-    </div>
-  
-  </body>
-</html>
-
-<script>
-const paragraphs = [
-    "Authors often misinterpret the lettuce as a folklore rabbi, when in actuality it feels more like an uncursed bacon. Pursued distances show us how mother-in-laws can be charleses. Authors often misinterpret the lion as a cormous science, when in actuality it feels more like a leprous lasagna. Recent controversy aside, their band was, in this moment, a racemed suit. The clutch of a joke becomes a togaed chair. The first pickled chess is.",
-    "In modern times the first scrawny kitten is, in its own way, an input. An ostrich is the beginner of a roast. An appressed exhaust is a gun of the mind. A recorder is a grade from the right perspective. A hygienic is the cowbell of a skin. Few can name a dun brazil that isn't a highbrow playroom. The unwished beast comes from a thorny oxygen. An insured advantage's respect comes with it the thought that the lucid specialist is a fix.",
-    "In ancient times the legs could be said to resemble stroppy vegetables. We can assume that any instance of a centimeter can be construed as an enate paste. One cannot separate pairs from astute managers. Those americas are nothing more than fish. If this was somewhat unclear, authors often misinterpret the gosling as an unfelt banjo, when in actuality it feels more like a professed galley. A bow of the squirrel is assumed.",
-    "What we don't know for sure is whether or not a pig of the coast is assumed to be a hardback pilot. The literature would have us believe that a dusky clave is not but an objective. Few can name a limbate leo that isn't a sunlit silver. The bow is a mitten. However, the drawer is a bay. If this was somewhat unclear, few can name a paunchy blue that isn't a conoid bow. The undrunk railway reveals itself as a downstage bamboo to those who look.",
-    "Their politician was, in this moment, a notour paperback. The first armless grouse is, in its own way, a gear. The coat is a wash. However, a cake is the llama of a caravan. Snakelike armies show us how playgrounds can be viscoses. Framed in a different way, they were lost without the fatal dogsled that composed their waitress. Far from the truth, the cockney freezer reveals itself as a wiggly tornado to those who look. The first hawklike sack.",
-    "An aunt is a bassoon from the right perspective. As far as we can estimate, some posit the melic myanmar to be less than kutcha. One cannot separate foods from blowzy bows. The scampish closet reveals itself as a sclerous llama to those who look. A hip is the skirt of a peak. Some hempy laundries are thought of simply as orchids. A gum is a trumpet from the right perspective. A freebie flight is a wrench of the mind. Some posit the croupy.",
-    "A baby is a shingle from the right perspective. Before defenses, collars were only operations. Bails are gleesome relatives. An alloy is a streetcar's debt. A fighter of the scarecrow is assumed to be a leisured laundry. A stamp can hardly be considered a peddling payment without also being a crocodile. A skill is a meteorology's fan. Their scent was, in this moment, a hidden feeling. The competitor of a bacon becomes a boxlike cougar.",
-    "A broadband jam is a network of the mind. One cannot separate chickens from glowing periods. A production is a faucet from the right perspective. The lines could be said to resemble zincoid females. A deborah is a tractor's whale. Cod are elite japans. Some posit the wiglike norwegian to be less than plashy. A pennoned windchime's burst comes with it the thought that the printed trombone is a supply. Relations are restless tests.",
-    "In recent years, some teeming herons are thought of simply as numbers. Nowhere is it disputed that an unlaid fur is a marble of the mind. Far from the truth, few can name a glossy lier that isn't an ingrate bone. The chicken is a giraffe. They were lost without the abscessed leek that composed their fowl. An interviewer is a tussal bomb. Vanward maracas show us how scarfs can be doubts. Few can name an unguled punch that isn't pig.",
-    "A cough is a talk from the right perspective. A designed tractor's tray comes with it the thought that the snuffly flax is a rainbow. Their health was, in this moment, an earthy passbook. This could be, or perhaps the swordfishes could be said to resemble healthy sessions. A capricorn is a helium from the right perspective. However, a sled is a mailman's tennis. The competitor of an alarm becomes a toeless raincoat. Their twist was, in this moment.",
-    "Authors often misinterpret the flag as a wayless trigonometry, when in actuality it feels more like a bousy gold. Few can name a jasp oven that isn't a stutter grape. They were lost without the huffy religion that composed their booklet. Those waves are nothing more than pedestrians. Few can name a quartered semicolon that isn't a rounding scooter. Though we assume the latter, the literature would have us believe.",
-    "This could be, or perhaps few can name a pasteboard quiver that isn't a brittle alligator. A swordfish is a death's numeric. Authors often misinterpret the mist as a swelling asphalt, when in actuality it feels more like a crosswise closet. Some posit the tonal brother-in-law to be less than newborn. We know that the sizes could be said to resemble sleepwalk cycles. Before seasons, supplies were only fighters. Their stew was, in this moment.",
-    "The vision of an attempt becomes a lawny output. Dibbles are mis womens. The olden penalty reveals itself as a bustled field to those who look. Few can name a chalky force that isn't a primate literature. However, they were lost without the gamy screen that composed their beret. Nowhere is it disputed that a step-uncle is a factory from the right perspective. One cannot separate paints from dreary windows. What we don't know for sure is whether.",
-    "A tramp is a siamese from the right perspective. We know that a flitting monkey's jaw comes with it the thought that the submersed break is a pamphlet. Their cream was, in this moment, a seedy daffodil. The nest is a visitor. Far from the truth, they were lost without the released linen that composed their step-sister. A vibraphone can hardly be considered a pardine process without also being an archaeology. The bay of a hyacinth becomes.",
-    "The frosts could be said to resemble backstage chards. One cannot separate colleges from pinkish bacons. Far from the truth, the mom of a rooster becomes a chordal hydrogen. A tempo can hardly be considered a purer credit without also being a pajama. The first combined ease is, in its own way, a pantyhose. Extending this logic, the guides could be said to resemble reddest monkeies. Framed in a different way, an addle hemp is a van.",
-    "Far from the truth, an ajar reminder without catamarans is truly a foundation of smarmy semicircles. An alike board without harps is truly a satin of fated pans. A hubcap sees a parent as a painful beautician. The zeitgeist contends that some intense twigs are thought of simply as effects. A cross is a poppied tune. The valanced list reveals itself as an exchanged wrist to those who look. Recent controversy aside.",
-    "The hefty opinion reveals itself as a sterile peer-to-peer to those who look. This could be, or perhaps the watch of a diamond becomes a bosom baboon. In recent years, some posit the unstuffed road to be less than altern. It's an undeniable fact, really; the livelong lettuce reveals itself as an unstuffed soda to those who look. In ancient times a bit is a balance's season. The popcorn of a morning becomes a moonless beauty.",
-    "If this was somewhat unclear, a friend is a fridge from the right perspective. An upset carriage is a stitch of the mind. To be more specific, a temper is a pair from the right perspective. Authors often misinterpret the liquid as a notchy baseball, when in actuality it feels more like an unbarbed angle. Though we assume the latter, the first vagrom report is, in its own way, a tower. We know that the octopus of a cd becomes an unrent dahlia.",
-    "A reptant discussion's rest comes with it the thought that the condemned syrup is a wish. The drake of a wallaby becomes a sonant harp. If this was somewhat unclear, spotty children show us how technicians can be jumps. Their honey was, in this moment, an intime direction. A ship is the lion of a hate. They were lost without the croupous jeep that composed their lily. In modern times a butcher of the birth is assumed to be a spiral bean.",
-    "Those cowbells are nothing more than elements. This could be, or perhaps before stockings, thoughts were only opinions. A coil of the exclamation is assumed to be a hurtless toy. A board is the cast of a religion. In ancient times the first stinko sailboat is, in its own way, an exchange. Few can name a tutti channel that isn't a footless operation. Extending this logic, an oatmeal is the rooster of a shake. Those step-sons are nothing more than matches."
-];
-
-const typingText = document.querySelector(".typing-text p"),
-inpField = document.querySelector(".wrapper .input-field"),
-tryAgainBtn = document.querySelector(".content button"),
-timeTag = document.querySelector(".time span b"),
-mistakeTag = document.querySelector(".mistake span"),
-wpmTag = document.querySelector(".wpm span"),
-cpmTag = document.querySelector(".cpm span");
-
-let timer,
-maxTime = 60,
-timeLeft = maxTime,
-charIndex = mistakes = isTyping = 0;
-
-function loadParagraph() {
-    const ranIndex = Math.floor(Math.random() * paragraphs.length);
-    typingText.innerHTML = "";
-    paragraphs[ranIndex].split("").forEach(char => {
-        let span = `<span>${char}</span>`
-        typingText.innerHTML += span;
-    });
-    typingText.querySelectorAll("span")[0].classList.add("active");
-    document.addEventListener("keydown", () => inpField.focus());
-    typingText.addEventListener("click", () => inpField.focus());
-}
-
-function initTyping() {
-    let characters = typingText.querySelectorAll("span");
-    let typedChar = inpField.value.split("")[charIndex];
-    if(charIndex < characters.length - 1 && timeLeft > 0) {
-        if(!isTyping) {
-            timer = setInterval(initTimer, 1000);
-            isTyping = true;
-        }
-        if(typedChar == null) {
-            if(charIndex > 0) {
-                charIndex--;
-                if(characters[charIndex].classList.contains("incorrect")) {
-                    mistakes--;
-                }
-                characters[charIndex].classList.remove("correct", "incorrect");
-            }
-        } else {
-            if(characters[charIndex].innerText == typedChar) {
-                characters[charIndex].classList.add("correct");
-            } else {
-                mistakes++;
-                characters[charIndex].classList.add("incorrect");
-            }
-            charIndex++;
-        }
-        characters.forEach(span => span.classList.remove("active"));
-        characters[charIndex].classList.add("active");
-
-        let wpm = Math.round(((charIndex - mistakes)  / 5) / (maxTime - timeLeft) * 60);
-        wpm = wpm < 0 || !wpm || wpm === Infinity ? 0 : wpm;
-        
-        wpmTag.innerText = wpm;
-        mistakeTag.innerText = mistakes;
-        cpmTag.innerText = charIndex - mistakes;
-    } else {
-        clearInterval(timer);
-        inpField.value = "";
-    }   
-}
-
-function initTimer() {
-    if(timeLeft > 0) {
-        timeLeft--;
-        timeTag.innerText = timeLeft;
-        let wpm = Math.round(((charIndex - mistakes)  / 5) / (maxTime - timeLeft) * 60);
-        wpmTag.innerText = wpm;
-    } else {
-        clearInterval(timer);
-    }
-}
-
-function resetGame() {
-    loadParagraph();
-    clearInterval(timer);
-    timeLeft = maxTime;
-    charIndex = mistakes = isTyping = 0;
-    inpField.value = "";
-    timeTag.innerText = timeLeft;
-    wpmTag.innerText = 0;
-    mistakeTag.innerText = 0;
-    cpmTag.innerText = 0;
-}
-
-loadParagraph();
-inpField.addEventListener("input", initTyping);
-tryAgainBtn.addEventListener("click", resetGame);
-</script>
-
-<!---->
-
-<style>
-body {
-  height: 100vh;
-  width: 100vw;
-  background-color: black;
-  margin: 0rem;
-  overflow: hidden;
-}
-
-#image-track {
-  display: flex;
-  gap: 4vmin;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(0%, -50%); 
-  user-select: none; /* -- Prevent image highlighting -- */
-}
-
-#image-track > .image {
-  width: 40vmin;
-  height: 56vmin;
-  object-fit: cover;
-  object-position: 100% center;
-}
-
-/* -- YouTube Link Styles -- */
-
-body.menu-toggled > .meta-link > span {
-  color: rgb(30, 30, 30);
-}
-
-#source-link {
-  bottom: 60px;
-}
-
-#source-link > i {
-  color: rgb(94, 106, 210);
-}
-
-#yt-link > i {
-  color: rgb(239, 83, 80);
-}
-
-.meta-link {
-  align-items: center;
-  backdrop-filter: blur(3px);
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
-  bottom: 10px;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
-  cursor: pointer;  
-  display: inline-flex;
-  gap: 5px;
-  left: 10px;
-  padding: 10px 20px;
-  position: fixed;
-  text-decoration: none;
-  transition: background-color 400ms, border-color 400ms;
-  z-index: 10000;
-}
-
-.meta-link:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.meta-link > i, .meta-link > span {
-  height: 20px;
-  line-height: 20px;
-}
-
-.meta-link > span {
-  color: white;
-  font-family: "Rubik", sans-serif;
-  font-weight: 500;
-}
-</style>
-
-<div id="image-track" data-mouse-down-at="0" data-prev-percentage="0">
-
-<img class="image" src="sketch1.webp" draggable="false" />
-<img class="image" src="wax1.jpg" draggable="false" />
-<img class="image" src="wax2.jpg" draggable="false" />
-<img class="image" src="wax3.jpg" draggable="false" />
-<img class="image" src="candle1.jpg" draggable="false" />
-<img class="image" src="book1.jpg" draggable="false" />
-<img class="image" src="book2.jpg" draggable="false" />
-<img class="image" src="book3.jpg" draggable="false" />
-<img class="image" src="stamp1.jpg" draggable="false" />
-<img class="image" src="stamp2.jpg" draggable="false" />
-<img class="image" src="stamp3.jpg" draggable="false" />
-<img class="image" src="string1.webp" draggable="false" />
-<img class="image" src="furnace1.webp" draggable="false" />
-<img class="image" src="tape1.jpg" draggable="false" />
-<img class="image" src="page1.jpg" draggable="false" />
-<img class="image" src="paper1.jpg" draggable="false" />
-<img class="image" src="paper2.jpg" draggable="false" />
-
-<!--
-  <img class="image" src="https://images.unsplash.com/photo-1524781289445-ddf8f5695861?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
-  <img class="image" src="https://images.unsplash.com/photo-1610194352361-4c81a6a8967e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1674&q=80" draggable="false" />
-  <img class="image" src="https://images.unsplash.com/photo-1618202133208-2907bebba9e1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
-  <img class="image" src="https://images.unsplash.com/photo-1495805442109-bf1cf975750b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
-  <img class="image" src="https://images.unsplash.com/photo-1548021682-1720ed403a5b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
-  <img class="image" src="https://images.unsplash.com/photo-1496753480864-3e588e0269b3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2134&q=80" draggable="false" />
-  <img class="image" src="https://images.unsplash.com/photo-1613346945084-35cccc812dd5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1759&q=80" draggable="false" />
-  <img class="image" src="https://images.unsplash.com/photo-1516681100942-77d8e7f9dd97?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
--->
-</div>
-
-<a id="source-link" class="meta-link" href="https://camillemormal.com" target="_blank">
-  <i class="fa-solid fa-link"></i>
-  <span>Source</span>
-</a>
-
-<a id="yt-link" class="meta-link" href="https://youtu.be/PkADl0HubMY" target="_blank">
-  <i class="fa-brands fa-youtube"></i>
-  <span>7 min tutorial</span>
-</a>
-
-<script>
-const track = document.getElementById("image-track");
-
-const handleOnDown = e => track.dataset.mouseDownAt = e.clientX;
-
-const handleOnUp = () => {
-  track.dataset.mouseDownAt = "0";  
-  track.dataset.prevPercentage = track.dataset.percentage;
-}
-
-const handleOnMove = e => {
-  if(track.dataset.mouseDownAt === "0") return;
-  
-  const mouseDelta = parseFloat(track.dataset.mouseDownAt) - e.clientX,
-        maxDelta = window.innerWidth / 2;
-  
-  const percentage = (mouseDelta / maxDelta) * -100,
-        nextPercentageUnconstrained = parseFloat(track.dataset.prevPercentage) + percentage,
-        nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), -100);
-  
-  track.dataset.percentage = nextPercentage;
-  
-  track.animate({
-    transform: `translate(${nextPercentage}%, -50%)`
-  }, { duration: 1200, fill: "forwards" });
-  
-  for(const image of track.getElementsByClassName("image")) {
-    image.animate({
-      objectPosition: `${100 + nextPercentage}% center`
-    }, { duration: 1200, fill: "forwards" });
-  }
-}
-
-/* -- Had to add extra lines for touch events -- */
-
-window.onmousedown = e => handleOnDown(e);
-
-window.ontouchstart = e => handleOnDown(e.touches[0]);
-
-window.onmouseup = e => handleOnUp(e);
-
-window.ontouchend = e => handleOnUp(e.touches[0]);
-
-window.onmousemove = e => handleOnMove(e);
-
-window.ontouchmove = e => handleOnMove(e.touches[0]);
-</script>
-
-<!---->
-
 <style>
 :root { --color: black; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -768,6 +247,489 @@ iframe.src = link
 iframe.setAttribute("allow", "fullscreen")
 div.appendChild(iframe) }
 </script>
+
+<!--
+<link rel="stylesheet" href="style.css">
+<script src="js/script.js"></script>
+-->
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap')
+* { font-family: 'Poppins', sans-serif; }
+body { display: flex; padding: 0 10px; align-items: center; justify-content: center; min-height: 100vh; background: #17A2B8; }
+::selection { color: #fff; background: #17A2B8; }
+.wrapper { width: 770px; padding: 35px; background: #fff; border-radius: 10px; box-shadow: 0 10px 15px rgba(0,0,0,0.05); }
+.wrapper .input-field{ opacity: 0; z-index: -999; position: absolute; }
+.wrapper .content-box{ padding: 13px 20px 0; border-radius: 10px; border: 1px solid #bfbfbf; }
+.content-box .typing-text{ overflow: hidden; max-height: 256px; }
+.typing-text::-webkit-scrollbar{ width: 0; }
+.typing-text p{ font-size: 21px; text-align: justify; letter-spacing: 1px; word-break: break-all; }
+.typing-text p span{
+position: relative;
+}
+.typing-text p span.correct{
+color: #56964f;
+}
+.typing-text p span.incorrect{
+color: #cb3439;
+outline: 1px solid #fff;
+background: #ffc0cb;
+border-radius: 4px;
+}
+.typing-text p span.active{
+color: #17A2B8;
+}
+.typing-text p span.active::before{
+position: absolute;
+content: "";
+height: 2px;
+width: 100%;
+bottom: 0;
+left: 0;
+opacity: 0;
+border-radius: 5px;
+background: #17A2B8;
+animation: blink 1s ease-in-out infinite;
+}
+@keyframes blink{
+50%{ 
+opacity: 1; 
+}
+}
+.content-box .content{
+margin-top: 17px;
+display: flex;
+padding: 12px 0;
+flex-wrap: wrap;
+align-items: center;
+justify-content: space-between;
+border-top: 1px solid #bfbfbf;
+}
+.content button{
+outline: none;
+border: none;
+width: 105px;
+color: #fff;
+padding: 8px 0;
+font-size: 16px;
+cursor: pointer;
+border-radius: 5px;
+background: #17A2B8;
+transition: transform 0.3s ease;
+}
+.content button:active{
+transform: scale(0.97);
+}
+.content .result-details{
+display: flex;
+flex-wrap: wrap;
+align-items: center;
+width: calc(100% - 140px);
+justify-content: space-between;
+}
+.result-details li{
+display: flex;
+height: 20px;
+list-style: none;
+position: relative;
+align-items: center;
+}
+.result-details li:not(:first-child){
+padding-left: 22px;
+border-left: 1px solid #bfbfbf;
+}
+.result-details li p{
+font-size: 19px;
+}
+.result-details li span{
+display: block;
+font-size: 20px;
+margin-left: 10px;
+}
+li span b{
+font-weight: 500;
+}
+li:not(:first-child) span{
+font-weight: 500;
+}
+@media (max-width: 745px) {
+.wrapper{
+padding: 20px;
+}
+.content-box .content{
+padding: 20px 0;
+}
+.content-box .typing-text{
+max-height: 100%;
+}
+.typing-text p{
+font-size: 19px;
+text-align: left;
+}
+.content button{
+width: 100%;
+font-size: 15px;
+padding: 10px 0;
+margin-top: 20px;
+}
+.content .result-details{
+width: 100%;
+}
+.result-details li:not(:first-child){
+border-left: 0;
+padding: 0;
+}
+.result-details li p, 
+.result-details li span{
+font-size: 17px;
+}
+}
+@media (max-width: 518px) {
+.wrapper .content-box{
+padding: 10px 15px 0;
+}
+.typing-text p{
+font-size: 18px;
+}
+.result-details li{
+margin-bottom: 10px;
+}
+.content button{
+margin-top: 10px;
+}
+}
+</style>
+
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<title>Typing Speed Test Game | CodingNepal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div class="wrapper">
+<input type="text" class="input-field">
+<div class="content-box">
+<div class="typing-text">
+<p></p>
+</div>
+<div class="content">
+<ul class="result-details">
+<li class="time">
+<p>Time Left:</p>
+<span><b>60</b>s</span>
+</li>
+<li class="mistake">
+<p>Mistakes:</p>
+<span>0</span>
+</li>
+<li class="wpm">
+<p>WPM:</p>
+<span>0</span>
+</li>
+<li class="cpm">
+<p>CPM:</p>
+<span>0</span>
+</li>
+</ul>
+<button>Try Again</button>
+</div>
+</div>
+</div>
+
+</body>
+</html>
+
+<script>
+const paragraphs = [
+"Authors often misinterpret the lettuce as a folklore rabbi, when in actuality it feels more like an uncursed bacon. Pursued distances show us how mother-in-laws can be charleses. Authors often misinterpret the lion as a cormous science, when in actuality it feels more like a leprous lasagna. Recent controversy aside, their band was, in this moment, a racemed suit. The clutch of a joke becomes a togaed chair. The first pickled chess is.",
+"In modern times the first scrawny kitten is, in its own way, an input. An ostrich is the beginner of a roast. An appressed exhaust is a gun of the mind. A recorder is a grade from the right perspective. A hygienic is the cowbell of a skin. Few can name a dun brazil that isn't a highbrow playroom. The unwished beast comes from a thorny oxygen. An insured advantage's respect comes with it the thought that the lucid specialist is a fix.",
+"In ancient times the legs could be said to resemble stroppy vegetables. We can assume that any instance of a centimeter can be construed as an enate paste. One cannot separate pairs from astute managers. Those americas are nothing more than fish. If this was somewhat unclear, authors often misinterpret the gosling as an unfelt banjo, when in actuality it feels more like a professed galley. A bow of the squirrel is assumed.",
+"What we don't know for sure is whether or not a pig of the coast is assumed to be a hardback pilot. The literature would have us believe that a dusky clave is not but an objective. Few can name a limbate leo that isn't a sunlit silver. The bow is a mitten. However, the drawer is a bay. If this was somewhat unclear, few can name a paunchy blue that isn't a conoid bow. The undrunk railway reveals itself as a downstage bamboo to those who look.",
+"Their politician was, in this moment, a notour paperback. The first armless grouse is, in its own way, a gear. The coat is a wash. However, a cake is the llama of a caravan. Snakelike armies show us how playgrounds can be viscoses. Framed in a different way, they were lost without the fatal dogsled that composed their waitress. Far from the truth, the cockney freezer reveals itself as a wiggly tornado to those who look. The first hawklike sack.",
+"An aunt is a bassoon from the right perspective. As far as we can estimate, some posit the melic myanmar to be less than kutcha. One cannot separate foods from blowzy bows. The scampish closet reveals itself as a sclerous llama to those who look. A hip is the skirt of a peak. Some hempy laundries are thought of simply as orchids. A gum is a trumpet from the right perspective. A freebie flight is a wrench of the mind. Some posit the croupy.",
+"A baby is a shingle from the right perspective. Before defenses, collars were only operations. Bails are gleesome relatives. An alloy is a streetcar's debt. A fighter of the scarecrow is assumed to be a leisured laundry. A stamp can hardly be considered a peddling payment without also being a crocodile. A skill is a meteorology's fan. Their scent was, in this moment, a hidden feeling. The competitor of a bacon becomes a boxlike cougar.",
+"A broadband jam is a network of the mind. One cannot separate chickens from glowing periods. A production is a faucet from the right perspective. The lines could be said to resemble zincoid females. A deborah is a tractor's whale. Cod are elite japans. Some posit the wiglike norwegian to be less than plashy. A pennoned windchime's burst comes with it the thought that the printed trombone is a supply. Relations are restless tests.",
+"In recent years, some teeming herons are thought of simply as numbers. Nowhere is it disputed that an unlaid fur is a marble of the mind. Far from the truth, few can name a glossy lier that isn't an ingrate bone. The chicken is a giraffe. They were lost without the abscessed leek that composed their fowl. An interviewer is a tussal bomb. Vanward maracas show us how scarfs can be doubts. Few can name an unguled punch that isn't pig.",
+"A cough is a talk from the right perspective. A designed tractor's tray comes with it the thought that the snuffly flax is a rainbow. Their health was, in this moment, an earthy passbook. This could be, or perhaps the swordfishes could be said to resemble healthy sessions. A capricorn is a helium from the right perspective. However, a sled is a mailman's tennis. The competitor of an alarm becomes a toeless raincoat. Their twist was, in this moment.",
+"Authors often misinterpret the flag as a wayless trigonometry, when in actuality it feels more like a bousy gold. Few can name a jasp oven that isn't a stutter grape. They were lost without the huffy religion that composed their booklet. Those waves are nothing more than pedestrians. Few can name a quartered semicolon that isn't a rounding scooter. Though we assume the latter, the literature would have us believe.",
+"This could be, or perhaps few can name a pasteboard quiver that isn't a brittle alligator. A swordfish is a death's numeric. Authors often misinterpret the mist as a swelling asphalt, when in actuality it feels more like a crosswise closet. Some posit the tonal brother-in-law to be less than newborn. We know that the sizes could be said to resemble sleepwalk cycles. Before seasons, supplies were only fighters. Their stew was, in this moment.",
+"The vision of an attempt becomes a lawny output. Dibbles are mis womens. The olden penalty reveals itself as a bustled field to those who look. Few can name a chalky force that isn't a primate literature. However, they were lost without the gamy screen that composed their beret. Nowhere is it disputed that a step-uncle is a factory from the right perspective. One cannot separate paints from dreary windows. What we don't know for sure is whether.",
+"A tramp is a siamese from the right perspective. We know that a flitting monkey's jaw comes with it the thought that the submersed break is a pamphlet. Their cream was, in this moment, a seedy daffodil. The nest is a visitor. Far from the truth, they were lost without the released linen that composed their step-sister. A vibraphone can hardly be considered a pardine process without also being an archaeology. The bay of a hyacinth becomes.",
+"The frosts could be said to resemble backstage chards. One cannot separate colleges from pinkish bacons. Far from the truth, the mom of a rooster becomes a chordal hydrogen. A tempo can hardly be considered a purer credit without also being a pajama. The first combined ease is, in its own way, a pantyhose. Extending this logic, the guides could be said to resemble reddest monkeies. Framed in a different way, an addle hemp is a van.",
+"Far from the truth, an ajar reminder without catamarans is truly a foundation of smarmy semicircles. An alike board without harps is truly a satin of fated pans. A hubcap sees a parent as a painful beautician. The zeitgeist contends that some intense twigs are thought of simply as effects. A cross is a poppied tune. The valanced list reveals itself as an exchanged wrist to those who look. Recent controversy aside.",
+"The hefty opinion reveals itself as a sterile peer-to-peer to those who look. This could be, or perhaps the watch of a diamond becomes a bosom baboon. In recent years, some posit the unstuffed road to be less than altern. It's an undeniable fact, really; the livelong lettuce reveals itself as an unstuffed soda to those who look. In ancient times a bit is a balance's season. The popcorn of a morning becomes a moonless beauty.",
+"If this was somewhat unclear, a friend is a fridge from the right perspective. An upset carriage is a stitch of the mind. To be more specific, a temper is a pair from the right perspective. Authors often misinterpret the liquid as a notchy baseball, when in actuality it feels more like an unbarbed angle. Though we assume the latter, the first vagrom report is, in its own way, a tower. We know that the octopus of a cd becomes an unrent dahlia.",
+"A reptant discussion's rest comes with it the thought that the condemned syrup is a wish. The drake of a wallaby becomes a sonant harp. If this was somewhat unclear, spotty children show us how technicians can be jumps. Their honey was, in this moment, an intime direction. A ship is the lion of a hate. They were lost without the croupous jeep that composed their lily. In modern times a butcher of the birth is assumed to be a spiral bean.",
+"Those cowbells are nothing more than elements. This could be, or perhaps before stockings, thoughts were only opinions. A coil of the exclamation is assumed to be a hurtless toy. A board is the cast of a religion. In ancient times the first stinko sailboat is, in its own way, an exchange. Few can name a tutti channel that isn't a footless operation. Extending this logic, an oatmeal is the rooster of a shake. Those step-sons are nothing more than matches."
+];
+
+const typingText = document.querySelector(".typing-text p"),
+inpField = document.querySelector(".wrapper .input-field"),
+tryAgainBtn = document.querySelector(".content button"),
+timeTag = document.querySelector(".time span b"),
+mistakeTag = document.querySelector(".mistake span"),
+wpmTag = document.querySelector(".wpm span"),
+cpmTag = document.querySelector(".cpm span");
+
+let timer,
+maxTime = 60,
+timeLeft = maxTime,
+charIndex = mistakes = isTyping = 0;
+
+function loadParagraph() {
+const ranIndex = Math.floor(Math.random() * paragraphs.length);
+typingText.innerHTML = "";
+paragraphs[ranIndex].split("").forEach(char => {
+let span = `<span>${char}</span>`
+typingText.innerHTML += span;
+});
+typingText.querySelectorAll("span")[0].classList.add("active");
+document.addEventListener("keydown", () => inpField.focus());
+typingText.addEventListener("click", () => inpField.focus());
+}
+
+function initTyping() {
+let characters = typingText.querySelectorAll("span");
+let typedChar = inpField.value.split("")[charIndex];
+if(charIndex < characters.length - 1 && timeLeft > 0) {
+if(!isTyping) {
+timer = setInterval(initTimer, 1000);
+isTyping = true;
+}
+if(typedChar == null) {
+if(charIndex > 0) {
+charIndex--;
+if(characters[charIndex].classList.contains("incorrect")) {
+mistakes--;
+}
+characters[charIndex].classList.remove("correct", "incorrect");
+}
+} else {
+if(characters[charIndex].innerText == typedChar) {
+characters[charIndex].classList.add("correct");
+} else {
+mistakes++;
+characters[charIndex].classList.add("incorrect");
+}
+charIndex++;
+}
+characters.forEach(span => span.classList.remove("active"));
+characters[charIndex].classList.add("active");
+
+let wpm = Math.round(((charIndex - mistakes)/ 5) / (maxTime - timeLeft) * 60);
+wpm = wpm < 0 || !wpm || wpm === Infinity ? 0 : wpm;
+
+wpmTag.innerText = wpm;
+mistakeTag.innerText = mistakes;
+cpmTag.innerText = charIndex - mistakes;
+} else {
+clearInterval(timer);
+inpField.value = "";
+} 
+}
+
+function initTimer() {
+if(timeLeft > 0) {
+timeLeft--;
+timeTag.innerText = timeLeft;
+let wpm = Math.round(((charIndex - mistakes)/ 5) / (maxTime - timeLeft) * 60);
+wpmTag.innerText = wpm;
+} else {
+clearInterval(timer);
+}
+}
+
+function resetGame() {
+loadParagraph();
+clearInterval(timer);
+timeLeft = maxTime;
+charIndex = mistakes = isTyping = 0;
+inpField.value = "";
+timeTag.innerText = timeLeft;
+wpmTag.innerText = 0;
+mistakeTag.innerText = 0;
+cpmTag.innerText = 0;
+}
+
+loadParagraph();
+inpField.addEventListener("input", initTyping);
+tryAgainBtn.addEventListener("click", resetGame);
+</script>
+
+<!---->
+
+<style>
+body {
+height: 100vh;
+width: 100vw;
+background-color: black;
+margin: 0rem;
+overflow: hidden;
+}
+
+#image-track {
+display: flex;
+gap: 4vmin;
+position: absolute;
+left: 50%;
+top: 50%;
+transform: translate(0%, -50%); 
+user-select: none; /* -- Prevent image highlighting -- */
+}
+
+#image-track > .image {
+width: 40vmin;
+height: 56vmin;
+object-fit: cover;
+object-position: 100% center;
+}
+
+/* -- YouTube Link Styles -- */
+
+body.menu-toggled > .meta-link > span {
+color: rgb(30, 30, 30);
+}
+
+#source-link {
+bottom: 60px;
+}
+
+#source-link > i {
+color: rgb(94, 106, 210);
+}
+
+#yt-link > i {
+color: rgb(239, 83, 80);
+}
+
+.meta-link {
+align-items: center;
+backdrop-filter: blur(3px);
+background-color: rgba(255, 255, 255, 0.05);
+border: 1px solid rgba(255, 255, 255, 0.1);
+border-radius: 6px;
+bottom: 10px;
+box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+cursor: pointer;
+display: inline-flex;
+gap: 5px;
+left: 10px;
+padding: 10px 20px;
+position: fixed;
+text-decoration: none;
+transition: background-color 400ms, border-color 400ms;
+z-index: 10000;
+}
+
+.meta-link:hover {
+background-color: rgba(255, 255, 255, 0.1);
+border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.meta-link > i, .meta-link > span {
+height: 20px;
+line-height: 20px;
+}
+
+.meta-link > span {
+color: white;
+font-family: "Rubik", sans-serif;
+font-weight: 500;
+}
+</style>
+
+<div id="image-track" data-mouse-down-at="0" data-prev-percentage="0">
+
+<img class="image" src="sketch1.webp" draggable="false" />
+<img class="image" src="wax1.jpg" draggable="false" />
+<img class="image" src="wax2.jpg" draggable="false" />
+<img class="image" src="wax3.jpg" draggable="false" />
+<img class="image" src="candle1.jpg" draggable="false" />
+<img class="image" src="book1.jpg" draggable="false" />
+<img class="image" src="book2.jpg" draggable="false" />
+<img class="image" src="book3.jpg" draggable="false" />
+<img class="image" src="stamp1.jpg" draggable="false" />
+<img class="image" src="stamp2.jpg" draggable="false" />
+<img class="image" src="stamp3.jpg" draggable="false" />
+<img class="image" src="string1.webp" draggable="false" />
+<img class="image" src="furnace1.webp" draggable="false" />
+<img class="image" src="tape1.jpg" draggable="false" />
+<img class="image" src="page1.jpg" draggable="false" />
+<img class="image" src="paper1.jpg" draggable="false" />
+<img class="image" src="paper2.jpg" draggable="false" />
+
+<!--
+<img class="image" src="https://images.unsplash.com/photo-1524781289445-ddf8f5695861?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
+<img class="image" src="https://images.unsplash.com/photo-1610194352361-4c81a6a8967e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1674&q=80" draggable="false" />
+<img class="image" src="https://images.unsplash.com/photo-1618202133208-2907bebba9e1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
+<img class="image" src="https://images.unsplash.com/photo-1495805442109-bf1cf975750b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
+<img class="image" src="https://images.unsplash.com/photo-1548021682-1720ed403a5b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
+<img class="image" src="https://images.unsplash.com/photo-1496753480864-3e588e0269b3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2134&q=80" draggable="false" />
+<img class="image" src="https://images.unsplash.com/photo-1613346945084-35cccc812dd5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1759&q=80" draggable="false" />
+<img class="image" src="https://images.unsplash.com/photo-1516681100942-77d8e7f9dd97?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
+-->
+</div>
+
+<a id="source-link" class="meta-link" href="https://camillemormal.com" target="_blank">
+<i class="fa-solid fa-link"></i>
+<span>Source</span>
+</a>
+
+<a id="yt-link" class="meta-link" href="https://youtu.be/PkADl0HubMY" target="_blank">
+<i class="fa-brands fa-youtube"></i>
+<span>7 min tutorial</span>
+</a>
+
+<script>
+const track = document.getElementById("image-track");
+
+const handleOnDown = e => track.dataset.mouseDownAt = e.clientX;
+
+const handleOnUp = () => {
+track.dataset.mouseDownAt = "0";
+track.dataset.prevPercentage = track.dataset.percentage;
+}
+
+const handleOnMove = e => {
+if(track.dataset.mouseDownAt === "0") return;
+
+const mouseDelta = parseFloat(track.dataset.mouseDownAt) - e.clientX,
+maxDelta = window.innerWidth / 2;
+
+const percentage = (mouseDelta / maxDelta) * -100,
+nextPercentageUnconstrained = parseFloat(track.dataset.prevPercentage) + percentage,
+nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), -100);
+
+track.dataset.percentage = nextPercentage;
+
+track.animate({
+transform: `translate(${nextPercentage}%, -50%)`
+}, { duration: 1200, fill: "forwards" });
+
+for(const image of track.getElementsByClassName("image")) {
+image.animate({
+objectPosition: `${100 + nextPercentage}% center`
+}, { duration: 1200, fill: "forwards" });
+}
+}
+
+/* -- Had to add extra lines for touch events -- */
+
+window.onmousedown = e => handleOnDown(e);
+
+window.ontouchstart = e => handleOnDown(e.touches[0]);
+
+window.onmouseup = e => handleOnUp(e);
+
+window.ontouchend = e => handleOnUp(e.touches[0]);
+
+window.onmousemove = e => handleOnMove(e);
+
+window.ontouchmove = e => handleOnMove(e.touches[0]);
+</script>
+
+<!---->
 
 <!--
 
@@ -1486,11 +1448,11 @@ app = Flask("")
 log = logging.getLogger("werkzeug").setLevel(logging.ERROR)
 @app.route("/")
 def home():
-    return redirect("https://kish.vercel.app")
+return redirect("https://kish.vercel.app")
 def run():
-    app.run(host="0.0.0.0", port=3000)
+app.run(host="0.0.0.0", port=3000)
 def server():
-    Thread(target=run).start()
+Thread(target=run).start()
 server()
 
 import praw, os, csv, re, time, requests, json
@@ -1502,80 +1464,80 @@ path = "storage/shared/download/file/file.json"
 path2 = "storage/shared/download/file/file.csv"
 
 def clean_string(raw_string):
-    cleaned_string = raw_string.lower()
-    cleaned_string = re.sub(r"[^A-Za-z0-9 ]+", "", cleaned_string)
-    return cleaned_string
+cleaned_string = raw_string.lower()
+cleaned_string = re.sub(r"[^A-Za-z0-9 ]+", "", cleaned_string)
+return cleaned_string
 
 class client:
-    def __init__(self, filename):
-        self.response_list = []
-        with open(path, "r", encoding="utf8") as file:
-            file = json.load(file)
-            if "response_list" not in file:
-                with open(filename) as csv_file:
-                    csv_reader = csv.reader(csv_file, delimiter=",")
-                    for row in csv_reader:
-                        self.response_list.append({"phrase": clean_string(row[0]), "reply": row[1]})
-                file["response_list"] = self.response_list
-                print("data added")
-            else:
-                self.response_list = file["response_list"]
-                print("data loaded")
-        with open(path, "w", encoding="utf8") as f:
-            json.dump(file, f, indent=4)
+def __init__(self, filename):
+self.response_list = []
+with open(path, "r", encoding="utf8") as file:
+file = json.load(file)
+if "response_list" not in file:
+with open(filename) as csv_file:
+csv_reader = csv.reader(csv_file, delimiter=",")
+for row in csv_reader:
+self.response_list.append({"phrase": clean_string(row[0]), "reply": row[1]})
+file["response_list"] = self.response_list
+print("data added")
+else:
+self.response_list = file["response_list"]
+print("data loaded")
+with open(path, "w", encoding="utf8") as f:
+json.dump(file, f, indent=4)
 
-    def find_match(self, comment):
-        for i, dictionary in enumerate(self.response_list):
+def find_match(self, comment):
+for i, dictionary in enumerate(self.response_list):
 
-            if dictionary["phrase"] in clean_string(comment.body):
-                if self.cool_down(i):
-                    self.make_reply(i, comment)
+if dictionary["phrase"] in clean_string(comment.body):
+if self.cool_down(i):
+self.make_reply(i, comment)
 
-            elif "hakkushtest" in clean_string(comment.body):
-                response = requests.get("https://api.binance.com/api/v3/ticker/24hr?symbol=SLPUSDT")
-                json_data = json.loads(response.text)
-                symbol = json_data["symbol"].split("USDT")[0]
-                price = round(float(json_data["lastPrice"]), 5)
-                percent = round(float(json_data["priceChangePercent"]), 2)
-                comment.reply(body=f"{symbol} | ${price} | {percent}%")
+elif "hakkushtest" in clean_string(comment.body):
+response = requests.get("https://api.binance.com/api/v3/ticker/24hr?symbol=SLPUSDT")
+json_data = json.loads(response.text)
+symbol = json_data["symbol"].split("USDT")[0]
+price = round(float(json_data["lastPrice"]), 5)
+percent = round(float(json_data["priceChangePercent"]), 2)
+comment.reply(body=f"{symbol} | ${price} | {percent}%")
 
-    def cool_down(self, i):
-        dictionary = self.response_list[i]
-        if "last_posted" not in dictionary.keys():
-            return True
-        else:
-            now = datetime.now()
-            duration = now - datetime.fromtimestamp(dictionary["last_posted"])
-            duration_seconds = duration.total_seconds()
-            hours = divmod(duration_seconds, 3600)[0]
-            if hours >= 24:
-                return True
-            else:
-                print("cooldown: " + str(24 - hours) + " phrase: " + dictionary["phrase"])
-        return False
+def cool_down(self, i):
+dictionary = self.response_list[i]
+if "last_posted" not in dictionary.keys():
+return True
+else:
+now = datetime.now()
+duration = now - datetime.fromtimestamp(dictionary["last_posted"])
+duration_seconds = duration.total_seconds()
+hours = divmod(duration_seconds, 3600)[0]
+if hours >= 24:
+return True
+else:
+print("cooldown: " + str(24 - hours) + " phrase: " + dictionary["phrase"])
+return False
 
-    def make_reply(self, i, comment):
-        dictionary = self.response_list[i]
-        try:
-            comment.reply(body=dictionary["reply"])
-            print(comment.body)
-            print(dictionary["phrase"])
-            print(dictionary["reply"])
-            time.sleep(60 * 60 * 3)
-        except Exception as e:
-            print(e)
-        now = datetime.now()
-        self.response_list[i]["last_posted"] = now.timestamp()
-        with open(path, "r", encoding="utf8") as file:
-            file = json.load(file)
-            file["response_list"] = self.response_list
-        with open(path, "w", encoding="utf8") as f:
-            json.dump(file, f, indent=4)
+def make_reply(self, i, comment):
+dictionary = self.response_list[i]
+try:
+comment.reply(body=dictionary["reply"])
+print(comment.body)
+print(dictionary["phrase"])
+print(dictionary["reply"])
+time.sleep(60 * 60 * 3)
+except Exception as e:
+print(e)
+now = datetime.now()
+self.response_list[i]["last_posted"] = now.timestamp()
+with open(path, "r", encoding="utf8") as file:
+file = json.load(file)
+file["response_list"] = self.response_list
+with open(path, "w", encoding="utf8") as f:
+json.dump(file, f, indent=4)
 
 bot = client(path2)
 subreddit = reddit.subreddit("test")
 for comment in subreddit.stream.comments(skip_existing=True):
-    bot.find_match(comment)
+bot.find_match(comment)
 
 import discord, requests, json, os, random, string, time
 from discord.ext import commands
@@ -1585,163 +1547,163 @@ from datetime import datetime
 filePath = "file"
 
 def prefix(bot, message):
-    with open(filePath, 'r', encoding='utf-8') as file:
-        prefix = json.load(file)
-    return prefix[str(message.guild.id)] or "?"
+with open(filePath, 'r', encoding='utf-8') as file:
+prefix = json.load(file)
+return prefix[str(message.guild.id)] or "?"
 
 bot = commands.Bot(command_prefix='/', self_bot=True) #, intents=discord.Intents.default())
 with open(filePath, 'r', encoding='utf8') as file:
-    file = json.load(file)
-    if 'date' not in file:
-        file['date'] = datetime.timestamp(datetime.now()) * 1000
-    if 'respond' not in file:
-        file['respond'] = False
+file = json.load(file)
+if 'date' not in file:
+file['date'] = datetime.timestamp(datetime.now()) * 1000
+if 'respond' not in file:
+file['respond'] = False
 with open(filePath, 'w', encoding='utf8') as f:
-    json.dump(file, f, indent=4)
+json.dump(file, f, indent=4)
 respond = False
 
 @bot.event
 async def on_ready():
-    with open(filePath, 'r', encoding='utf8') as file:
-        file = json.load(file)
-        date = file['date']
-        await bot.change_presence(status=discord.Status.idle, activity=discord.Activity(application_id='1073031588155248651', type=discord.ActivityType.playing, name='With Fire', url='https://ishkafel.vercel.app', details='Contemplate', state='Procrastinate', timestamps={ 'start': date }, assets={ 'large_image_key': 'dota', 'large_text': 'Dota 2' }))
-        print(f'{bot.user}')
+with open(filePath, 'r', encoding='utf8') as file:
+file = json.load(file)
+date = file['date']
+await bot.change_presence(status=discord.Status.idle, activity=discord.Activity(application_id='1073031588155248651', type=discord.ActivityType.playing, name='With Fire', url='https://ishkafel.vercel.app', details='Contemplate', state='Procrastinate', timestamps={ 'start': date }, assets={ 'large_image_key': 'dota', 'large_text': 'Dota 2' }))
+print(f'{bot.user}')
 
 bot.run("OTcyNjY0MTEyMzc3MTEwNjA5.GA2fE9.Elne4WZx-Odl4bYC87HTQpdM8XbXg8-Q5dit0Q" or os.environ['token'])
 
 for filename in os.listdir('./'):
-    if filename.endswith('.py'):
-        bot.load_extension(f'cogs.{filename[:-3]}')
-        print(filename[:-3])
+if filename.endswith('.py'):
+bot.load_extension(f'cogs.{filename[:-3]}')
+print(filename[:-3])
 
 msg1 = ['ishkatest']
 msg2 = ['ishkaworks']
 
 @bot.event
 async def on_message(message):
-    try:
+try:
 
-        with open(filePath, 'r', encoding='utf8') as file:
-            file = json.load(file)
-            if file['respond'] or message.author.id == bot.user.id or message.author.id == 972664112377110609:
-                msg20 = msg2
-                if 'msg2' in file:
-                    msg20 = msg20 + file['msg2']
+with open(filePath, 'r', encoding='utf8') as file:
+file = json.load(file)
+if file['respond'] or message.author.id == bot.user.id or message.author.id == 972664112377110609:
+msg20 = msg2
+if 'msg2' in file:
+msg20 = msg20 + file['msg2']
 
-                if any(word in message.content for word in msg1):
-                    await message.channel.send(random.choice(msg20))
+if any(word in message.content for word in msg1):
+await message.channel.send(random.choice(msg20))
 
-                if message.content.startswith('/add'):
-                    add = message.content.split(' ', 1)[1]
-                    if 'msg2' in file:
-                        msg20 = file['msg2']
-                        msg20.append(add)
-                        file['msg2'] = msg20
-                    else:
-                        file['msg2'] = [add]
-                    await message.channel.send('added')
+if message.content.startswith('/add'):
+add = message.content.split(' ', 1)[1]
+if 'msg2' in file:
+msg20 = file['msg2']
+msg20.append(add)
+file['msg2'] = msg20
+else:
+file['msg2'] = [add]
+await message.channel.send('added')
 
-                if message.content.startswith('/del'):
-                    msg20 = []
-                    if 'msg2' in file:
-                        index = int(message.content.split(' ', 1)[1])
-                        msg30 = file['msg2']
-                        if len(msg30) > index:
-                            del msg30[index]
-                            file['msg2'] = msg30
-                        msg20 = file['msg2']
-                    await message.channel.send(msg20)
+if message.content.startswith('/del'):
+msg20 = []
+if 'msg2' in file:
+index = int(message.content.split(' ', 1)[1])
+msg30 = file['msg2']
+if len(msg30) > index:
+del msg30[index]
+file['msg2'] = msg30
+msg20 = file['msg2']
+await message.channel.send(msg20)
 
-                if message.content.startswith('/list'):
-                    msg20 = []
-                    if 'msg2' in file:
-                        msg20 = file['msg2']
-                    await message.channel.send(msg20)
+if message.content.startswith('/list'):
+msg20 = []
+if 'msg2' in file:
+msg20 = file['msg2']
+await message.channel.send(msg20)
 
-            await bot.process_commands(message)
+await bot.process_commands(message)
 
-            if message.content.startswith('/set'):
-                value = message.content.split(' ', 1)[1]
-                if value.lower() == 'true':
-                    file['respond'] = True
-                    await message.channel.send('on')
-                else:
-                    file['respond'] = False
-                    await message.channel.send('off')
-            await bot.process_commands(message)
+if message.content.startswith('/set'):
+value = message.content.split(' ', 1)[1]
+if value.lower() == 'true':
+file['respond'] = True
+await message.channel.send('on')
+else:
+file['respond'] = False
+await message.channel.send('off')
+await bot.process_commands(message)
 
-        with open(filePath, 'w', encoding='utf8') as f:
-            json.dump(file, f, indent=4)
+with open(filePath, 'w', encoding='utf8') as f:
+json.dump(file, f, indent=4)
 
-        if respond or message.author.id == bot.user.id or message.author.id == 972664112377110609:
+if respond or message.author.id == bot.user.id or message.author.id == 972664112377110609:
 
-            if message.content.lower() == '/slp':
-                response = requests.get('https://api.binance.com/api/v3/ticker/24hr?symbol=SLPUSDT')
-                json_data = json.loads(response.text)
-                symbol = json_data['symbol'].split('USDT')[0]
-                price = round(float(json_data['lastPrice']), 5)
-                percent = round(float(json_data['priceChangePercent']), 2)
-                embed = discord.Embed(title=message.guild.name, description=message.author.name, url=message.author.avatar_url, color=0x00ff00, timestamp=datetime.utcnow())
-                embed.set_author(name=message.guild.name, icon_url=message.guild.icon_url)
-                embed.set_thumbnail(url=message.guild.icon_url)
-                embed.set_image(url=message.author.avatar_url)
-                embed.set_footer(text=message.author.name, icon_url=message.author.avatar_url)
-                embed.add_field(name=message.guild.name, value=message.author.name, inline=False)
-                await message.channel.send('embed', embed=embed)
-                await message.channel.send(f'**{symbol} | ${price} | {percent}%**')
+if message.content.lower() == '/slp':
+response = requests.get('https://api.binance.com/api/v3/ticker/24hr?symbol=SLPUSDT')
+json_data = json.loads(response.text)
+symbol = json_data['symbol'].split('USDT')[0]
+price = round(float(json_data['lastPrice']), 5)
+percent = round(float(json_data['priceChangePercent']), 2)
+embed = discord.Embed(title=message.guild.name, description=message.author.name, url=message.author.avatar_url, color=0x00ff00, timestamp=datetime.utcnow())
+embed.set_author(name=message.guild.name, icon_url=message.guild.icon_url)
+embed.set_thumbnail(url=message.guild.icon_url)
+embed.set_image(url=message.author.avatar_url)
+embed.set_footer(text=message.author.name, icon_url=message.author.avatar_url)
+embed.add_field(name=message.guild.name, value=message.author.name, inline=False)
+await message.channel.send('embed', embed=embed)
+await message.channel.send(f'**{symbol} | ${price} | {percent}%**')
 
-            if message.content.startswith('/type'):
-                ch4 = message.content.split(' ', 1)[1]
-                url = f"https://discord.com/api/v9/channels/{ch4}/typing"
-                headers = {'authorization': os.getenv("token")}
-                while True:
-                    response = requests.request("POST", url, headers=headers)
-                    if response.status_code != 204:
-                        print(response.text)
-                        break
-                    time.sleep(10)
+if message.content.startswith('/type'):
+ch4 = message.content.split(' ', 1)[1]
+url = f"https://discord.com/api/v9/channels/{ch4}/typing"
+headers = {'authorization': os.getenv("token")}
+while True:
+response = requests.request("POST", url, headers=headers)
+if response.status_code != 204:
+print(response.text)
+break
+time.sleep(10)
 
-        await bot.process_commands(message)
+await bot.process_commands(message)
 
-    except Exception as e:
-        print(e)
+except Exception as e:
+print(e)
 
 @bot.event
 async def on_command_error(ctx, error):
-    if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.reply(error)
-    if isinstance(error, commands.MissingPermissions):
-        perms = ', '.join(error.missing_perms)
-        perms = f'{perms[0]}{perms[1:]}'
-        await ctx.reply(perms)
-    raise error
+if isinstance(error, commands.MissingRequiredArgument):
+await ctx.reply(error)
+if isinstance(error, commands.MissingPermissions):
+perms = ', '.join(error.missing_perms)
+perms = f'{perms[0]}{perms[1:]}'
+await ctx.reply(perms)
+raise error
 
 @bot.command()
 async def dm(ctx, member: discord.Member):
-    await ctx.send('msg: ')
-    def check(m):
-        return m.author.id == ctx.author.id
-    msg = await bot.wait_for('message', check=check)
-    await ctx.send(member)
-    await member.send(msg.content)
+await ctx.send('msg: ')
+def check(m):
+return m.author.id == ctx.author.id
+msg = await bot.wait_for('message', check=check)
+await ctx.send(member)
+await member.send(msg.content)
 
 @bot.command()
 @commands.has_permissions(administrator=True)
 async def prefix(ctx, arg):
-    with open(filePath, 'r', encoding='utf-8') as file:
-        prefix = json.load(file)
-    prefix[str(ctx.guild.id)]=arg
-    with open(filePath, 'w', encoding='utf-8') as f:
-        json.dump(prefix, f, indent=4)
-    await ctx.send(arg)
+with open(filePath, 'r', encoding='utf-8') as file:
+prefix = json.load(file)
+prefix[str(ctx.guild.id)]=arg
+with open(filePath, 'w', encoding='utf-8') as f:
+json.dump(prefix, f, indent=4)
+await ctx.send(arg)
 
 @bot.command()
 async def close(ctx):
-    if ctx.message.author.id == bot.user.id or ctx.author.id == 972664112377110609:
-        await ctx.send('close()')
-        print('close()')
-        await bot.close()
+if ctx.message.author.id == bot.user.id or ctx.author.id == 972664112377110609:
+await ctx.send('close()')
+print('close()')
+await bot.close()
 
 import discord, os, re, requests
 
@@ -1749,159 +1711,159 @@ from colorama import Fore
 from discord.ext import commands
 
 class disClient(commands.Bot):
-    def __init__(self):
-        super().__init__(command_prefix=':', self_bot=True)
+def __init__(self):
+super().__init__(command_prefix=':', self_bot=True)
 
-        self.session = requests.Session()
-        self.token = os.getenv('token')
-        self.remove_command('help')
-        self.errors = {
-            1: '{`message`: `Unknown Gift Code`, `code`: 10038}',
-            2: '{`message`: `This gift has been redeemed already.`, `code`: 50050}',
-            3: 'You are being rate limited',
-            4: 'Access denied'
-        }
+self.session = requests.Session()
+self.token = os.getenv('token')
+self.remove_command('help')
+self.errors = {
+1: '{`message`: `Unknown Gift Code`, `code`: 10038}',
+2: '{`message`: `This gift has been redeemed already.`, `code`: 50050}',
+3: 'You are being rate limited',
+4: 'Access denied'
+}
 
-    async def on_message(self, message):
-        try:
-            code = re.search(r'(discord.gift|discordapp.com/gifts)/\w{16,24}', message.content).group(0)
-            if code:
-                payload = {'channel_id': None, 'payment_source_id': None}
+async def on_message(self, message):
+try:
+code = re.search(r'(discord.gift|discordapp.com/gifts)/\w{16,24}', message.content).group(0)
+if code:
+payload = {'channel_id': None, 'payment_source_id': None}
 
-                r = self.session.post(f'https://discordapp.com/api/v6/entitlements/gift-codes/' + code.replace('discord.gift/', '') + '/redeem', headers=self.getHeaders(), json=payload)
-                if self.errors[1] in r.text:
-                    self.returnData('INVALID CODE', code, message.guild, message.author)
-                    self.Save('log.txt', 'a+', f'[WARN] Invalid Code {code} | {message.guild} | {message.author}')
-                elif self.errors[2] in r.text:
-                    self.returnData('ALREADY REDEEMED', code, message.guild, message.author)
-                    self.Save('log.txt', 'a+', f'[INFO] Already redeemed Code {code} | {message.guild} | {message.author}')
-                elif self.errors[3] in r.text:
-                    self.returnData('RATELIMITED', code, message.guild, message.author)
-                    self.Save('log.txt', 'a+', '[WARN] RateLimited')
-                elif self.errors[4] in r.text:
-                    self.returnData('DENIED', code, message.guild, message.author)
-                    self.Save('log.txt', 'a+', '[WARN] Denied')
-                else:
-                    self.returnData('CLAIMED', code, message.guild, message.author)
-                    self.Save('log.txt', 'a+', f'[INFO] Claimed Code {code} | {message.guild} | {message.author} | {r.text}')
-        except (AttributeError):
-            pass
+r = self.session.post(f'https://discordapp.com/api/v6/entitlements/gift-codes/' + code.replace('discord.gift/', '') + '/redeem', headers=self.getHeaders(), json=payload)
+if self.errors[1] in r.text:
+self.returnData('INVALID CODE', code, message.guild, message.author)
+self.Save('log.txt', 'a+', f'[WARN] Invalid Code {code} | {message.guild} | {message.author}')
+elif self.errors[2] in r.text:
+self.returnData('ALREADY REDEEMED', code, message.guild, message.author)
+self.Save('log.txt', 'a+', f'[INFO] Already redeemed Code {code} | {message.guild} | {message.author}')
+elif self.errors[3] in r.text:
+self.returnData('RATELIMITED', code, message.guild, message.author)
+self.Save('log.txt', 'a+', '[WARN] RateLimited')
+elif self.errors[4] in r.text:
+self.returnData('DENIED', code, message.guild, message.author)
+self.Save('log.txt', 'a+', '[WARN] Denied')
+else:
+self.returnData('CLAIMED', code, message.guild, message.author)
+self.Save('log.txt', 'a+', f'[INFO] Claimed Code {code} | {message.guild} | {message.author} | {r.text}')
+except (AttributeError):
+pass
 
-    def returnData(self, status, code, value1, value2):
-        if status == 'INVALID CODE' or 'DENIED':
-            perhaps = Fore.RED
-        elif status == 'ALREADY REDEEMED' or 'RATELIMITED' or 'UNKNOWN':
-            perhaps = Fore.YELLOW
-        else:
-            perhaps = Fore.GREEN
-        data = print(f'[{perhaps}{status}{Fore.RESET}] - [{Fore.CYAN}{code}{Fore.RESET}] - [{Fore.YELLOW}{value1}{Fore.RESET}] - [{Fore.YELLOW}{value2}{Fore.RESET}]')
-        return data
+def returnData(self, status, code, value1, value2):
+if status == 'INVALID CODE' or 'DENIED':
+perhaps = Fore.RED
+elif status == 'ALREADY REDEEMED' or 'RATELIMITED' or 'UNKNOWN':
+perhaps = Fore.YELLOW
+else:
+perhaps = Fore.GREEN
+data = print(f'[{perhaps}{status}{Fore.RESET}] - [{Fore.CYAN}{code}{Fore.RESET}] - [{Fore.YELLOW}{value1}{Fore.RESET}] - [{Fore.YELLOW}{value2}{Fore.RESET}]')
+return data
 
-    def getHeaders(self):
-        headers = {
-            'Content-Type': 'application/json',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) discord/0.0.306 Chrome/78.0.3904.130 Electron/7.1.11 Safari/537.36',
-            'Authorization': self.token
-        }
-        return headers
+def getHeaders(self):
+headers = {
+'Content-Type': 'application/json',
+'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) discord/0.0.306 Chrome/78.0.3904.130 Electron/7.1.11 Safari/537.36',
+'Authorization': self.token
+}
+return headers
 
-    def Save(self, fileName, mode, info):
-        return open(fileName, mode).write(info+'\n')
+def Save(self, fileName, mode, info):
+return open(fileName, mode).write(info+'\n')
 
-    def run(self):
-        super().run(self.token)
+def run(self):
+super().run(self.token)
 
 if __name__ == '__main__':
-    client = disClient()
-    client.run()
+client = disClient()
+client.run()
 
 from discord.ext import commands
 import discord
 
 class emoji(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
+def __init__(self, bot):
+self.bot = bot
 
-    async def get_emote(self, arg):
-        emoji = discord.utils.get(self.bot.emojis, name = arg.strip(':'))
-        if emoji is not None:
-            if emoji.animated:
-                add = 'a'
-            else:
-                add = ''
-            return f'<{add}:{emoji.name}:{emoji.id}>'
-        else:
-            return None
+async def get_emote(self, arg):
+emoji = discord.utils.get(self.bot.emojis, name = arg.strip(':'))
+if emoji is not None:
+if emoji.animated:
+add = 'a'
+else:
+add = ''
+return f'<{add}:{emoji.name}:{emoji.id}>'
+else:
+return None
 
-    async def get_string(self, content):
-        ret = []
-        spc = content.split(' ')
-        cnt = content.split(':')
-        if len(cnt) > 1:
-            for item in spc:
-                if item.count(':') > 1:
-                    wr = ''
-                    if item.startswith('<') and item.endswith('>'):
-                        ret.append(item)
-                    else:
-                        cnt = 0
-                        for i in item:
-                            if cnt == 2:
-                                aaa = wr.replace(' ', '')
-                                ret.append(aaa)
-                                wr = ''
-                                cnt = 0
-                            if i != ':':
-                                wr += i
-                            else:
-                                if wr == '' or cnt == 1:
-                                    wr += ' : '
-                                    cnt += 1
-                                else:
-                                    aaa = wr.replace(' ', '')
-                                    ret.append(aaa)
-                                    wr = ':'
-                                    cnt = 1
-                        aaa = wr.replace(' ', '')
-                        ret.append(aaa)
-                else:
-                    ret.append(item)
-        else:
-            return content
-        return ret
+async def get_string(self, content):
+ret = []
+spc = content.split(' ')
+cnt = content.split(':')
+if len(cnt) > 1:
+for item in spc:
+if item.count(':') > 1:
+wr = ''
+if item.startswith('<') and item.endswith('>'):
+ret.append(item)
+else:
+cnt = 0
+for i in item:
+if cnt == 2:
+aaa = wr.replace(' ', '')
+ret.append(aaa)
+wr = ''
+cnt = 0
+if i != ':':
+wr += i
+else:
+if wr == '' or cnt == 1:
+wr += ' : '
+cnt += 1
+else:
+aaa = wr.replace(' ', '')
+ret.append(aaa)
+wr = ':'
+cnt = 1
+aaa = wr.replace(' ', '')
+ret.append(aaa)
+else:
+ret.append(item)
+else:
+return content
+return ret
 
-    @commands.Cog.listener()
-    async def on_message(self, message):
-        if message.author.bot or message.author.id != self.bot.user.id or message.author.id != 972664112377110609:
-            return
-        if ':' in message.content:
-            msg = await self.get_string(message.content)
-            ret = ''
-            em = False
-            smth = message.content.split(':')
-            if len(smth) > 1:
-                for word in msg:
-                    if word.startswith(':') and word.endswith(':') and len(word) > 1:
-                        emoji = await self.get_emote(word)
-                        if emoji is not None:
-                            em = True
-                            ret += f' {emoji}'
-                        else:
-                            ret += f' {word}'
-                    else:
-                        ret += f' {word}'
-            else:
-                ret += msg
-            if em:
-                webhooks = await message.channel.webhooks()
-                webhook = discord.utils.get(webhooks, name = 'Ish')
-                if webhook is None:
-                    webhook = await message.channel.create_webhook(name = 'Ish')
-                await webhook.send(ret, username = message.author.name, avatar_url = message.author.avatar_url)
-                await message.delete()
+@commands.Cog.listener()
+async def on_message(self, message):
+if message.author.bot or message.author.id != self.bot.user.id or message.author.id != 972664112377110609:
+return
+if ':' in message.content:
+msg = await self.get_string(message.content)
+ret = ''
+em = False
+smth = message.content.split(':')
+if len(smth) > 1:
+for word in msg:
+if word.startswith(':') and word.endswith(':') and len(word) > 1:
+emoji = await self.get_emote(word)
+if emoji is not None:
+em = True
+ret += f' {emoji}'
+else:
+ret += f' {word}'
+else:
+ret += f' {word}'
+else:
+ret += msg
+if em:
+webhooks = await message.channel.webhooks()
+webhook = discord.utils.get(webhooks, name = 'Ish')
+if webhook is None:
+webhook = await message.channel.create_webhook(name = 'Ish')
+await webhook.send(ret, username = message.author.name, avatar_url = message.author.avatar_url)
+await message.delete()
 
 def setup(bot):
-    bot.add_cog(emoji(bot))
+bot.add_cog(emoji(bot))
 </textarea>
 
 <script>
