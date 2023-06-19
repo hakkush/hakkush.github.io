@@ -251,9 +251,7 @@ div.appendChild(iframe) }
 <!---->
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap')
-* { font-family: 'Poppins', sans-serif; }
-body { display: flex; padding: 0 10px; align-items: center; justify-content: center; min-height: 100vh; background: #17A2B8; }
+.wrapper { display: flex; padding: 0 10px; align-items: center; justify-content: center; min-height: 100vh; background: #17A2B8; }
 ::selection { color: #fff; background: #17A2B8; }
 .wrapper { width: 770px; padding: 35px; background: #fff; border-radius: 10px; box-shadow: 0 10px 15px rgba(0,0,0,0.05); }
 .wrapper .input-field{ opacity: 0; z-index: -999; position: absolute; }
@@ -309,7 +307,7 @@ li:not(:first-child) span{ font-weight: 500; }
 </div>
 
 <script>
-const paragraphs = ["Authors often misinterpret the lettuce as a folklore rabbi, when in actuality it feels more like an uncursed bacon. Pursued distances show us how mother-in-laws can be charleses. Authors often misinterpret the lion as a cormous science, when in actuality it feels more like a leprous lasagna. Recent controversy aside, their band was, in this moment, a racemed suit. The clutch of a joke becomes a togaed chair. The first pickled chess is.",
+paragraphs = ["Authors often misinterpret the lettuce as a folklore rabbi, when in actuality it feels more like an uncursed bacon. Pursued distances show us how mother-in-laws can be charleses. Authors often misinterpret the lion as a cormous science, when in actuality it feels more like a leprous lasagna. Recent controversy aside, their band was, in this moment, a racemed suit. The clutch of a joke becomes a togaed chair. The first pickled chess is.",
 "In modern times the first scrawny kitten is, in its own way, an input. An ostrich is the beginner of a roast. An appressed exhaust is a gun of the mind. A recorder is a grade from the right perspective. A hygienic is the cowbell of a skin. Few can name a dun brazil that isn't a highbrow playroom. The unwished beast comes from a thorny oxygen. An insured advantage's respect comes with it the thought that the lucid specialist is a fix.",
 "In ancient times the legs could be said to resemble stroppy vegetables. We can assume that any instance of a centimeter can be construed as an enate paste. One cannot separate pairs from astute managers. Those americas are nothing more than fish. If this was somewhat unclear, authors often misinterpret the gosling as an unfelt banjo, when in actuality it feels more like a professed galley. A bow of the squirrel is assumed.",
 "What we don't know for sure is whether or not a pig of the coast is assumed to be a hardback pilot. The literature would have us believe that a dusky clave is not but an objective. Few can name a limbate leo that isn't a sunlit silver. The bow is a mitten. However, the drawer is a bay. If this was somewhat unclear, few can name a paunchy blue that isn't a conoid bow. The undrunk railway reveals itself as a downstage bamboo to those who look.",
@@ -412,15 +410,6 @@ tryAgainBtn.addEventListener("click", resetGame)
 body { height: 100vh; width: 100vw; background-color: black; margin: 0rem; overflow: hidden; }
 #image-track { display: flex; gap: 4vmin; position: absolute; left: 50%; top: 50%; transform: translate(0%, -50%);  user-select: none; /* -- Prevent image highlighting -- */ }
 #image-track > .image { width: 40vmin; height: 56vmin; object-fit: cover; object-position: 100% center; }
-
-body.menu-toggled > .meta-link > span { color: rgb(30, 30, 30); }
-#source-link { bottom: 60px; }
-#source-link > i { color: rgb(94, 106, 210); }
-#yt-link > i { color: rgb(239, 83, 80); }
-.meta-link { align-items: center; backdrop-filter: blur(3px); background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; bottom: 10px; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1); cursor: pointer; display: inline-flex; gap: 5px; left: 10px; padding: 10px 20px; position: fixed; text-decoration: none; transition: background-color 400ms, border-color 400ms; z-index: 10000; }
-.meta-link:hover { background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); }
-.meta-link > i, .meta-link > span { height: 20px; line-height: 20px; }
-.meta-link > span { color: white; font-family: "Rubik", sans-serif; font-weight: 500; }
 </style>
 
 <div id="image-track" data-mouse-down-at="0" data-prev-percentage="0">
@@ -442,12 +431,6 @@ body.menu-toggled > .meta-link > span { color: rgb(30, 30, 30); }
 <img class="image" src="paper1.jpg" draggable="false" />
 <img class="image" src="paper2.jpg" draggable="false" />
 </div>
-
-<a id="source-link" class="meta-link" href="https://camillemormal.com" target="_blank">
-<i class="fa-solid fa-link"></i><span>Source</span></a>
-
-<a id="yt-link" class="meta-link" href="https://youtu.be/PkADl0HubMY" target="_blank">
-<i class="fa-brands fa-youtube"></i><span>7 min tutorial</span></a>
 
 <script>
 const track = document.getElementById("image-track")
