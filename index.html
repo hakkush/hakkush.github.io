@@ -266,7 +266,7 @@ div.appendChild(iframe) }
 .typing-text p span.incorrect{ color: #cb3439; outline: 1px solid #fff; background: #ffc0cb; border-radius: 4px; }
 .typing-text p span.active{ color: #17A2B8; }
 .typing-text p span.active::before{ position: absolute; content: ""; height: 2px; width: 100%; bottom: 0; left: 0; opacity: 0; border-radius: 5px; background: #17A2B8; animation: blink 1s ease-in-out infinite; }
-@keyframes blink{ 50%{  opacity: 1;  } }
+@keyframes blink{ 50%{opacity: 1;} }
 .content-box .content{ margin-top: 17px; display: flex; padding: 12px 0; flex-wrap: wrap; align-items: center; justify-content: space-between; border-top: 1px solid #bfbfbf; }
 .content button{ outline: none; border: none; width: 105px; color: #fff; padding: 8px 0; font-size: 16px; cursor: pointer; border-radius: 5px; background: #17A2B8; transition: transform 0.3s ease; }
 .content button:active{ transform: scale(0.97); }
@@ -284,7 +284,7 @@ li:not(:first-child) span{ font-weight: 500; }
 .content button{ width: 100%; font-size: 15px; padding: 10px 0; margin-top: 20px; }
 .content .result-details{ width: 100%; }
 .result-details li:not(:first-child){ border-left: 0; padding: 0; }
-.result-details li p,  .result-details li span{ font-size: 17px; } }
+.result-details li p,.result-details li span{ font-size: 17px; } }
 @media (max-width: 518px) { .wrapper .content-box{ padding: 10px 15px 0; }
 .typing-text p{ font-size: 18px; }
 .result-details li{ margin-bottom: 10px; }
@@ -410,7 +410,7 @@ tryAgainBtn.addEventListener("click", resetGame)
 
 <style>
 body { height: 100vh; width: 100vw; background-color: black; margin: 0rem; overflow: hidden; }
-#image-track { display: flex; gap: 4vmin; position: absolute; left: 50%; top: 50%; transform: translate(0%, -50%);  user-select: none; /* -- Prevent image highlighting -- */ }
+#image-track { display: flex; gap: 4vmin; position: absolute; left: 50%; top: 50%; transform: translate(0%, -50%);user-select: none; /* -- Prevent image highlighting -- */ }
 #image-track > .image { width: 40vmin; height: 56vmin; object-fit: cover; object-position: 100% center; }
 </style>
 
@@ -614,6 +614,9 @@ global_url = "background.jpg"
 background_image_showed = true
 body.style.backgroundImage = `url(${global_url})` }}
 
+fetch('index.html')
+.then(response => response.text())
+.then(text => console.log(text)) 
 </script>
 
 <script>
@@ -760,7 +763,7 @@ audio.onended = () => {
 play_music(music_list[Math.floor(Math.random() * music_list.length)].name)
 audio.play() } }
 
-</script><button><a id="down" href="#up">Up</a></button>-->
+</script><button><a id="down" href="#up">Up</a></button>
 
 <textarea class="auto_resize">
 client=~/client && rm -r ${client} && cd ~/storage/shared/download/ && cp -r client ${client} && cd ${client} && vercel --prod -y
