@@ -29,7 +29,7 @@ input, select { border: none; background-color: var(--color); color: white; }
 .menu ul li:hover > ul { opacity: 1; transition: all 2s ease; pointer-events: auto; }
 .menu ul li a:hover { transition: all 1s ease; background-color: pink; }
 
-#auto_hide_div img { width: 2vw; }
+#auto_hide_div img { width: 4ch; }
 #auto_hide_div img:hover { transition: all 1s ease; transform: scale(1.2) rotate(360deg); }
 
 @media only screen and (min-width: 200px) and (max-width: 480px) {}
@@ -41,6 +41,47 @@ input, select { border: none; background-color: var(--color); color: white; }
 <a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/paperthena"><img src="insta.png"></a>
 <a target="_blank" rel="noopener noreferrer" href="https://shopee.ph/paperthena"><img src="shopee.png"></a>
 </div>
+
+<textarea class="auto_resize">
+To Do:
+Ship Orders
+Color Hair
+PSA On Pagibig
+
+To Buy:
+Shampol
+Soap
+Efficascent Oil
+Insect Spray
+Plastic Labo
+
+Ballpen
+Super Glue
+Expanded Folder
+Sticker
+Ceramic Screen Protector
+Spray Container
+
+Pancit Canton
+Sorbetes
+Marie
+Candy
+Ketchup
+Mayonaise
+
+School:
+Front Office
+
+Places To Rent:
+Mandaluyong Addition Hills
+San Lorenzo
+Pio Del Pilar
+
+Athena.com
+Onlinejobs | Fiverr | Upwork | Taskus
+Pineapple Virtual Assistant Hub
+Sim Soh International Services Inc
+</textarea>
 
 <div id="scrollables">
 
@@ -314,37 +355,8 @@ div.appendChild(iframe) }
 </script>
 
 <!--
-<style>
-img { backdrop-filter: blur(10px); }
-</style>
-ballpen
-superglue
-efficascent oil
-small spray
-candie
-marie
-sorbetes
-poty
-sticker
-expander folder
+<style>img { backdrop-filter: blur(10px); }
 
-front office
-laderize school
-mandaluyong addition hills
-san lorenzo
-
-spray insect
-moa
-plastic labo
-color hair
-pagibig
-athena.com
-pic
-onlinejobs | fiverr | upwork | taskus
-pineapple virtual assistant hub
-sim soh international services inc
-
-<style>
 .wrapper { display: flex; padding: 0 10px; align-items: center; justify-content: center; min-height: 100vh; background: #17A2B8; }
 ::selection { color: #fff; background: #17A2B8; }
 .wrapper { width: 770px; padding: 35px; background: #fff; border-radius: 10px; box-shadow: 0 10px 15px rgba(0,0,0,0.05); }
@@ -556,6 +568,7 @@ transition: .3s linear, color 0s, background-color 0s; outline: var(--b) solid #
 </form>
 
 <div id="home"></div>
+-->
 
 <script>
 auto_type_word = ""
@@ -596,9 +609,6 @@ body.style.backgroundImage = `url(${global_url})` }}
 fetch('index.html')
 .then(response => response.text())
 .then(text => console.log(text)) 
-</script>
-
-<script>
 
 file_size = ""
 
@@ -741,8 +751,9 @@ music_position.replaceChildren(div)
 audio.onended = () => {
 play_music(music_list[Math.floor(Math.random() * music_list.length)].name)
 audio.play() } }
+</script>
 
-</script><button><a id="down" href="#up">Up</a></button>
+<a id="down" href="#up">Up</a>
 
 <textarea class="auto_resize">
 client=~/client && rm -r ${client} && cd ~/storage/shared/download/ && cp -r client ${client} && cd ${client} && vercel --prod -y
