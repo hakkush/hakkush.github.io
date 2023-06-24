@@ -6,58 +6,66 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js" integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <style>
+#scrollables { width: 100vw; height: 100vh; background-color: black; color: white; margin: 0rem; overflow: hidden; }
+#image-track { display: flex; gap: 4vmin; position: absolute; left: 50%; top: 50%; transform: translate(0%, -50%); user-select: none; }
+#image-track > .image { width: 40vmin; height: 56vmin; object-fit: cover; object-position: 100% center; }
+
+.sketch::after { content: "Sketchbook 180gsm (₱199)"; }
+.wax::after { content: "Wax Beads 25 Pieces (₱25)"; }
+.candle::after { content: "Tealight Candle 2 Pieces (₱9)"; }
+.book::after { content: "Watercolor Sketchbook 200gsm (₱329)"; }
+.stamp::after { content: "Wax Seal Stamp Set with Box (₱119)"; }
+.misc::after { content: "Miscellaneous (₱0)"; }
+
 :root { --color: black; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-fieldset { margin: 8px; padding: 6px; }
-input, select, button { margin: 2px; padding: 2px; }
 
-body { background-size: cover; background-image: url(""); background-repeat: no-repeat; background-attachment: fixed; background-position: center;
-color: #cb9f6e; background-color: var(--color); }
+body { background-color: var(--color); color: white; background-size: cover; background-image: url(""); background-repeat: no-repeat; background-attachment: fixed; background-position: center; }
+input, select { border: none; background-color: var(--color); color: white; }
 
-.menu ul { list-style-type: none; cursor: pointer !important; }
+.menu ul { list-style-type: none; cursor: pointer; }
 .menu ul li { color: white; background-color: var(--color); }
 .menu ul li ul { opacity: 0; position: absolute; display: flex; flex-direction: column; pointer-events: none; }
 .menu ul li:hover > ul { opacity: 1; transition: all 2s ease; pointer-events: auto; }
 .menu ul li a:hover { transition: all 1s ease; background-color: pink; }
-.menu ul li:hover p::after { content: "~"; }
 
-img { backdrop-filter: blur(10px); }
+#auto_hide_div img { width: 2vw; }
+#auto_hide_div img:hover { transition: all 1s ease; transform: scale(1.2) rotate(360deg); }
+
+@media only screen and (min-width: 200px) and (max-width: 480px) {}
 </style>
-ballpen
-superglue
-efficascent oil
-small spray
-candie
-marie
-sorbetes
-poty
-sticker
-expander folder
 
-front office
-laderize school
-mandaluyong addition hills
-san lorenzo
+<h1 id="auto_type_p" onclick="background_image()" style="font-weight: bold; font-style: italic;">Paperthena</h1>
+<div id="auto_hide_div">
+<a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/paperthena"><img src="facebook.png"></a>
+<a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/paperthena"><img src="insta.png"></a>
+<a target="_blank" rel="noopener noreferrer" href="https://shopee.ph/paperthena"><img src="shopee.png"></a>
+</div>
 
-spray insect
-moa
-plastic labo
-color hair
-pagibig
-athena.com
-pic
-onlinejobs | fiverr | upwork | taskus
-pineapple virtual assistant hub
-sim soh international services inc
+<div id="scrollables">
 
 <fieldset>
 <legend>
-<button><a id="link_id" href="index.html" download>S<span style="color: red">ourc</span>e</a></button>
-
-<button class="menu">
-<ul>
-<li id="z"><p>Music</p>
+<a id="link_id" href="index.html" download>Paperthena</a>
+<select id="mode_selector"><option value="night" selected>Night</option><option value="light">Light</option></select>
+<input type="radio" id="sort1" name="sort" class="sort" value="sort1" checked><label for="sort1">Show</label>
+<input type="radio" id="sort2" name="sort" class="sort" value="sort2"><label for="sort2">Hide</label>
+</legend>
+<div class="menu"><ul>
+<li id="z">
+<input id="query" placeholder="Search" type="search" onkeypress="if(event.key === 'Enter') search.click()">
+<select id="search_type">
+<option value="Reddit" selected>Reddit</option>
+<option value="Anime">Anime</option>
+<option value="Discord">Discord</option>
+<option value="Youtube">Youtube</option>
+</select>
+<a id="search" onclick="search(query.value)">Search</a>
 <ul style="z-index: 1; line-height: 3ch;">
+<li><a onclick="reddit_comment()">Comment</a></li>
+<li><a onclick="reset()">Reset</a></li>
+<li><a onclick="rewind()">Return</a></li>
+<li>More<ul>
 <li><a onclick="play_music('eine')">Eine Kleine</a></li>
 <li><a onclick="play_music('haiiro')">Haiiro to Ao</a></li>
 <li><a onclick="play_music('kaerou')">Kaerou</a></li>
@@ -66,7 +74,6 @@ sim soh international services inc
 <li><a onclick="play_music('matsuri')">Matsuri</a></li>
 <li><a onclick="play_music('metronome')">Metronome</a></li>
 <li><a onclick="play_music('night')">Night Dancer</a></li>
-<li><a>More</a><ul>
 <li><a onclick="play_music('shinunoga')">Shinunoga E-Wa</a></li>
 <li><a onclick="play_music('tsumi')">Tsumi No Kaori</a></li>
 <li><a onclick="play_music('orion')">Orion</a></li>
@@ -75,27 +82,57 @@ sim soh international services inc
 <li><a onclick="play_music('yasashisa')">Yasashisa</a></li>
 </ul></li>
 </ul></li>
-</ul></button>
-
-<select id="mode_selector"><option value="night" selected>Night</option><option value="light">Light</option></select>
-
-</legend>
-<input id="query" placeholder="Search" type="search" onkeypress="if(event.key === 'Enter') search.click()">
-<select id="search_type">
-<option value="Reddit" selected>Reddit</option>
-<option value="Anime">Anime</option>
-<option value="Discord">Discord</option>
-<option value="Youtube">Youtube</option>
-</select>
-<button id="search" onclick="search(query.value)">Search</button>
-<button onclick="rewind()">Rewind</button>
-<button onclick="reset()">Reset</button>
-<input type="radio" id="sort1" name="sort" class="sort" value="sort1" checked><button><label for="sort1">Show</label></button>
-<input type="radio" id="sort2" name="sort" class="sort" value="sort2"><button><label for="sort2">Hide</label></button>
+</ul></div>
 <div id="result"></div>
 </fieldset>
 
+<div id="image-track" data-mouse-down-at="0" data-prev-percentage="0">
+<img class="image" src="sketch1.jpg" draggable="false" /><p class="sketch"></p>
+<img class="image" src="wax1.jpg" draggable="false" /><p class="wax"></p>
+<img class="image" src="wax2.jpg" draggable="false" /><p class="wax"></p>
+<img class="image" src="wax3.jpg" draggable="false" /><p class="wax"></p>
+<img class="image" src="candle1.jpg" draggable="false" /><p class="candle"></p>
+<img class="image" src="book1.jpg" draggable="false" /><p class="book"></p>
+<img class="image" src="book2.jpg" draggable="false" /><p class="book"></p>
+<img class="image" src="book3.jpg" draggable="false" /><p class="book"></p>
+<img class="image" src="stamp1.jpg" draggable="false" /><p class="stamp"></p>
+<img class="image" src="stamp2.jpg" draggable="false" /><p class="stamp"></p>
+<img class="image" src="stamp3.jpg" draggable="false" /><p class="stamp"></p>
+<img class="image" src="string1.jpg" draggable="false" /><p class="misc"></p>
+<img class="image" src="furnace1.jpg" draggable="false" /><p class="misc"></p>
+<img class="image" src="tape1.jpg" draggable="false" /><p class="misc"></p>
+<img class="image" src="page1.jpg" draggable="false" /><p class="misc"></p>
+<img class="image" src="paper1.jpg" draggable="false" /><p class="misc"></p>
+<img class="image" src="paper2.jpg" draggable="false" /><p class="misc"></p>
+</div>
+</div>
+
 <script>
+track = document.getElementById("image-track")
+handleOnDown = e => track.dataset.mouseDownAt = e.clientX
+handleOnUp = () => { track.dataset.mouseDownAt = "0"
+track.dataset.prevPercentage = track.dataset.percentage }
+handleOnMove = e => { if(track.dataset.mouseDownAt === "0") return
+mouseDelta = parseFloat(track.dataset.mouseDownAt) - e.clientX
+maxDelta = window.innerWidth / 2
+percentage = (mouseDelta / maxDelta) * -100
+nextPercentageUnconstrained = parseFloat(track.dataset.prevPercentage) + percentage
+nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), -100)
+track.dataset.percentage = nextPercentage
+
+track.animate({ transform: `translate(${nextPercentage}%, -50%)` }, { duration: 1200, fill: "forwards" })
+
+for(const image of track.getElementsByClassName("image")) {
+image.animate({ objectPosition: `${100 + nextPercentage}% center`
+}, { duration: 1200, fill: "forwards" }) } }
+
+window.onmousedown = e => handleOnDown(e)
+window.ontouchstart = e => handleOnDown(e.touches[0])
+window.onmouseup = e => handleOnUp(e)
+window.ontouchend = e => handleOnUp(e.touches[0])
+window.onmousemove = e => handleOnMove(e)
+window.ontouchmove = e => handleOnMove(e.touches[0])
+
 body = document.querySelector("body")
 global_url = "background.jpg"
 
@@ -276,7 +313,36 @@ iframe.setAttribute("allow", "fullscreen")
 div.appendChild(iframe) }
 </script>
 
-<!---->
+<!--
+<style>
+img { backdrop-filter: blur(10px); }
+</style>
+ballpen
+superglue
+efficascent oil
+small spray
+candie
+marie
+sorbetes
+poty
+sticker
+expander folder
+
+front office
+laderize school
+mandaluyong addition hills
+san lorenzo
+
+spray insect
+moa
+plastic labo
+color hair
+pagibig
+athena.com
+pic
+onlinejobs | fiverr | upwork | taskus
+pineapple virtual assistant hub
+sim soh international services inc
 
 <style>
 .wrapper { display: flex; padding: 0 10px; align-items: center; justify-content: center; min-height: 100vh; background: #17A2B8; }
@@ -432,82 +498,7 @@ inpField.addEventListener("input", initTyping)
 tryAgainBtn.addEventListener("click", resetGame)
 </script>
 
-<!---->
-
-<style>
-body { height: 100vh; width: 100vw; background-color: black; margin: 0rem; overflow: hidden; }
-#image-track { display: flex; gap: 4vmin; position: absolute; left: 50%; top: 50%; transform: translate(0%, -50%);user-select: none; /* -- Prevent image highlighting -- */ }
-#image-track > .image { width: 40vmin; height: 56vmin; object-fit: cover; object-position: 100% center; }
-</style>
-
-<div id="image-track" data-mouse-down-at="0" data-prev-percentage="0">
-<img class="image" src="sketch1.webp" draggable="false" />
-<img class="image" src="wax1.jpg" draggable="false" />
-<img class="image" src="wax2.jpg" draggable="false" />
-<img class="image" src="wax3.jpg" draggable="false" />
-<img class="image" src="candle1.jpg" draggable="false" />
-<img class="image" src="book1.jpg" draggable="false" />
-<img class="image" src="book2.jpg" draggable="false" />
-<img class="image" src="book3.jpg" draggable="false" />
-<img class="image" src="stamp1.jpg" draggable="false" />
-<img class="image" src="stamp2.jpg" draggable="false" />
-<img class="image" src="stamp3.jpg" draggable="false" />
-<img class="image" src="string1.webp" draggable="false" />
-<img class="image" src="furnace1.webp" draggable="false" />
-<img class="image" src="tape1.jpg" draggable="false" />
-<img class="image" src="page1.jpg" draggable="false" />
-<img class="image" src="paper1.jpg" draggable="false" />
-<img class="image" src="paper2.jpg" draggable="false" />
-</div>
-
-<script>
-const track = document.getElementById("image-track")
-const handleOnDown = e => track.dataset.mouseDownAt = e.clientX
-const handleOnUp = () => { track.dataset.mouseDownAt = "0"
-track.dataset.prevPercentage = track.dataset.percentage }
-const handleOnMove = e => { if(track.dataset.mouseDownAt === "0") return
-
-const mouseDelta = parseFloat(track.dataset.mouseDownAt) - e.clientX,
-maxDelta = window.innerWidth / 2
-
-const percentage = (mouseDelta / maxDelta) * -100,
-nextPercentageUnconstrained = parseFloat(track.dataset.prevPercentage) + percentage,
-nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), -100)
-
-track.dataset.percentage = nextPercentage
-
-track.animate({ transform: `translate(${nextPercentage}%, -50%)`
-}, { duration: 1200, fill: "forwards" })
-
-for(const image of track.getElementsByClassName("image")) {
-image.animate({ objectPosition: `${100 + nextPercentage}% center`
-}, { duration: 1200, fill: "forwards" }) } }
-
-window.onmousedown = e => handleOnDown(e)
-window.ontouchstart = e => handleOnDown(e.touches[0])
-window.onmouseup = e => handleOnUp(e)
-window.ontouchend = e => handleOnUp(e.touches[0])
-window.onmousemove = e => handleOnMove(e)
-window.ontouchmove = e => handleOnMove(e.touches[0])
-</script>
-
-<!---->
-
 <button><a id="up" onclick="down.scrollIntoView({ behavior: 'smooth' })">Down</a></button>
-
-<style>
-#auto_hide_div img { width: 20vw; }
-#auto_hide_div img:hover { transition: all 1s ease; transform: scale(1.2) rotate(360deg); }
-
-#item_id img { width: 40%; }
-#item_id .img_div img { width: 30%; }
-
-@media only screen and (min-width: 200px) and (max-width: 480px) {}
-</style>
-
-<h1 id="auto_type_p" onclick="background_image()" style="font-weight: bold; font-style: italic;">Paperthena</h1>
-
-<style>
 
 #posts div, #auto_type_p { text-align: left; }
 html { scroll-behavior: smooth; }
@@ -565,40 +556,6 @@ transition: .3s linear, color 0s, background-color 0s; outline: var(--b) solid #
 </form>
 
 <div id="home"></div>
-
-<div id="item_id" onclick="reddit_comment()">
-<p>Sketchbook 180gsm (₱199)</p>
-<img src="sketch1.webp">
-<p>Wax Beads 25 Pieces (₱25)</p>
-<img src="wax1.jpg">
-<img src="wax2.jpg">
-<img src="wax3.jpg">
-<p>Tealight Candle 2 Pieces (₱9)</p>
-<img src="candle1.jpg">
-<p>Watercolor Sketchbook 200gsm (₱329)</p>
-<img src="book1.jpg">
-<img src="book2.jpg">
-<img src="book3.jpg">
-<p>Wax Seal Stamp Set with Box (₱119)</p>
-<img src="stamp1.jpg">
-<img src="stamp2.jpg">
-<img src="stamp3.jpg">
-<p>Miscellaneous (₱0)</p>
-<div class="img_div">
-<img src="string1.webp">
-<img src="furnace1.webp">
-<img src="tape1.jpg">
-<img src="page1.jpg">
-<img src="paper1.jpg">
-<img src="paper2.jpg">
-</div>
-</div>
-
-<div id="auto_hide_div">
-<a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/paperthena"><img src="facebook.png"><p>https://www.facebook.com/paperthena</p></a><br>
-<a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/paperthena"><img src="insta.png"><p>https://www.instagram.com/paperthena</p></a><br>
-<a target="_blank" rel="noopener noreferrer" href="https://shopee.ph/paperthena"><img src="shopee.png"><p>https://shopee.ph/paperthena</p></a>
-</div>
 
 <script>
 auto_type_word = ""
